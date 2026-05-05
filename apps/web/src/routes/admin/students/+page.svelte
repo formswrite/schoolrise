@@ -4,7 +4,6 @@
 	import * as Table from '$lib/components/ui/table';
 	import { Button } from '$lib/components/ui/button';
 	import { Alert, AlertDescription } from '$lib/components/ui/alert';
-	import ScopePicker from '$lib/components/scope-picker.svelte';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 </script>
@@ -27,13 +26,6 @@
 				<Button href="/admin/students/new?institution={data.institutionId}">+ New student</Button>
 			{/if}
 		</div>
-		{#if data.institutionOptions && data.institutionOptions.length > 0 && data.institutionId}
-			<ScopePicker
-				options={data.institutionOptions}
-				current={data.institutionId}
-				paramName="institution"
-			/>
-		{/if}
 	</header>
 
 	{#if !data.institutionId}
