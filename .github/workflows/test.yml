@@ -20,8 +20,9 @@ jobs:
           cache: true
       - name: install encore cli
         run: |
-          curl -L https://encore.dev/install.sh | bash
+          curl -L https://encore.dev/install.sh | bash -s -- 1.52.1
           echo "$HOME/.encore/bin" >> "$GITHUB_PATH"
+          "$HOME/.encore/bin/encore" version
       - name: encore test
         run: encore test -race -shuffle=on -coverprofile=coverage.out ./...
       - name: go mod tidy check
