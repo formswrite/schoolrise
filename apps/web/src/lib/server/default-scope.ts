@@ -37,14 +37,20 @@ export async function resolveDefaultScope(
 
 	const roots = await listNodes({ token }, null);
 	if (roots.length > 0) {
-		return { scopeNodeId: roots[0].id, scope: roots[0], options: await scopeOptions(token, session) };
+		return {
+			scopeNodeId: roots[0].id,
+			scope: roots[0],
+			options: await scopeOptions(token, session)
+		};
 	}
 
 	return null;
 }
 
 export async function scopeOptions(token: string, session: Session): Promise<ScopeOption[]> {
-	const isGlobalAdmin = session.assignments.some((a) => a.role === 'admin' && a.scopeNodeId === null);
+	const isGlobalAdmin = session.assignments.some(
+		(a) => a.role === 'admin' && a.scopeNodeId === null
+	);
 	const out: ScopeOption[] = [];
 
 	if (isGlobalAdmin) {
@@ -81,7 +87,12 @@ export async function resolveDefaultInstitution(
 ): Promise<InstitutionPick | null> {
 	if (requested) {
 		const node = await getNode({ token }, requested);
-		if (node) return { institutionId: requested, institution: node, options: await institutionOptions(token, session) };
+		if (node)
+			return {
+				institutionId: requested,
+				institution: node,
+				options: await institutionOptions(token, session)
+			};
 	}
 
 	const opts = await institutionOptions(token, session);
@@ -93,7 +104,9 @@ export async function resolveDefaultInstitution(
 }
 
 export async function institutionOptions(token: string, session: Session): Promise<ScopeOption[]> {
-	const isGlobalAdmin = session.assignments.some((a) => a.role === 'admin' && a.scopeNodeId === null);
+	const isGlobalAdmin = session.assignments.some(
+		(a) => a.role === 'admin' && a.scopeNodeId === null
+	);
 	const institutions = await listNodes({ token }, null, 'institution').catch(() => [] as Node[]);
 
 	const flat: ScopeOption[] = institutions.map((n) => ({

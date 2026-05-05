@@ -27,7 +27,10 @@
 				<a href="/admin/institutions" class="rounded px-1.5 py-0.5 hover:bg-accent">All</a>
 				{#each data.breadcrumbs as crumb}
 					<span class="text-muted-foreground/50">/</span>
-					<a href="/admin/institutions?parent={crumb.id}" class="rounded px-1.5 py-0.5 hover:bg-accent">
+					<a
+						href="/admin/institutions?parent={crumb.id}"
+						class="rounded px-1.5 py-0.5 hover:bg-accent"
+					>
 						{crumb.label}
 						<span class="text-xs text-muted-foreground">({levelLabel(crumb.level)})</span>
 					</a>
@@ -36,9 +39,13 @@
 		</div>
 		<div class="flex gap-2">
 			{#if data.parentId}
-				<Button variant="outline" size="sm" href="/admin/staff?scope={data.parentId}">Staff here</Button>
+				<Button variant="outline" size="sm" href="/admin/staff?scope={data.parentId}"
+					>Staff here</Button
+				>
 				{#if data.parent && data.parent.level === 'institution'}
-					<Button variant="outline" size="sm" href="/admin/students?institution={data.parentId}">Students</Button>
+					<Button variant="outline" size="sm" href="/admin/students?institution={data.parentId}"
+						>Students</Button
+					>
 				{/if}
 			{/if}
 			{#if data.childLevelCode && !(data.parent && data.parent.level === 'institution')}
@@ -95,7 +102,8 @@
 				<Card.Header>
 					<Card.Title class="text-base">{data.parent.label}</Card.Title>
 					<Card.Description>
-						This is a school — the bottom of the hierarchy. Schools contain people and classes, not more institutions.
+						This is a school — the bottom of the hierarchy. Schools contain people and classes, not
+						more institutions.
 					</Card.Description>
 				</Card.Header>
 				<Card.Content>
@@ -104,7 +112,7 @@
 							href="/admin/students?institution={data.parentId}"
 							class="rounded-md border p-4 transition hover:border-[#6439B5] hover:bg-[#f0ecff]"
 						>
-							<p class="text-xs uppercase tracking-wide text-muted-foreground">Students</p>
+							<p class="text-xs tracking-wide text-muted-foreground uppercase">Students</p>
 							<p class="mt-1 text-3xl font-bold">{data.leafSummary.studentCount}</p>
 							<p class="mt-1 text-xs text-[#6439B5]">View roster →</p>
 						</a>
@@ -112,7 +120,7 @@
 							href="/admin/staff?scope={data.parentId}"
 							class="rounded-md border p-4 transition hover:border-[#6439B5] hover:bg-[#f0ecff]"
 						>
-							<p class="text-xs uppercase tracking-wide text-muted-foreground">Staff</p>
+							<p class="text-xs tracking-wide text-muted-foreground uppercase">Staff</p>
 							<p class="mt-1 text-3xl font-bold">{data.leafSummary.staffCount}</p>
 							<p class="mt-1 text-xs text-[#6439B5]">View staff →</p>
 						</a>
@@ -120,7 +128,7 @@
 							href="/admin/classes?institution={data.parentId}"
 							class="rounded-md border p-4 transition hover:border-[#6439B5] hover:bg-[#f0ecff]"
 						>
-							<p class="text-xs uppercase tracking-wide text-muted-foreground">Classes</p>
+							<p class="text-xs tracking-wide text-muted-foreground uppercase">Classes</p>
 							<p class="mt-1 text-3xl font-bold">{data.leafSummary.classCount}</p>
 							<p class="mt-1 text-xs text-[#6439B5]">View classes →</p>
 						</a>
@@ -155,7 +163,9 @@
 								variant="ghost"
 								size="sm"
 								class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-								onclick={(e) => { if (!confirm('Delete this node?')) e.preventDefault(); }}
+								onclick={(e) => {
+									if (!confirm('Delete this node?')) e.preventDefault();
+								}}
 							>
 								Delete
 							</Button>

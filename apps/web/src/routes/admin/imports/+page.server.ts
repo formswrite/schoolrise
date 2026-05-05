@@ -29,11 +29,14 @@ export const actions: Actions = {
 			return fail(400, { error: 'Upload a CSV file or paste CSV text.' });
 		}
 
-		const res = await importStudents({ token }, {
-			institution_id: institutionId,
-			csv_data: csvData,
-			dry_run: dryRun
-		});
+		const res = await importStudents(
+			{ token },
+			{
+				institution_id: institutionId,
+				csv_data: csvData,
+				dry_run: dryRun
+			}
+		);
 
 		if (!res.ok) {
 			return fail(res.status, { error: res.message ?? 'Import failed.' });

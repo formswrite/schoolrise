@@ -81,10 +81,7 @@ export async function listClassesByInstitution(
 	{ token }: Opts,
 	institutionId: number
 ): Promise<Class[]> {
-	const res = await authedFetch(
-		`/v1/academics/classes?institution_id=${institutionId}`,
-		token
-	);
+	const res = await authedFetch(`/v1/academics/classes?institution_id=${institutionId}`, token);
 	if (!res.ok) return [];
 	const data = await res.json();
 	return data.classes ?? [];
@@ -125,7 +122,10 @@ export type ClassRoster = {
 	staff: Array<{ staff_id: number; role: string }>;
 };
 
-export async function getClassRoster({ token }: Opts, classID: number): Promise<ClassRoster | null> {
+export async function getClassRoster(
+	{ token }: Opts,
+	classID: number
+): Promise<ClassRoster | null> {
 	const res = await authedFetch(`/v1/academics/classes/${classID}/roster`, token);
 	if (!res.ok) return null;
 	return await res.json();
@@ -140,11 +140,18 @@ export async function addStudentToClass({ token }: Opts, classID: number, studen
 }
 
 export async function removeStudentFromClass({ token }: Opts, classID: number, studentID: number) {
-	const res = await authedFetch(`/v1/academics/classes/${classID}/students/${studentID}`, token, { method: 'DELETE' });
+	const res = await authedFetch(`/v1/academics/classes/${classID}/students/${studentID}`, token, {
+		method: 'DELETE'
+	});
 	return { ok: res.ok, status: res.status } as const;
 }
 
-export async function addStaffToClass({ token }: Opts, classID: number, staffID: number, role = 'teacher') {
+export async function addStaffToClass(
+	{ token }: Opts,
+	classID: number,
+	staffID: number,
+	role = 'teacher'
+) {
 	const res = await authedFetch(`/v1/academics/classes/${classID}/staff`, token, {
 		method: 'POST',
 		body: JSON.stringify({ staff_id: staffID, role })
@@ -152,7 +159,16 @@ export async function addStaffToClass({ token }: Opts, classID: number, staffID:
 	return { ok: res.ok, status: res.status } as const;
 }
 
-export async function removeStaffFromClass({ token }: Opts, classID: number, staffID: number, role: string) {
-	const res = await authedFetch(`/v1/academics/classes/${classID}/staff/${staffID}/${encodeURIComponent(role)}`, token, { method: 'DELETE' });
+export async function removeStaffFromClass(
+	{ token }: Opts,
+	classID: number,
+	staffID: number,
+	role: string
+) {
+	const res = await authedFetch(
+		`/v1/academics/classes/${classID}/staff/${staffID}/${encodeURIComponent(role)}`,
+		token,
+		{ method: 'DELETE' }
+	);
 	return { ok: res.ok, status: res.status } as const;
 }

@@ -54,7 +54,8 @@
 		<Card.Header>
 			<Card.Title class="text-base">Role assignments</Card.Title>
 			<Card.Description>
-				Each assignment grants the user a role at a specific scope. <strong>Global</strong> means no scope restriction (full access).
+				Each assignment grants the user a role at a specific scope. <strong>Global</strong> means no scope
+				restriction (full access).
 			</Card.Description>
 		</Card.Header>
 		<Card.Content class="space-y-6">
@@ -86,7 +87,9 @@
 											variant="ghost"
 											size="sm"
 											class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-											onclick={(e) => { if (!confirm('Revoke this assignment?')) e.preventDefault(); }}
+											onclick={(e) => {
+												if (!confirm('Revoke this assignment?')) e.preventDefault();
+											}}
 										>
 											Revoke
 										</Button>
@@ -107,7 +110,7 @@
 							id="role"
 							name="role"
 							required
-							class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+							class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 						>
 							<option value="admin">admin</option>
 							<option value="inspector" selected>inspector</option>
@@ -116,9 +119,18 @@
 					</div>
 					<div class="col-span-2 space-y-1.5">
 						<Label for="scope_node_id" class="text-xs">Scope (node ID)</Label>
-						<Input id="scope_node_id" name="scope_node_id" type="number" min="1" placeholder="Leave blank for global" />
+						<Input
+							id="scope_node_id"
+							name="scope_node_id"
+							type="number"
+							min="1"
+							placeholder="Leave blank for global"
+						/>
 						<p class="text-xs text-muted-foreground">
-							Find a node ID from <a href="/admin/institutions" class="underline">/admin/institutions</a> (URL has <code>?parent=NN</code>).
+							Find a node ID from <a href="/admin/institutions" class="underline"
+								>/admin/institutions</a
+							>
+							(URL has <code>?parent=NN</code>).
 						</p>
 					</div>
 				</div>

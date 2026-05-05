@@ -14,7 +14,9 @@
 		<Card.Title class="text-2xl">Paste your install token</Card.Title>
 		<Card.Description>
 			The install token was printed to your container logs on first boot. Run
-			<code class="rounded bg-muted px-1.5 py-0.5 text-xs">docker compose logs app | grep token</code>
+			<code class="rounded bg-muted px-1.5 py-0.5 text-xs"
+				>docker compose logs app | grep token</code
+			>
 			to retrieve it.
 		</Card.Description>
 	</Card.Header>
@@ -22,7 +24,14 @@
 		<form method="POST" class="space-y-4">
 			<div class="space-y-2">
 				<Label for="install_token">Install token</Label>
-				<Input id="install_token" name="install_token" type="text" required autocomplete="off" class="font-mono" />
+				<Input
+					id="install_token"
+					name="install_token"
+					type="text"
+					required
+					autocomplete="off"
+					class="font-mono"
+				/>
 			</div>
 			{#if form?.error}
 				<Alert variant="destructive">

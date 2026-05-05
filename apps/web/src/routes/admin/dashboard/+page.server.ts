@@ -1,6 +1,11 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { getDrilldown, getProgression, listCampaignsByScope, refreshSnapshot } from '$lib/server/progression';
+import {
+	getDrilldown,
+	getProgression,
+	listCampaignsByScope,
+	refreshSnapshot
+} from '$lib/server/progression';
 import { resolveDefaultScope } from '$lib/server/default-scope';
 
 function parseId(value: string | null): number | null {

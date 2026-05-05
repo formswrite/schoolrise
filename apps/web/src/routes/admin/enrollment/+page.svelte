@@ -17,10 +17,14 @@
 
 	function statusVariant(s: string) {
 		switch (s) {
-			case 'active': return 'default';
-			case 'transferred': return 'secondary';
-			case 'dropped': return 'destructive';
-			default: return 'secondary';
+			case 'active':
+				return 'default';
+			case 'transferred':
+				return 'secondary';
+			case 'dropped':
+				return 'destructive';
+			default:
+				return 'secondary';
 		}
 	}
 </script>
@@ -33,7 +37,10 @@
 				<h1 class="text-2xl font-semibold">Enrollment</h1>
 				{#if data.scope}
 					<p class="mt-1 text-sm text-muted-foreground">
-						at <a href="/admin/institutions?parent={data.scope.id}" class="font-medium text-foreground hover:underline">{data.scope.label}</a>
+						at <a
+							href="/admin/institutions?parent={data.scope.id}"
+							class="font-medium text-foreground hover:underline">{data.scope.label}</a
+						>
 						{#if data.periodId}
 							<span class="ml-2">— Period #{data.periodId}</span>
 						{/if}
@@ -52,26 +59,38 @@
 			{/if}
 		</div>
 		{#if data.scopeOptions && data.scopeOptions.length > 0 && data.scopeNodeId}
-			<ScopePicker options={data.scopeOptions} current={data.scopeNodeId} extraParams={{ period: data.periodId ?? undefined }} />
+			<ScopePicker
+				options={data.scopeOptions}
+				current={data.scopeNodeId}
+				extraParams={{ period: data.periodId ?? undefined }}
+			/>
 		{/if}
 	</header>
 
 	{#if !data.scopeNodeId}
 		<Alert>
 			<AlertDescription>
-				No scopes are configured yet. Set up your hierarchy first via <a href="/admin/institutions" class="font-medium underline">Institutions</a>.
+				No scopes are configured yet. Set up your hierarchy first via <a
+					href="/admin/institutions"
+					class="font-medium underline">Institutions</a
+				>.
 			</AlertDescription>
 		</Alert>
 	{:else}
 		{#if data.coverage}
 			<div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
 				<Card.Root>
-					<Card.Header class="pb-2"><Card.Description>Total enrolled</Card.Description></Card.Header>
-					<Card.Content><p class="text-3xl font-bold">{data.coverage.total_enrolled}</p></Card.Content>
+					<Card.Header class="pb-2"><Card.Description>Total enrolled</Card.Description></Card.Header
+					>
+					<Card.Content
+						><p class="text-3xl font-bold">{data.coverage.total_enrolled}</p></Card.Content
+					>
 				</Card.Root>
 				<Card.Root>
 					<Card.Header class="pb-2"><Card.Description>Female</Card.Description></Card.Header>
-					<Card.Content><p class="text-3xl font-bold text-[#6439B5]">{data.coverage.female}</p></Card.Content>
+					<Card.Content
+						><p class="text-3xl font-bold text-[#6439B5]">{data.coverage.female}</p></Card.Content
+					>
 				</Card.Root>
 				<Card.Root>
 					<Card.Header class="pb-2"><Card.Description>Male</Card.Description></Card.Header>
@@ -83,7 +102,11 @@
 				</Card.Root>
 				<Card.Root>
 					<Card.Header class="pb-2"><Card.Description>Unknown</Card.Description></Card.Header>
-					<Card.Content><p class="text-3xl font-bold text-muted-foreground">{data.coverage.unknown}</p></Card.Content>
+					<Card.Content
+						><p class="text-3xl font-bold text-muted-foreground">
+							{data.coverage.unknown}
+						</p></Card.Content
+					>
 				</Card.Root>
 			</div>
 		{/if}
@@ -109,7 +132,9 @@
 							<Label for="note">Note</Label>
 							<Input id="note" name="note" placeholder="optional" />
 						</div>
-						{#if form?.error}<Alert variant="destructive"><AlertDescription>{form.error}</AlertDescription></Alert>{/if}
+						{#if form?.error}<Alert variant="destructive"
+								><AlertDescription>{form.error}</AlertDescription></Alert
+							>{/if}
 						<div class="flex justify-end"><Button type="submit" size="sm">Enroll</Button></div>
 					</form>
 				</Card.Content>
@@ -118,7 +143,10 @@
 
 		{#if showTransfer}
 			<Card.Root>
-				<Card.Header><Card.Title class="text-base">Transfer student to another institution</Card.Title></Card.Header>
+				<Card.Header
+					><Card.Title class="text-base">Transfer student to another institution</Card.Title
+					></Card.Header
+				>
 				<Card.Content>
 					<form method="POST" use:enhance action="?/transfer" class="space-y-4">
 						<input type="hidden" name="period_id" value={data.periodId} />
@@ -129,7 +157,13 @@
 							</div>
 							<div class="space-y-2">
 								<Label for="to_institution_id">To institution ID *</Label>
-								<Input id="to_institution_id" name="to_institution_id" type="number" min="1" required />
+								<Input
+									id="to_institution_id"
+									name="to_institution_id"
+									type="number"
+									min="1"
+									required
+								/>
 							</div>
 							<div class="space-y-2">
 								<Label for="effective_on">Effective on</Label>
@@ -140,7 +174,9 @@
 							<Label for="t_note">Note</Label>
 							<Input id="t_note" name="note" placeholder="optional" />
 						</div>
-						{#if form?.error}<Alert variant="destructive"><AlertDescription>{form.error}</AlertDescription></Alert>{/if}
+						{#if form?.error}<Alert variant="destructive"
+								><AlertDescription>{form.error}</AlertDescription></Alert
+							>{/if}
 						<div class="flex justify-end"><Button type="submit" size="sm">Transfer</Button></div>
 					</form>
 				</Card.Content>
@@ -170,8 +206,12 @@
 							<Table.Row>
 								<Table.Cell class="font-mono text-xs">{e.student_id}</Table.Cell>
 								<Table.Cell><Badge variant={statusVariant(e.status)}>{e.status}</Badge></Table.Cell>
-								<Table.Cell class="text-muted-foreground">{new Date(e.enrolled_on).toLocaleDateString()}</Table.Cell>
-								<Table.Cell class="text-muted-foreground">{e.ended_on ? new Date(e.ended_on).toLocaleDateString() : '—'}</Table.Cell>
+								<Table.Cell class="text-muted-foreground"
+									>{new Date(e.enrolled_on).toLocaleDateString()}</Table.Cell
+								>
+								<Table.Cell class="text-muted-foreground"
+									>{e.ended_on ? new Date(e.ended_on).toLocaleDateString() : '—'}</Table.Cell
+								>
 								<Table.Cell>
 									{#if e.status === 'active'}
 										<form method="POST" use:enhance action="?/drop">
@@ -181,7 +221,9 @@
 												variant="ghost"
 												size="sm"
 												class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-												onclick={(ev) => { if (!confirm('Drop this enrollment?')) ev.preventDefault(); }}
+												onclick={(ev) => {
+													if (!confirm('Drop this enrollment?')) ev.preventDefault();
+												}}
 											>
 												Drop
 											</Button>

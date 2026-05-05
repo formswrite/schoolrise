@@ -26,7 +26,12 @@ export const actions: Actions = {
 
 		const result = await createUser({ token }, email, fullName, password, role, mustChange);
 		if (!result.ok) {
-			return fail(result.status, { email, fullName, role, error: result.message ?? 'Could not create user.' });
+			return fail(result.status, {
+				email,
+				fullName,
+				role,
+				error: result.message ?? 'Could not create user.'
+			});
 		}
 
 		throw redirect(303, `/admin/users/${result.user!.id}`);

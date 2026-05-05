@@ -64,10 +64,9 @@ async function loginFresh(context: BrowserContext, page: Page, cred: Cred) {
 	await page.locator('input[name="password"]').fill(cred.password);
 
 	const [postResp] = await Promise.all([
-		page.waitForResponse(
-			(r) => r.url().includes('/login') && r.request().method() === 'POST',
-			{ timeout: 10_000 }
-		),
+		page.waitForResponse((r) => r.url().includes('/login') && r.request().method() === 'POST', {
+			timeout: 10_000
+		}),
 		page.locator('form button[type="submit"]').click()
 	]);
 	expect(postResp.status(), `POST /login should redirect (303) for ${cred.key}`).toBe(303);
@@ -81,7 +80,10 @@ async function loginFresh(context: BrowserContext, page: Page, cred: Cred) {
 }
 
 test.describe('PERSONA · scoped views (08)', () => {
-	test('minister (country-wide admin) sees country-level dashboard, ALL institutions, full nav', async ({ context, page }) => {
+	test('minister (country-wide admin) sees country-level dashboard, ALL institutions, full nav', async ({
+		context,
+		page
+	}) => {
 		const cred = CREDS.minister;
 		await loginFresh(context, page, cred);
 
@@ -91,7 +93,14 @@ test.describe('PERSONA · scoped views (08)', () => {
 
 		const navLinks = await page.locator('aside nav a').allInnerTexts();
 		expect(navLinks).toEqual(
-			expect.arrayContaining(['Dashboard', 'Periods', 'Niveaux', 'Imports', 'Notifications', 'Users'])
+			expect.arrayContaining([
+				'Dashboard',
+				'Periods',
+				'Niveaux',
+				'Imports',
+				'Notifications',
+				'Users'
+			])
 		);
 		expect(navLinks.length).toBeGreaterThanOrEqual(13);
 		await expect(page.locator('aside p:has-text("Admin")').first()).toBeVisible();
@@ -100,7 +109,9 @@ test.describe('PERSONA · scoped views (08)', () => {
 		const chipCount = await scopeChips.count();
 		expect(chipCount, 'minister should see many scope chips (country-wide)').toBeGreaterThan(1);
 		const chipTexts = await scopeChips.allInnerTexts();
-		console.log(`[minister] scope chip count=${chipCount}, sample=${chipTexts.slice(0, 5).join(' | ')}`);
+		console.log(
+			`[minister] scope chip count=${chipCount}, sample=${chipTexts.slice(0, 5).join(' | ')}`
+		);
 
 		await page.goto('/admin/students');
 		await expect(page.locator('h1')).toContainText(/Students/i);
@@ -108,7 +119,10 @@ test.describe('PERSONA · scoped views (08)', () => {
 		expect(page.url()).toContain('/admin/students');
 	});
 
-	test('inspector.boke (region scope) auto-resolves to Boké, shows fewer chips, blocked from Users/Periods', async ({ context, page }) => {
+	test('inspector.boke (region scope) auto-resolves to Boké, shows fewer chips, blocked from Users/Periods', async ({
+		context,
+		page
+	}) => {
 		const cred = CREDS['inspector.boke'];
 		await loginFresh(context, page, cred);
 
@@ -143,7 +157,10 @@ test.describe('PERSONA · scoped views (08)', () => {
 		expect(periodsResp?.status(), 'inspector blocked from /admin/periods').toBe(403);
 	});
 
-	test('principal (institution scope, role=inspector) sees only LT School 1, blocked from Users', async ({ context, page }) => {
+	test('principal (institution scope, role=inspector) sees only LT School 1, blocked from Users', async ({
+		context,
+		page
+	}) => {
 		const cred = CREDS.principal;
 		await loginFresh(context, page, cred);
 
@@ -153,9 +170,16 @@ test.describe('PERSONA · scoped views (08)', () => {
 
 		await expect(page.locator('aside p:has-text("Inspector")').first()).toBeVisible();
 
-		const bannerText = (await page.locator('header p.text-muted-foreground').first().textContent({ timeout: 5_000 }).catch(() => '')) ?? '';
+		const bannerText =
+			(await page
+				.locator('header p.text-muted-foreground')
+				.first()
+				.textContent({ timeout: 5_000 })
+				.catch(() => '')) ?? '';
 		console.log(`[principal] resolved scope banner: ${bannerText.trim()}`);
-		expect(bannerText, 'principal dashboard should auto-resolve to LT School 1').toMatch(/LT School 1/);
+		expect(bannerText, 'principal dashboard should auto-resolve to LT School 1').toMatch(
+			/LT School 1/
+		);
 
 		const chipTexts = await page.locator('header a[href*="?scope="]').allInnerTexts();
 		console.log(`[principal] scope chips=${chipTexts.length}: ${chipTexts.join(' | ')}`);
@@ -169,18 +193,25 @@ test.describe('PERSONA · scoped views (08)', () => {
 		await shoot(page, '06-principal-blocked-users');
 	});
 
-	test('teacher.guinea is redirected away from /admin/* and lands on /teacher with only their classes', async ({ context, page }) => {
+	test('teacher.guinea is redirected away from /admin/* and lands on /teacher with only their classes', async ({
+		context,
+		page
+	}) => {
 		const cred = CREDS['teacher.guinea'];
 		await loginFresh(context, page, cred);
 
 		await page.goto('/admin/dashboard');
 		await page.waitForLoadState('networkidle');
-		expect(page.url(), 'teacher should be redirected away from /admin/dashboard').toContain('/teacher');
+		expect(page.url(), 'teacher should be redirected away from /admin/dashboard').toContain(
+			'/teacher'
+		);
 		await shoot(page, '07-teacher-redirect-from-admin-dashboard');
 
 		await page.goto('/admin/students');
 		await page.waitForLoadState('networkidle');
-		expect(page.url(), 'teacher should be redirected away from /admin/students').toContain('/teacher');
+		expect(page.url(), 'teacher should be redirected away from /admin/students').toContain(
+			'/teacher'
+		);
 		await shoot(page, '08-teacher-redirect-from-admin-students');
 
 		await page.goto('/teacher');
@@ -193,6 +224,9 @@ test.describe('PERSONA · scoped views (08)', () => {
 		const classCards = page.locator('a[href^="/teacher/classes/"]');
 		const classCount = await classCards.count();
 		console.log(`[teacher.guinea] visible classes on /teacher: ${classCount}`);
-		expect(classCount, 'teacher.guinea should see only the classes they teach').toBeGreaterThanOrEqual(0);
+		expect(
+			classCount,
+			'teacher.guinea should see only the classes they teach'
+		).toBeGreaterThanOrEqual(0);
 	});
 });

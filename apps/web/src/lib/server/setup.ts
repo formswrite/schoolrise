@@ -22,14 +22,24 @@ export async function fetchSetupStatus(): Promise<SetupStatus> {
 		const res = await fetch(`${encoreApiUrl}/v1/setup/status`);
 
 		if (!res.ok) {
-			return { setupComplete: false, installTokenSet: false, tokenConsumed: false, failedAttempts: 0 };
+			return {
+				setupComplete: false,
+				installTokenSet: false,
+				tokenConsumed: false,
+				failedAttempts: 0
+			};
 		}
 
 		const value = (await res.json()) as SetupStatus;
 		statusCache = { value, expiresAt: now + cacheTTLms };
 		return value;
 	} catch {
-		return { setupComplete: false, installTokenSet: false, tokenConsumed: false, failedAttempts: 0 };
+		return {
+			setupComplete: false,
+			installTokenSet: false,
+			tokenConsumed: false,
+			failedAttempts: 0
+		};
 	}
 }
 
@@ -69,7 +79,10 @@ export async function setupUnlock(installToken: string): Promise<UnlockResult> {
 	}
 }
 
-async function postSetup(path: string, body: Record<string, unknown>): Promise<{ ok: boolean; status: number; message?: string; data?: unknown }> {
+async function postSetup(
+	path: string,
+	body: Record<string, unknown>
+): Promise<{ ok: boolean; status: number; message?: string; data?: unknown }> {
 	try {
 		const res = await fetch(`${encoreApiUrl}${path}`, {
 			method: 'POST',
@@ -92,8 +105,7 @@ async function postSetup(path: string, body: Record<string, unknown>): Promise<{
 		try {
 			const data = await res.json();
 			if (data?.message) message = String(data.message);
-		} catch {
-		}
+		} catch {}
 
 		return { ok: false, status: res.status, message };
 	} catch {
@@ -101,11 +113,27 @@ async function postSetup(path: string, body: Record<string, unknown>): Promise<{
 	}
 }
 
-export async function setupCreateAdmin(sessionToken: string, email: string, fullName: string, password: string) {
-	return postSetup('/v1/setup/admin', { SessionToken: sessionToken, Email: email, FullName: fullName, Password: password });
+export async function setupCreateAdmin(
+	sessionToken: string,
+	email: string,
+	fullName: string,
+	password: string
+) {
+	return postSetup('/v1/setup/admin', {
+		SessionToken: sessionToken,
+		Email: email,
+		FullName: fullName,
+		Password: password
+	});
 }
 
-export async function setupSaveSystem(sessionToken: string, instanceName: string, defaultLocale: string, baseURL: string, timeZone: string) {
+export async function setupSaveSystem(
+	sessionToken: string,
+	instanceName: string,
+	defaultLocale: string,
+	baseURL: string,
+	timeZone: string
+) {
 	return postSetup('/v1/setup/system', {
 		SessionToken: sessionToken,
 		InstanceName: instanceName,
@@ -115,12 +143,24 @@ export async function setupSaveSystem(sessionToken: string, instanceName: string
 	});
 }
 
-export type LevelInput = { code: string; label: string; parent: string; depth: number; sort: number };
+export type LevelInput = {
+	code: string;
+	label: string;
+	parent: string;
+	depth: number;
+	sort: number;
+};
 
 export async function setupSetLevels(sessionToken: string, levels: LevelInput[]) {
 	return postSetup('/v1/setup/levels', {
 		SessionToken: sessionToken,
-		Levels: levels.map((l) => ({ Code: l.code, Label: l.label, Parent: l.parent, Depth: l.depth, Sort: l.sort }))
+		Levels: levels.map((l) => ({
+			Code: l.code,
+			Label: l.label,
+			Parent: l.parent,
+			Depth: l.depth,
+			Sort: l.sort
+		}))
 	});
 }
 
@@ -140,7 +180,15 @@ export async function setupSkipIntegrations(sessionToken: string) {
 	return postSetup('/v1/setup/integrations/skip', { SessionToken: sessionToken });
 }
 
-export async function setupSaveSMTP(sessionToken: string, host: string, port: number, username: string, password: string, useTLS: boolean, fromAddress: string) {
+export async function setupSaveSMTP(
+	sessionToken: string,
+	host: string,
+	port: number,
+	username: string,
+	password: string,
+	useTLS: boolean,
+	fromAddress: string
+) {
 	return postSetup('/v1/setup/smtp', {
 		SessionToken: sessionToken,
 		Host: host,

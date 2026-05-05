@@ -92,20 +92,16 @@ export const actions: Actions = {
 		const sortOrder = (existing.length + 1) * 10;
 		const defaults = getDefaultQuestion(type, sortOrder);
 
-		const res = await addQuestion(
-			{ token },
-			id,
-			{
-				client_id: generateClientId(),
-				sort_order: sortOrder,
-				title: defaults.title ?? '',
-				type,
-				required: defaults.required ?? false,
-				options: (defaults.options ?? []) as never,
-				scale_min: defaults.scale_min,
-				scale_max: defaults.scale_max
-			}
-		);
+		const res = await addQuestion({ token }, id, {
+			client_id: generateClientId(),
+			sort_order: sortOrder,
+			title: defaults.title ?? '',
+			type,
+			required: defaults.required ?? false,
+			options: (defaults.options ?? []) as never,
+			scale_min: defaults.scale_min,
+			scale_max: defaults.scale_max
+		});
 		if (!res.ok) return fail(res.status, { error: res.data?.message ?? 'Could not add question.' });
 		return { success: true };
 	},
@@ -184,7 +180,8 @@ export const actions: Actions = {
 			if (v !== null && String(v).length > 0) validation[k] = Number(v);
 		}
 		const valPattern = formData.get('val_pattern');
-		if (valPattern !== null && String(valPattern).length > 0) validation.pattern = String(valPattern);
+		if (valPattern !== null && String(valPattern).length > 0)
+			validation.pattern = String(valPattern);
 		if (Object.keys(validation).length > 0) body.validation = validation;
 
 		const grading: Record<string, unknown> = {};
@@ -204,7 +201,8 @@ export const actions: Actions = {
 		if (Object.keys(grading).length > 0) body.grading = grading;
 
 		const res = await updateQuestion({ token }, qid, body);
-		if (!res.ok) return fail(res.status, { error: res.data?.message ?? 'Could not save question.' });
+		if (!res.ok)
+			return fail(res.status, { error: res.data?.message ?? 'Could not save question.' });
 		return { success: true };
 	},
 
@@ -278,7 +276,11 @@ export const actions: Actions = {
 		if (!current) return fail(404, { error: 'Form not found.' });
 		const rules = rulesFromSettings(current.form.settings);
 
-		const condition: Condition = { source_question_client_id: sourceCID, op: condOp, value: condValue };
+		const condition: Condition = {
+			source_question_client_id: sourceCID,
+			op: condOp,
+			value: condValue
+		};
 		const newRule: LogicRule = {
 			id: newRuleId(),
 			target_question_client_id: target,

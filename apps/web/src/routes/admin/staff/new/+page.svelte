@@ -11,10 +11,15 @@
 
 <div class="space-y-6">
 	<header>
-		<a href="/admin/staff?scope={data.scopeNodeId}" class="text-xs text-muted-foreground hover:underline">← Staff</a>
+		<a
+			href="/admin/staff?scope={data.scopeNodeId}"
+			class="text-xs text-muted-foreground hover:underline">← Staff</a
+		>
 		<h1 class="mt-1 text-2xl font-semibold">New staff</h1>
 		{#if data.node}
-			<p class="text-sm text-muted-foreground">at <strong>{data.node.label}</strong> ({data.node.level})</p>
+			<p class="text-sm text-muted-foreground">
+				at <strong>{data.node.label}</strong> ({data.node.level})
+			</p>
 		{/if}
 	</header>
 
@@ -28,7 +33,11 @@
 				<div class="grid grid-cols-3 gap-4">
 					<div class="col-span-2 space-y-2">
 						<Label for="position">Position</Label>
-						<Input id="position" name="position" placeholder="e.g. Headteacher, Teacher, Inspector" />
+						<Input
+							id="position"
+							name="position"
+							placeholder="e.g. Headteacher, Teacher, Inspector"
+						/>
 					</div>
 					<div class="space-y-2">
 						<Label for="staff_code">Staff code</Label>

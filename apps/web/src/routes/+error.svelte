@@ -16,7 +16,10 @@
 		</Card.Header>
 		<Card.Content class="space-y-3 text-sm text-muted-foreground">
 			{#if $page.status === 403}
-				<p>Your account does not include this area. If you think this is a mistake, ask your administrator to update your role assignment.</p>
+				<p>
+					Your account does not include this area. If you think this is a mistake, ask your
+					administrator to update your role assignment.
+				</p>
 			{/if}
 			<div class="flex gap-2 pt-2">
 				<Button href="/admin/dashboard" size="sm">Go to dashboard</Button>

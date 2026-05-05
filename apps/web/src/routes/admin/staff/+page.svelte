@@ -16,7 +16,10 @@
 				<h1 class="text-2xl font-semibold">Staff</h1>
 				{#if data.node}
 					<p class="mt-1 text-sm text-muted-foreground">
-						at <a href="/admin/institutions?parent={data.node.id}" class="font-medium text-foreground hover:underline">{data.node.label}</a>
+						at <a
+							href="/admin/institutions?parent={data.node.id}"
+							class="font-medium text-foreground hover:underline">{data.node.label}</a
+						>
 					</p>
 				{/if}
 			</div>
@@ -32,7 +35,10 @@
 	{#if !data.scopeNodeId}
 		<Alert>
 			<AlertDescription>
-				No scopes are configured yet. Set up your hierarchy first via <a href="/admin/institutions" class="font-medium underline">Institutions</a>.
+				No scopes are configured yet. Set up your hierarchy first via <a
+					href="/admin/institutions"
+					class="font-medium underline">Institutions</a
+				>.
 			</AlertDescription>
 		</Alert>
 	{:else if data.staff.length === 0}
@@ -72,7 +78,9 @@
 										variant="ghost"
 										size="sm"
 										class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-										onclick={(e) => { if (!confirm('Delete this staff member?')) e.preventDefault(); }}
+										onclick={(e) => {
+											if (!confirm('Delete this staff member?')) e.preventDefault();
+										}}
 									>
 										Delete
 									</Button>

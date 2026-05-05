@@ -26,7 +26,15 @@ export const actions: Actions = {
 			return fail(400, { error: 'Host, port and from address required.' });
 		}
 
-		const result = await setupSaveSMTP(session, host, port, username, password, useTLS, fromAddress);
+		const result = await setupSaveSMTP(
+			session,
+			host,
+			port,
+			username,
+			password,
+			useTLS,
+			fromAddress
+		);
 		if (!result.ok) {
 			return fail(result.status, { error: result.message ?? 'Could not save SMTP config.' });
 		}

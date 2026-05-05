@@ -32,9 +32,7 @@
 		})
 	);
 
-	const totalEntered = $derived(
-		Object.values(scores).filter((v) => normalize(v) !== '').length
-	);
+	const totalEntered = $derived(Object.values(scores).filter((v) => normalize(v) !== '').length);
 
 	const bandColor: Record<string, string> = {
 		debutant: 'bg-[#dc2626]',
@@ -62,12 +60,17 @@
 
 <div class="space-y-6">
 	<header>
-		<a href="/teacher/classes/{data.classID}" class="text-xs text-muted-foreground hover:underline">← Class</a>
+		<a href="/teacher/classes/{data.classID}" class="text-xs text-muted-foreground hover:underline"
+			>← Class</a
+		>
 		<h1 class="mt-1 text-2xl font-semibold">{data.roster.campaign.title}</h1>
 		<p class="mt-1 text-sm text-muted-foreground">
 			Class #{data.classID} ·
 			<Badge variant="secondary" class="ml-1">{data.roster.campaign.scale_code}</Badge>
-			<Badge variant={data.roster.campaign.status === 'open' ? 'default' : 'destructive'} class="ml-1">{data.roster.campaign.status}</Badge>
+			<Badge
+				variant={data.roster.campaign.status === 'open' ? 'default' : 'destructive'}
+				class="ml-1">{data.roster.campaign.status}</Badge
+			>
 		</p>
 	</header>
 
@@ -77,7 +80,8 @@
 		<Card.Header>
 			<Card.Title class="text-base">Roster ({data.roster.rows.length} students)</Card.Title>
 			<Card.Description>
-				Type each student's raw score (0–100). Leave blank to skip. The system computes the band on submit.
+				Type each student's raw score (0–100). Leave blank to skip. The system computes the band on
+				submit.
 			</Card.Description>
 		</Card.Header>
 		<Card.Content>
@@ -102,7 +106,9 @@
 							{#each data.roster.rows as r, i}
 								<Table.Row>
 									<Table.Cell class="text-muted-foreground">{i + 1}</Table.Cell>
-									<Table.Cell class="font-medium">{r.full_name || `Student #${r.student_id}`}</Table.Cell>
+									<Table.Cell class="font-medium"
+										>{r.full_name || `Student #${r.student_id}`}</Table.Cell
+									>
 									<Table.Cell class="font-mono text-xs">{r.student_code || '—'}</Table.Cell>
 									<Table.Cell>
 										{#if r.has_score}
@@ -125,11 +131,15 @@
 									<Table.Cell>
 										{#if r.has_score && scores[r.student_id] === r.raw_score}
 											<div class="flex items-center gap-2">
-												<span class="size-3 rounded-full {bandColor[r.band_code ?? ''] ?? 'bg-muted'}"></span>
+												<span
+													class="size-3 rounded-full {bandColor[r.band_code ?? ''] ?? 'bg-muted'}"
+												></span>
 												<span class="text-xs">{r.band_code}</span>
 											</div>
 										{:else if scores[r.student_id] !== null && scores[r.student_id] !== undefined && String(scores[r.student_id]) !== ''}
-											<span class="text-xs text-muted-foreground">→ {previewBand(scores[r.student_id])}</span>
+											<span class="text-xs text-muted-foreground"
+												>→ {previewBand(scores[r.student_id])}</span
+											>
 										{:else}
 											<span class="text-xs text-muted-foreground">—</span>
 										{/if}
@@ -144,10 +154,10 @@
 							{totalEntered} entered · {dirty.length} unsaved
 						</p>
 						<div class="flex gap-2">
-							<Button type="button" variant="ghost" size="sm" onclick={() => location.reload()}>Cancel</Button>
-							<Button type="submit" size="sm">
-								Submit batch
-							</Button>
+							<Button type="button" variant="ghost" size="sm" onclick={() => location.reload()}
+								>Cancel</Button
+							>
+							<Button type="submit" size="sm">Submit batch</Button>
 						</div>
 					</div>
 				</form>

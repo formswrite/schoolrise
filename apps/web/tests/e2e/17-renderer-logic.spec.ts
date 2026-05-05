@@ -22,9 +22,7 @@ test.describe('Public renderer — logic rules hide/show reactively', () => {
 					id: 'r_show_phone',
 					target_question_client_id: '__Q1__',
 					operator: 'show_if',
-					conditions: [
-						{ source_question_client_id: '__Q0__', op: 'equals', value: 'yes' }
-					]
+					conditions: [{ source_question_client_id: '__Q0__', op: 'equals', value: 'yes' }]
 				}
 			]
 		);

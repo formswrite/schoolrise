@@ -11,7 +11,8 @@
 	<Card.Header>
 		<Card.Title class="text-2xl">Ready to finalize</Card.Title>
 		<Card.Description>
-			After finalize the setup endpoints can no longer be called — re-running setup requires a database reset.
+			After finalize the setup endpoints can no longer be called — re-running setup requires a
+			database reset.
 		</Card.Description>
 	</Card.Header>
 	<Card.Content class="space-y-4">

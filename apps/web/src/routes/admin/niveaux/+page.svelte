@@ -44,7 +44,9 @@
 					<div class="space-y-2">
 						<Label for="sort_order">Sort order</Label>
 						<Input id="sort_order" name="sort_order" type="number" min="0" value="0" />
-						<p class="text-xs text-muted-foreground">Lower values appear first. Use 10/20/30 to leave room for inserting later.</p>
+						<p class="text-xs text-muted-foreground">
+							Lower values appear first. Use 10/20/30 to leave room for inserting later.
+						</p>
 					</div>
 					{#if form?.error}
 						<Alert variant="destructive"><AlertDescription>{form.error}</AlertDescription></Alert>
@@ -88,7 +90,9 @@
 										variant="ghost"
 										size="sm"
 										class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-										onclick={(e) => { if (!confirm('Delete this niveau?')) e.preventDefault(); }}
+										onclick={(e) => {
+											if (!confirm('Delete this niveau?')) e.preventDefault();
+										}}
 									>
 										Delete
 									</Button>

@@ -13,9 +13,7 @@
 
 	const assignedIDs = $derived(new Set(data.assignments.map((a) => a.student_id)));
 	const submittedCount = $derived(data.assignments.filter((a) => a.submitted_at).length);
-	const scoreByStudent = $derived(
-		new Map(data.scores.map((s) => [s.student_id, s] as const))
-	);
+	const scoreByStudent = $derived(new Map(data.scores.map((s) => [s.student_id, s] as const)));
 
 	const bandColor: Record<string, string> = {
 		debutant: 'bg-[#dc2626]',
@@ -35,7 +33,10 @@
 
 	<header class="flex items-start justify-between">
 		<div>
-			<a href="/admin/campaigns?scope={data.campaign.scope_node_id}" class="text-xs text-muted-foreground hover:underline">← Campaigns</a>
+			<a
+				href="/admin/campaigns?scope={data.campaign.scope_node_id}"
+				class="text-xs text-muted-foreground hover:underline">← Campaigns</a
+			>
 			<h1 class="mt-1 text-2xl font-semibold">{data.campaign.title}</h1>
 			<p class="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
 				<Badge variant="secondary">{data.campaign.scale_code}</Badge>
@@ -54,9 +55,19 @@
 				<form method="POST" action="?/close" use:enhance>
 					<Button type="submit" size="sm" variant="destructive">Close campaign</Button>
 				</form>
-				<Button href="/admin/dashboard?scope={data.campaign.scope_node_id}&campaign={data.campaign.id}&period={data.campaign.period_id}" variant="outline" size="sm">View dashboard →</Button>
+				<Button
+					href="/admin/dashboard?scope={data.campaign.scope_node_id}&campaign={data.campaign
+						.id}&period={data.campaign.period_id}"
+					variant="outline"
+					size="sm">View dashboard →</Button
+				>
 			{:else}
-				<Button href="/admin/dashboard?scope={data.campaign.scope_node_id}&campaign={data.campaign.id}&period={data.campaign.period_id}" variant="outline" size="sm">View dashboard →</Button>
+				<Button
+					href="/admin/dashboard?scope={data.campaign.scope_node_id}&campaign={data.campaign
+						.id}&period={data.campaign.period_id}"
+					variant="outline"
+					size="sm">View dashboard →</Button
+				>
 			{/if}
 		</div>
 	</header>
@@ -81,14 +92,19 @@
 			<Card.Title class="text-base">Assign students</Card.Title>
 			<Card.Description>
 				{data.eligibleStudents.length} students at this institution.
-				{#if data.campaign.status !== 'open'}<span class="text-destructive">Campaign must be open to receive responses.</span>{/if}
+				{#if data.campaign.status !== 'open'}<span class="text-destructive"
+						>Campaign must be open to receive responses.</span
+					>{/if}
 			</Card.Description>
 		</Card.Header>
 		<Card.Content>
 			{#if data.eligibleStudents.length === 0}
 				<Alert>
 					<AlertDescription>
-						No students at this institution. Add some via <a href="/admin/students?institution={data.campaign.scope_node_id}" class="underline">/admin/students</a>.
+						No students at this institution. Add some via <a
+							href="/admin/students?institution={data.campaign.scope_node_id}"
+							class="underline">/admin/students</a
+						>.
 					</AlertDescription>
 				</Alert>
 			{:else}
@@ -96,7 +112,9 @@
 					<div class="flex items-center justify-between rounded-md border bg-muted/30 p-3">
 						<div class="flex items-center gap-2">
 							<Checkbox id="notify_by_email" name="notify_by_email" />
-							<label for="notify_by_email" class="cursor-pointer text-sm">Email each student a unique link (uses Resend)</label>
+							<label for="notify_by_email" class="cursor-pointer text-sm"
+								>Email each student a unique link (uses Resend)</label
+							>
 						</div>
 						<Button type="submit" size="sm">Assign selected</Button>
 					</div>
@@ -125,13 +143,19 @@
 												class="size-4 rounded border-input"
 											/>
 										</Table.Cell>
-										<Table.Cell class="font-medium">{st.person?.fullName ?? `Student #${st.id}`}</Table.Cell>
+										<Table.Cell class="font-medium"
+											>{st.person?.fullName ?? `Student #${st.id}`}</Table.Cell
+										>
 										<Table.Cell class="font-mono text-xs">{st.studentCode || '—'}</Table.Cell>
-										<Table.Cell class="text-xs text-muted-foreground">{st.person?.email || '—'}</Table.Cell>
+										<Table.Cell class="text-xs text-muted-foreground"
+											>{st.person?.email || '—'}</Table.Cell
+										>
 										<Table.Cell>
 											{#if score}
 												<div class="flex items-center gap-2">
-													<span class="size-2 rounded-full {bandColor[score.band_code] ?? 'bg-muted'}"></span>
+													<span
+														class="size-2 rounded-full {bandColor[score.band_code] ?? 'bg-muted'}"
+													></span>
 													<span class="text-xs">{score.band_code} ({score.raw_score})</span>
 												</div>
 											{:else if isAssigned}
@@ -178,7 +202,8 @@
 								<Table.Cell>
 									{#if score}
 										<div class="flex items-center gap-2">
-											<span class="size-2 rounded-full {bandColor[score.band_code] ?? 'bg-muted'}"></span>
+											<span class="size-2 rounded-full {bandColor[score.band_code] ?? 'bg-muted'}"
+											></span>
 											<span class="text-xs">{score.band_code} · {score.raw_score}</span>
 										</div>
 									{:else}

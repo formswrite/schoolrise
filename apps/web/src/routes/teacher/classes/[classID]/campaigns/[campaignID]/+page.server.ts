@@ -50,7 +50,9 @@ export const actions: Actions = {
 		const toastType: 'success' | 'warning' = errors.length ? 'warning' : 'success';
 		return {
 			success: true,
-			created, updated, errors,
+			created,
+			updated,
+			errors,
 			toast: { type: toastType, message: msg }
 		};
 	}

@@ -33,7 +33,7 @@
 					<select
 						id="default_locale"
 						name="default_locale"
-						class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
+						class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus:ring-1 focus:ring-ring focus:outline-none"
 					>
 						<option value="en" selected={form?.defaultLocale !== 'fr'}>English</option>
 						<option value="fr" selected={form?.defaultLocale === 'fr'}>Français</option>
@@ -41,13 +41,28 @@
 				</div>
 				<div class="space-y-2">
 					<Label for="time_zone">Time zone</Label>
-					<Input id="time_zone" name="time_zone" type="text" value={form?.timeZone ?? 'UTC'} placeholder="UTC, Africa/Conakry…" />
+					<Input
+						id="time_zone"
+						name="time_zone"
+						type="text"
+						value={form?.timeZone ?? 'UTC'}
+						placeholder="UTC, Africa/Conakry…"
+					/>
 				</div>
 			</div>
 			<div class="space-y-2">
 				<Label for="base_url">Public base URL</Label>
-				<Input id="base_url" name="base_url" type="url" required value={form?.baseURL ?? ''} placeholder="https://schoolrise.minedu.gov.example" />
-				<p class="text-xs text-muted-foreground">Used in assignment-link emails and API responses.</p>
+				<Input
+					id="base_url"
+					name="base_url"
+					type="url"
+					required
+					value={form?.baseURL ?? ''}
+					placeholder="https://schoolrise.minedu.gov.example"
+				/>
+				<p class="text-xs text-muted-foreground">
+					Used in assignment-link emails and API responses.
+				</p>
 			</div>
 			{#if form?.error}
 				<Alert variant="destructive">

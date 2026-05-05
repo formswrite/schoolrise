@@ -10,7 +10,10 @@
 		((question.options ?? []) as Array<string | { label?: string; value?: string }>).map((o, i) =>
 			typeof o === 'string'
 				? { label: o, value: o }
-				: { label: o.label ?? o.value ?? `Option ${i + 1}`, value: o.value ?? o.label ?? `opt_${i}` }
+				: {
+						label: o.label ?? o.value ?? `Option ${i + 1}`,
+						value: o.value ?? o.label ?? `opt_${i}`
+					}
 		)
 	);
 
@@ -22,7 +25,7 @@
 	}
 </script>
 
-<div class="pointer-events-none select-none text-sm">
+<div class="pointer-events-none text-sm select-none">
 	{#if question.type === 'SECTION'}
 		<h2 class="mt-1 border-b border-border pb-1 text-base font-semibold text-foreground">
 			{question.title || 'New section'}
@@ -80,7 +83,8 @@
 	{:else if question.type === 'CHECKBOX'}
 		<div class="space-y-1 text-xs">
 			{#each opts as opt}
-				<label class="flex items-center gap-2"><input type="checkbox" disabled /> {opt.label}</label>
+				<label class="flex items-center gap-2"><input type="checkbox" disabled /> {opt.label}</label
+				>
 			{/each}
 			{#if opts.length === 0}<span class="text-muted-foreground">(no options yet)</span>{/if}
 		</div>
@@ -90,14 +94,22 @@
 		</select>
 	{:else if question.type === 'COUNTRY_REGION'}
 		<div class="grid grid-cols-2 gap-2 text-xs">
-			<select disabled class="h-8 rounded-md border border-input bg-muted/30 px-2"><option>Guinée</option></select>
-			<select disabled class="h-8 rounded-md border border-input bg-muted/30 px-2"><option>— région —</option></select>
+			<select disabled class="h-8 rounded-md border border-input bg-muted/30 px-2"
+				><option>Guinée</option></select
+			>
+			<select disabled class="h-8 rounded-md border border-input bg-muted/30 px-2"
+				><option>— région —</option></select
+			>
 		</div>
 	{:else if question.type === 'ADDRESS'}
 		{@const fields = asStringArray(extra.fields, ['Quartier', 'Commune', 'Préfecture'])}
 		<div class="space-y-1 text-xs">
 			{#each fields as f}
-				<input disabled placeholder={f} class="h-8 w-full rounded-md border border-input bg-muted/30 px-2" />
+				<input
+					disabled
+					placeholder={f}
+					class="h-8 w-full rounded-md border border-input bg-muted/30 px-2"
+				/>
 			{/each}
 		</div>
 	{:else if question.type === 'TABLE'}
@@ -134,11 +146,11 @@
 			{/each}
 		</div>
 	{:else if question.type === 'MATCHING'}
-		{@const pairs = ((extra.pairs as Array<{ left?: string; right?: string }>) ?? [
+		{@const pairs = (extra.pairs as Array<{ left?: string; right?: string }>) ?? [
 			{ left: 'Lion', right: 'Mammifère' },
 			{ left: 'Aigle', right: 'Oiseau' },
 			{ left: 'Tortue', right: 'Reptile' }
-		])}
+		]}
 		<div class="grid grid-cols-2 gap-1 text-xs">
 			<div class="space-y-1">
 				{#each pairs as p}
@@ -147,19 +159,27 @@
 			</div>
 			<div class="space-y-1">
 				{#each pairs as p}
-					<select disabled class="h-7 w-full rounded-md border border-input bg-muted/30 px-2 text-xs">
+					<select
+						disabled
+						class="h-7 w-full rounded-md border border-input bg-muted/30 px-2 text-xs"
+					>
 						<option>{p.right}</option>
 					</select>
 				{/each}
 			</div>
 		</div>
 	{:else if question.type === 'FILL_IN_BLANK'}
-		{@const text = (typeof extra.template === 'string' ? extra.template : question.title) || 'Le mot manquant est [[1]] et aussi [[2]].'}
+		{@const text =
+			(typeof extra.template === 'string' ? extra.template : question.title) ||
+			'Le mot manquant est [[1]] et aussi [[2]].'}
 		<p class="text-xs text-foreground">
 			{#each text.split(/\[\[\d+\]\]/) as part, i}
 				<span>{part}</span>
 				{#if i < text.split(/\[\[\d+\]\]/).length - 1}
-					<input disabled class="mx-1 inline-block w-20 border-b-2 border-foreground/40 bg-transparent text-center" />
+					<input
+						disabled
+						class="mx-1 inline-block w-20 border-b-2 border-foreground/40 bg-transparent text-center"
+					/>
 				{/if}
 			{/each}
 		</p>
@@ -168,29 +188,41 @@
 			<div class="rounded-md border bg-muted/30 px-2 py-1 font-mono text-foreground">
 				{(typeof extra.latex === 'string' ? extra.latex : '') || 'x^2 + 2x + 1 = ?'}
 			</div>
-			<input disabled placeholder="Réponse" class="h-7 w-full rounded-md border border-input bg-muted/30 px-2" />
+			<input
+				disabled
+				placeholder="Réponse"
+				class="h-7 w-full rounded-md border border-input bg-muted/30 px-2"
+			/>
 		</div>
 	{:else if question.type === 'CODE_BLOCK'}
 		<textarea
 			rows="3"
 			disabled
-			placeholder={(typeof extra.language === 'string' ? `// ${extra.language}` : '// code')}
+			placeholder={typeof extra.language === 'string' ? `// ${extra.language}` : '// code'}
 			class="w-full resize-none rounded-md border border-input bg-muted/30 px-2 py-1 font-mono text-[11px]"
 		></textarea>
 	{:else if question.type === 'FILE_UPLOAD' || question.type === 'ATTACHMENT'}
-		<div class="rounded-md border border-dashed bg-muted/20 px-2 py-3 text-center text-[11px] text-muted-foreground">
+		<div
+			class="rounded-md border border-dashed bg-muted/20 px-2 py-3 text-center text-[11px] text-muted-foreground"
+		>
 			📎 Click to upload a file
 		</div>
 	{:else if question.type === 'IMAGE'}
-		<div class="rounded-md border border-dashed bg-muted/20 px-2 py-4 text-center text-[11px] text-muted-foreground">
+		<div
+			class="rounded-md border border-dashed bg-muted/20 px-2 py-4 text-center text-[11px] text-muted-foreground"
+		>
 			🖼 Image upload
 		</div>
 	{:else if question.type === 'SIGNATURE'}
-		<div class="rounded-md border bg-muted/20 px-2 py-3 text-center text-[11px] text-muted-foreground">
+		<div
+			class="rounded-md border bg-muted/20 px-2 py-3 text-center text-[11px] text-muted-foreground"
+		>
 			✍ Sign here
 		</div>
 	{:else if question.type === 'HOTSPOT'}
-		<div class="rounded-md border bg-muted/20 px-2 py-4 text-center text-[11px] text-muted-foreground">
+		<div
+			class="rounded-md border bg-muted/20 px-2 py-4 text-center text-[11px] text-muted-foreground"
+		>
 			🎯 Click on the image to mark a hotspot
 		</div>
 	{:else}

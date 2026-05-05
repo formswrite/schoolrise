@@ -21,12 +21,24 @@ export const actions: Actions = {
 		const timeZone = String(data.get('time_zone') ?? 'UTC').trim();
 
 		if (!instanceName || !baseURL) {
-			return fail(400, { instanceName, defaultLocale, baseURL, timeZone, error: 'Instance name and base URL required.' });
+			return fail(400, {
+				instanceName,
+				defaultLocale,
+				baseURL,
+				timeZone,
+				error: 'Instance name and base URL required.'
+			});
 		}
 
 		const result = await setupSaveSystem(session, instanceName, defaultLocale, baseURL, timeZone);
 		if (!result.ok) {
-			return fail(result.status, { instanceName, defaultLocale, baseURL, timeZone, error: result.message ?? 'Could not save settings.' });
+			return fail(result.status, {
+				instanceName,
+				defaultLocale,
+				baseURL,
+				timeZone,
+				error: result.message ?? 'Could not save settings.'
+			});
 		}
 
 		throw redirect(303, '/setup/levels');

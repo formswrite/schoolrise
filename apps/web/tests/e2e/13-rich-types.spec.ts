@@ -35,12 +35,13 @@ test.describe('Rich field types — editor settings + previews persist', () => {
 		const palette = page.locator('aside').filter({ hasText: 'Add a field' });
 		const badges = await palette.locator('text=/^β$/').count();
 		expect(badges).toBe(1);
-		await page.screenshot({ path: path.join(SHOTS_DIR, '01-palette-after-phase-3.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '01-palette-after-phase-3.png'),
+			fullPage: true
+		});
 	});
 
-	test('EQUATION: stores LaTeX in extra; grading.correct_value persists', async ({
-		request
-	}) => {
+	test('EQUATION: stores LaTeX in extra; grading.correct_value persists', async ({ request }) => {
 		const addRes = await request.post(`${API_BASE}/v1/forms/items/${formId}/questions`, {
 			headers: { Authorization: `Bearer ${token}` },
 			data: {
@@ -83,7 +84,9 @@ test.describe('Rich field types — editor settings + previews persist', () => {
 		const getRes = await request.get(`${API_BASE}/v1/forms/items/${formId}`, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
-		const fib = (await getRes.json()).questions.find((q: { type: string }) => q.type === 'FILL_IN_BLANK');
+		const fib = (await getRes.json()).questions.find(
+			(q: { type: string }) => q.type === 'FILL_IN_BLANK'
+		);
 		expect(fib.extra.template).toContain('[[1]]');
 		expect(fib.grading.answers).toEqual(['premier', 'second']);
 	});
@@ -142,7 +145,10 @@ test.describe('Rich field types — editor settings + previews persist', () => {
 		await page.goto(`/admin/forms/${formId}`);
 		await page.waitForLoadState('networkidle');
 
-		const eqRow = page.locator('div').filter({ hasText: /^[0-9]+\.\s*Résoudre/ }).first();
+		const eqRow = page
+			.locator('div')
+			.filter({ hasText: /^[0-9]+\.\s*Résoudre/ })
+			.first();
 		await eqRow.click();
 		const drawer = page.locator('aside').filter({ hasText: 'Question settings' });
 		await expect(drawer).toBeVisible();

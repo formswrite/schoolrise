@@ -24,15 +24,36 @@
 			</div>
 			<div class="space-y-2">
 				<Label for="email">Email</Label>
-				<Input id="email" name="email" type="email" required autocomplete="email" value={form?.email ?? ''} />
+				<Input
+					id="email"
+					name="email"
+					type="email"
+					required
+					autocomplete="email"
+					value={form?.email ?? ''}
+				/>
 			</div>
 			<div class="space-y-2">
 				<Label for="password">Password</Label>
-				<Input id="password" name="password" type="password" required minlength={8} autocomplete="new-password" />
+				<Input
+					id="password"
+					name="password"
+					type="password"
+					required
+					minlength={8}
+					autocomplete="new-password"
+				/>
 			</div>
 			<div class="space-y-2">
 				<Label for="confirm_password">Confirm password</Label>
-				<Input id="confirm_password" name="confirm_password" type="password" required minlength={8} autocomplete="new-password" />
+				<Input
+					id="confirm_password"
+					name="confirm_password"
+					type="password"
+					required
+					minlength={8}
+					autocomplete="new-password"
+				/>
 			</div>
 			{#if form?.error}
 				<Alert variant="destructive">

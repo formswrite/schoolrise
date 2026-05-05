@@ -14,12 +14,16 @@
 
 	function statusVariant(s: string) {
 		switch (s) {
-			case 'sent': return 'default';
+			case 'sent':
+				return 'default';
 			case 'pending':
-			case 'sending': return 'secondary';
+			case 'sending':
+				return 'secondary';
 			case 'failed':
-			case 'dropped': return 'destructive';
-			default: return 'secondary';
+			case 'dropped':
+				return 'destructive';
+			default:
+				return 'secondary';
 		}
 	}
 </script>
@@ -29,7 +33,8 @@
 	<header>
 		<h1 class="text-2xl font-semibold">Notifications</h1>
 		<p class="mt-1 text-sm text-muted-foreground">
-			Email outbox + provider status. Assignment emails go out automatically when the campaign is opened with <code>notify_by_email</code>.
+			Email outbox + provider status. Assignment emails go out automatically when the campaign is
+			opened with <code>notify_by_email</code>.
 		</p>
 	</header>
 
@@ -46,7 +51,9 @@
 							<Badge>Resend (live)</Badge>
 						{:else if data.provider.provider === 'log'}
 							<Badge variant="secondary">Log (dev)</Badge>
-							<span class="ml-2 text-xs text-muted-foreground">No <code>RESEND_API_KEY</code> set; emails are logged to stdout.</span>
+							<span class="ml-2 text-xs text-muted-foreground"
+								>No <code>RESEND_API_KEY</code> set; emails are logged to stdout.</span
+							>
 						{:else}
 							<Badge variant="destructive">{data.provider.provider}</Badge>
 						{/if}
@@ -74,9 +81,13 @@
 				<Button type="submit" size="sm">Send test</Button>
 			</form>
 			{#if form?.success && form?.sentTo}
-				<Alert class="mt-3"><AlertDescription>Test sent to <strong>{form.sentTo}</strong>.</AlertDescription></Alert>
+				<Alert class="mt-3"
+					><AlertDescription>Test sent to <strong>{form.sentTo}</strong>.</AlertDescription></Alert
+				>
 			{:else if form?.error}
-				<Alert variant="destructive" class="mt-3"><AlertDescription>{form.error}</AlertDescription></Alert>
+				<Alert variant="destructive" class="mt-3"
+					><AlertDescription>{form.error}</AlertDescription></Alert
+				>
 			{/if}
 		</Card.Content>
 	</Card.Root>
@@ -106,7 +117,9 @@
 					<Table.Body>
 						{#each data.emails as e}
 							<Table.Row>
-								<Table.Cell class="text-xs text-muted-foreground">{new Date(e.created_at).toLocaleString()}</Table.Cell>
+								<Table.Cell class="text-xs text-muted-foreground"
+									>{new Date(e.created_at).toLocaleString()}</Table.Cell
+								>
 								<Table.Cell><Badge variant="secondary">{e.kind}</Badge></Table.Cell>
 								<Table.Cell class="text-xs">{e.to_email}</Table.Cell>
 								<Table.Cell class="font-medium">{e.subject}</Table.Cell>
@@ -116,7 +129,9 @@
 							{#if e.last_error}
 								<Table.Row>
 									<Table.Cell></Table.Cell>
-									<Table.Cell colspan={5} class="pt-0 text-xs text-destructive">⚠ {e.last_error}</Table.Cell>
+									<Table.Cell colspan={5} class="pt-0 text-xs text-destructive"
+										>⚠ {e.last_error}</Table.Cell
+									>
 								</Table.Row>
 							{/if}
 						{/each}
