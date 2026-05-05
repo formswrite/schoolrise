@@ -32,9 +32,8 @@ export const actions: Actions = {
 			const v = payload[k];
 			if (typeof v === 'string' && v.trim() !== '') answered++;
 		}
-		const rawScore = totalQuestions > 0
-			? Math.min(100, Math.round((answered / totalQuestions) * 100))
-			: 0;
+		const rawScore =
+			totalQuestions > 0 ? Math.min(100, Math.round((answered / totalQuestions) * 100)) : 0;
 
 		const res = await submitResponse({
 			access_token: params.token,

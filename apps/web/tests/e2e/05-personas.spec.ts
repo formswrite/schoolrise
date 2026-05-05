@@ -34,7 +34,22 @@ test.describe('PERSONA · global admin', () => {
 
 		const navLinks = await page.locator('aside nav a').allInnerTexts();
 		expect(navLinks).toEqual(
-			expect.arrayContaining(['Dashboard', 'Institutions', 'Periods', 'Niveaux', 'Classes', 'Students', 'Staff', 'Enrollment', 'Forms', 'Campaigns', 'AI', 'Imports', 'Notifications', 'Users'])
+			expect.arrayContaining([
+				'Dashboard',
+				'Institutions',
+				'Periods',
+				'Niveaux',
+				'Classes',
+				'Students',
+				'Staff',
+				'Enrollment',
+				'Forms',
+				'Campaigns',
+				'AI',
+				'Imports',
+				'Notifications',
+				'Users'
+			])
 		);
 		expect(navLinks.length).toBe(14);
 
@@ -131,7 +146,10 @@ test.describe('PERSONA · teacher (scoped to one institution + class)', () => {
 		await expect(page.locator('text=/Open campaigns/i')).toBeVisible();
 		await shoot(page, '11-teacher-campaigns');
 
-		await page.getByRole('link', { name: /Enter scores|Continue/ }).first().click();
+		await page
+			.getByRole('link', { name: /Enter scores|Continue/ })
+			.first()
+			.click();
 		await page.waitForURL(/\/teacher\/classes\/\d+\/campaigns\/\d+/);
 		await expect(page.locator('text=/Roster/i')).toBeVisible();
 		await shoot(page, '12-teacher-grade-entry');
@@ -140,7 +158,10 @@ test.describe('PERSONA · teacher (scoped to one institution + class)', () => {
 	test('teacher submits scores end-to-end', async ({ page }) => {
 		await page.goto('/teacher');
 		await page.locator('text=E2E-CE1-A').first().click();
-		await page.getByRole('link', { name: /Enter scores|Continue/ }).first().click();
+		await page
+			.getByRole('link', { name: /Enter scores|Continue/ })
+			.first()
+			.click();
 		await page.waitForLoadState('networkidle');
 
 		const inputs = await page.locator('input[name^="score_"]').all();
@@ -159,7 +180,9 @@ test.describe('PERSONA · teacher (scoped to one institution + class)', () => {
 		await shoot(page, '14-teacher-scores-saved-toast');
 	});
 
-	test('teacher visiting /admin/users is also redirected (no admin shell access at all)', async ({ page }) => {
+	test('teacher visiting /admin/users is also redirected (no admin shell access at all)', async ({
+		page
+	}) => {
 		await page.goto('/admin/users');
 		await page.waitForLoadState('networkidle');
 		expect(page.url()).toContain('/teacher');
@@ -170,13 +193,23 @@ test.describe('PERSONA · teacher (scoped to one institution + class)', () => {
 test.describe('PERSONA · scoped inspector (read-only at region scope)', () => {
 	test.use({ storageState: 'tests/e2e/.auth/inspector.json' });
 
-	test('inspector lands and sees a FILTERED nav (no Periods/Niveaux/Imports/Notifications/Users)', async ({ page }) => {
+	test('inspector lands and sees a FILTERED nav (no Periods/Niveaux/Imports/Notifications/Users)', async ({
+		page
+	}) => {
 		await page.goto('/admin/dashboard');
 		await expect(page.locator('h1')).toContainText(/Progression dashboard/i);
 
 		const navLinks = await page.locator('aside nav a').allInnerTexts();
 		expect(navLinks).toEqual(
-			expect.arrayContaining(['Dashboard', 'Institutions', 'Classes', 'Students', 'Staff', 'Enrollment', 'Forms'])
+			expect.arrayContaining([
+				'Dashboard',
+				'Institutions',
+				'Classes',
+				'Students',
+				'Staff',
+				'Enrollment',
+				'Forms'
+			])
 		);
 		expect(navLinks).not.toContain('Periods');
 		expect(navLinks).not.toContain('Niveaux');
@@ -188,7 +221,9 @@ test.describe('PERSONA · scoped inspector (read-only at region scope)', () => {
 		await shoot(page, '20-inspector-dashboard');
 	});
 
-	test('inspector visits /admin/institutions (read-only allowed at their scope)', async ({ page }) => {
+	test('inspector visits /admin/institutions (read-only allowed at their scope)', async ({
+		page
+	}) => {
 		await page.goto('/admin/institutions');
 		await expect(page.locator('h1')).toContainText(/Institutions/i);
 		await shoot(page, '21-inspector-institutions');
@@ -231,7 +266,9 @@ test.describe('PERSONA · public student (no auth, token-only)', () => {
 		await expect(page.locator('text=/SchoolRise assessment/i')).toBeVisible();
 		await shoot(page, '31-student-form-rendered');
 
-		const inputs = await page.locator('form input[name^="q_"], form textarea[name^="q_"], form select[name^="q_"]').all();
+		const inputs = await page
+			.locator('form input[name^="q_"], form textarea[name^="q_"], form select[name^="q_"]')
+			.all();
 		for (const input of inputs) {
 			const tag = await input.evaluate((e) => e.tagName.toLowerCase());
 			const type = await input.getAttribute('type');

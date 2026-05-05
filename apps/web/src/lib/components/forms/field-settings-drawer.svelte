@@ -85,7 +85,7 @@
 
 {#if question}
 	<aside
-		class="hidden lg:flex lg:w-80 lg:shrink-0 lg:flex-col lg:border-l lg:bg-background lg:overflow-y-auto"
+		class="hidden lg:flex lg:w-80 lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-l lg:bg-background"
 	>
 		<header class="flex items-center justify-between border-b px-4 py-3">
 			<div class="min-w-0">
@@ -135,7 +135,7 @@
 					id="description"
 					name="description"
 					rows="2"
-					class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+					class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 					>{question.description ?? ''}</textarea
 				>
 			</div>
@@ -145,7 +145,7 @@
 				<select
 					id="type"
 					name="type"
-					class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+					class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 				>
 					{#each FIELD_TYPE_GROUPS as group}
 						<optgroup label={group.label}>
@@ -186,7 +186,7 @@
 						name="options"
 						rows="5"
 						placeholder={'Option A\nOption B'}
-						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 						>{optionsText}</textarea
 					>
 				</div>
@@ -196,12 +196,7 @@
 				<div class="grid grid-cols-2 gap-3">
 					<div class="space-y-1.5">
 						<Label for="scale_min">Scale min</Label>
-						<Input
-							id="scale_min"
-							name="scale_min"
-							type="number"
-							value={question.scale_min ?? 1}
-						/>
+						<Input id="scale_min" name="scale_min" type="number" value={question.scale_min ?? 1} />
 					</div>
 					<div class="space-y-1.5">
 						<Label for="scale_max">Scale max</Label>
@@ -218,14 +213,24 @@
 			{#if question.type === 'EQUATION'}
 				<div class="space-y-1.5">
 					<Label for="extra_latex">LaTeX equation (KaTeX)</Label>
-					<Input id="extra_latex" name="extra_latex" value={asString(extra.latex)} placeholder="x^2 + 2x + 1" />
+					<Input
+						id="extra_latex"
+						name="extra_latex"
+						value={asString(extra.latex)}
+						placeholder="x^2 + 2x + 1"
+					/>
 				</div>
 			{/if}
 
 			{#if question.type === 'CODE_BLOCK'}
 				<div class="space-y-1.5">
 					<Label for="extra_language">Language</Label>
-					<Input id="extra_language" name="extra_language" value={asString(extra.language)} placeholder="javascript" />
+					<Input
+						id="extra_language"
+						name="extra_language"
+						value={asString(extra.language)}
+						placeholder="javascript"
+					/>
 				</div>
 			{/if}
 
@@ -237,7 +242,7 @@
 						name="extra_template"
 						rows="3"
 						placeholder={'Le mot manquant est [[1]] et [[2]] aussi.'}
-						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 						>{asString(extra.template)}</textarea
 					>
 				</div>
@@ -251,7 +256,7 @@
 						name="extra_fields"
 						rows="4"
 						placeholder={'Quartier\nCommune\nPréfecture'}
-						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 						>{asArray(extra.fields).join('\n')}</textarea
 					>
 				</div>
@@ -286,14 +291,18 @@
 
 			{#if question.type === 'MATCHING'}
 				<div class="space-y-1.5">
-					<Label for="extra_pairs">Matching pairs (left → right, one per line, separated by →)</Label>
+					<Label for="extra_pairs"
+						>Matching pairs (left → right, one per line, separated by →)</Label
+					>
 					<textarea
 						id="extra_pairs"
 						name="extra_pairs"
 						rows="4"
 						placeholder={'Lion → Mammifère\nAigle → Oiseau\nTortue → Reptile'}
-						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
-						>{((extra.pairs ?? []) as Array<{ left?: string; right?: string }>).map((p) => `${p.left ?? ''} → ${p.right ?? ''}`).join('\n')}</textarea
+						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
+						>{((extra.pairs ?? []) as Array<{ left?: string; right?: string }>)
+							.map((p) => `${p.left ?? ''} → ${p.right ?? ''}`)
+							.join('\n')}</textarea
 					>
 				</div>
 			{/if}
@@ -306,15 +315,33 @@
 					<div class="mt-2 grid grid-cols-2 gap-2">
 						<div class="space-y-1">
 							<Label for="val_min_length" class="text-[11px]">Min length</Label>
-							<Input id="val_min_length" name="val_min_length" type="number" min="0" value={asString(validation.min_length)} />
+							<Input
+								id="val_min_length"
+								name="val_min_length"
+								type="number"
+								min="0"
+								value={asString(validation.min_length)}
+							/>
 						</div>
 						<div class="space-y-1">
 							<Label for="val_max_length" class="text-[11px]">Max length</Label>
-							<Input id="val_max_length" name="val_max_length" type="number" min="0" value={asString(validation.max_length)} />
+							<Input
+								id="val_max_length"
+								name="val_max_length"
+								type="number"
+								min="0"
+								value={asString(validation.max_length)}
+							/>
 						</div>
 						<div class="col-span-2 space-y-1">
 							<Label for="val_pattern" class="text-[11px]">Regex pattern</Label>
-							<Input id="val_pattern" name="val_pattern" value={asString(validation.pattern)} placeholder="^[A-Za-z]+$" class="font-mono text-xs" />
+							<Input
+								id="val_pattern"
+								name="val_pattern"
+								value={asString(validation.pattern)}
+								placeholder="^[A-Za-z]+$"
+								class="font-mono text-xs"
+							/>
 						</div>
 					</div>
 				</details>
@@ -357,18 +384,29 @@
 						{#if question.type === 'SHORT_ANSWER' || question.type === 'NUMBER' || question.type === 'DECIMAL' || question.type === 'EQUATION'}
 							<div class="space-y-1">
 								<Label for="grading_correct_value" class="text-[11px]">Correct answer</Label>
-								<Input id="grading_correct_value" name="grading_correct_value" value={asString(grading.correct_value)} />
+								<Input
+									id="grading_correct_value"
+									name="grading_correct_value"
+									value={asString(grading.correct_value)}
+								/>
 							</div>
 						{/if}
 						{#if TYPES_WITH_OPTIONS.has(question.type) || question.type === 'YES_NO'}
 							<div class="space-y-1">
-								<Label for="grading_correct_value" class="text-[11px]">Correct option (value)</Label>
-								<Input id="grading_correct_value" name="grading_correct_value" value={asString(grading.correct_value)} />
+								<Label for="grading_correct_value" class="text-[11px]">Correct option (value)</Label
+								>
+								<Input
+									id="grading_correct_value"
+									name="grading_correct_value"
+									value={asString(grading.correct_value)}
+								/>
 							</div>
 						{/if}
 						{#if question.type === 'FILL_IN_BLANK'}
 							<div class="space-y-1">
-								<Label for="grading_answers" class="text-[11px]">Answers (one per line, in order)</Label>
+								<Label for="grading_answers" class="text-[11px]"
+									>Answers (one per line, in order)</Label
+								>
 								<textarea
 									id="grading_answers"
 									name="grading_answers"
@@ -381,9 +419,16 @@
 						{#if question.type === 'ESSAY'}
 							<div class="space-y-1">
 								<Label for="grading_rubric_url" class="text-[11px]">Rubric URL</Label>
-								<Input id="grading_rubric_url" name="grading_rubric_url" value={asString(grading.rubric_url)} placeholder="https://…" />
+								<Input
+									id="grading_rubric_url"
+									name="grading_rubric_url"
+									value={asString(grading.rubric_url)}
+									placeholder="https://…"
+								/>
 							</div>
-							<p class="text-[10px] text-muted-foreground">Essays are not auto-graded; rubric is for human reviewers.</p>
+							<p class="text-[10px] text-muted-foreground">
+								Essays are not auto-graded; rubric is for human reviewers.
+							</p>
 						{/if}
 					</div>
 				</details>

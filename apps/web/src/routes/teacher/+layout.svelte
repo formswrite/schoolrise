@@ -21,7 +21,9 @@
 			<div class="flex items-center gap-3 text-sm">
 				<span class="text-muted-foreground">{data.user.email}</span>
 				{#if data.teacherRole === 'admin-global'}
-					<a href="/admin/dashboard" class="text-xs text-[#6439B5] hover:underline">← back to admin</a>
+					<a href="/admin/dashboard" class="text-xs text-[#6439B5] hover:underline"
+						>← back to admin</a
+					>
 				{/if}
 				<form method="POST" action="/logout">
 					<Button type="submit" variant="ghost" size="sm">Sign out</Button>

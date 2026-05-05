@@ -51,14 +51,23 @@ export async function getCoverage(
 	scopeNodeId: number,
 	periodId: number
 ): Promise<Coverage | null> {
-	const res = await req(`/v1/enrollment/coverage?scope_node_id=${scopeNodeId}&period_id=${periodId}`, token);
+	const res = await req(
+		`/v1/enrollment/coverage?scope_node_id=${scopeNodeId}&period_id=${periodId}`,
+		token
+	);
 	if (!res.ok) return null;
 	return (await res.json()) as Coverage;
 }
 
 export async function createEnrollment(
 	{ token }: Opts,
-	body: { student_id: number; institution_id: number; period_id: number; enrolled_on: string; note?: string }
+	body: {
+		student_id: number;
+		institution_id: number;
+		period_id: number;
+		enrolled_on: string;
+		note?: string;
+	}
 ) {
 	const res = await req('/v1/enrollment/enrollments', token, {
 		method: 'POST',
@@ -70,7 +79,13 @@ export async function createEnrollment(
 
 export async function transferEnrollment(
 	{ token }: Opts,
-	body: { student_id: number; period_id: number; to_institution_id: number; effective_on?: string; note?: string }
+	body: {
+		student_id: number;
+		period_id: number;
+		to_institution_id: number;
+		effective_on?: string;
+		note?: string;
+	}
 ) {
 	const res = await req('/v1/enrollment/transfers', token, {
 		method: 'POST',

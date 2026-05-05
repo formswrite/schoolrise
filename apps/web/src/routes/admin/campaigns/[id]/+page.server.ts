@@ -43,7 +43,10 @@ export const actions: Actions = {
 	assign: async ({ params, request, cookies }) => {
 		const token = cookies.get('schoolrise_session') ?? '';
 		const data = await request.formData();
-		const studentIds = data.getAll('student_id').map((v) => Number(v)).filter((n) => Number.isFinite(n) && n > 0);
+		const studentIds = data
+			.getAll('student_id')
+			.map((v) => Number(v))
+			.filter((n) => Number.isFinite(n) && n > 0);
 		const notify = data.get('notify_by_email') === 'on';
 		if (studentIds.length === 0) {
 			return fail(400, { error: 'Select at least one student.' });

@@ -11,7 +11,10 @@
 
 <div class="space-y-6">
 	<header>
-		<a href="/admin/students?institution={data.institutionId}" class="text-xs text-muted-foreground hover:underline">← Students</a>
+		<a
+			href="/admin/students?institution={data.institutionId}"
+			class="text-xs text-muted-foreground hover:underline">← Students</a
+		>
 		<h1 class="mt-1 text-2xl font-semibold">New student</h1>
 		{#if data.institution}
 			<p class="text-sm text-muted-foreground">at <strong>{data.institution.label}</strong></p>
@@ -49,7 +52,7 @@
 						<select
 							id="gender"
 							name="gender"
-							class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+							class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 						>
 							<option value=""></option>
 							<option value="female">Female</option>
@@ -76,7 +79,9 @@
 				{/if}
 
 				<div class="flex justify-between">
-					<Button variant="ghost" href="/admin/students?institution={data.institutionId}">Cancel</Button>
+					<Button variant="ghost" href="/admin/students?institution={data.institutionId}"
+						>Cancel</Button
+					>
 					<Button type="submit">Create student</Button>
 				</div>
 			</form>

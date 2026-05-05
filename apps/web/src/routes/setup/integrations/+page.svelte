@@ -13,7 +13,9 @@
 <Card.Root>
 	<Card.Header>
 		<Card.Title class="text-2xl">Integrations (optional)</Card.Title>
-		<Card.Description>All fields are optional and can be set later in admin settings.</Card.Description>
+		<Card.Description
+			>All fields are optional and can be set later in admin settings.</Card.Description
+		>
 	</Card.Header>
 	<Card.Content>
 		<form method="POST" action="?/save" class="space-y-6">

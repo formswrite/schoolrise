@@ -52,7 +52,12 @@
 								{/if}
 							</Table.Cell>
 							<Table.Cell>
-								<Button href="/admin/users/{user.id}" variant="ghost" size="sm" class="h-7 px-2 text-xs">Manage</Button>
+								<Button
+									href="/admin/users/{user.id}"
+									variant="ghost"
+									size="sm"
+									class="h-7 px-2 text-xs">Manage</Button
+								>
 							</Table.Cell>
 						</Table.Row>
 					{/each}

@@ -24,8 +24,14 @@ test.describe('Drag-reorder via UI persists sort_order', () => {
 		await page.goto(`/admin/forms/${formId}`);
 		await page.waitForLoadState('networkidle');
 
-		const rowA = page.locator('div').filter({ hasText: /^1\.\s*Question A/ }).first();
-		const rowD = page.locator('div').filter({ hasText: /^4\.\s*Question D/ }).first();
+		const rowA = page
+			.locator('div')
+			.filter({ hasText: /^1\.\s*Question A/ })
+			.first();
+		const rowD = page
+			.locator('div')
+			.filter({ hasText: /^4\.\s*Question D/ })
+			.first();
 		await expect(rowA).toBeVisible();
 		await expect(rowD).toBeVisible();
 

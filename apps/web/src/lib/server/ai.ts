@@ -70,7 +70,7 @@ export async function generateDistractors(
 export async function getProviderStatus({ token }: Opts) {
 	const res = await req('/v1/ai/provider', token);
 	if (!res.ok) return null;
-	return await res.json() as { provider: string; model: string };
+	return (await res.json()) as { provider: string; model: string };
 }
 
 export async function listJobs({ token }: Opts, limit = 50): Promise<AIJob[]> {

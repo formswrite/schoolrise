@@ -8,15 +8,17 @@
 	let { actionUrl = '?/addQuestion' }: Props = $props();
 </script>
 
-<aside class="hidden md:flex md:w-56 md:shrink-0 md:flex-col md:gap-3 md:border-r md:bg-muted/20 md:px-3 md:py-4 md:overflow-y-auto">
+<aside
+	class="hidden md:flex md:w-56 md:shrink-0 md:flex-col md:gap-3 md:overflow-y-auto md:border-r md:bg-muted/20 md:px-3 md:py-4"
+>
 	<header class="px-1">
-		<h2 class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Add a field</h2>
+		<h2 class="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Add a field</h2>
 		<p class="mt-1 text-[11px] text-muted-foreground">Click to append to the form.</p>
 	</header>
 
 	{#each FIELD_TYPE_GROUPS as group}
 		<div class="space-y-1">
-			<p class="px-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+			<p class="px-1 text-[10px] font-semibold tracking-wider text-muted-foreground/70 uppercase">
 				{group.label}
 			</p>
 			<ul class="space-y-0.5">
@@ -28,9 +30,7 @@
 							<button
 								type="submit"
 								class="group flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-xs hover:bg-accent hover:text-accent-foreground"
-								title={pending
-									? `${FIELD_LABELS[type]} — renderer pending`
-									: FIELD_LABELS[type]}
+								title={pending ? `${FIELD_LABELS[type]} — renderer pending` : FIELD_LABELS[type]}
 							>
 								<span class="truncate">{FIELD_LABELS[type]}</span>
 								{#if pending}

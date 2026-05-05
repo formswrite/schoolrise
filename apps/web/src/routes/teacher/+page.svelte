@@ -18,8 +18,10 @@
 	{#if data.teacherRole === 'admin-global'}
 		<Alert>
 			<AlertDescription>
-				You're an admin browsing the teacher view. Admins can enter scores for any class.
-				Use <a href="/admin/dashboard" class="font-medium underline">/admin/dashboard</a> for read-only analytics.
+				You're an admin browsing the teacher view. Admins can enter scores for any class. Use <a
+					href="/admin/dashboard"
+					class="font-medium underline">/admin/dashboard</a
+				> for read-only analytics.
 			</AlertDescription>
 		</Alert>
 	{/if}
@@ -28,9 +30,13 @@
 		<Card.Root>
 			<Card.Content class="py-12 text-center text-sm text-muted-foreground">
 				{#if data.teacherRole === 'admin-global'}
-					No classes are linked to your staff record. Use <a href="/admin/classes" class="underline">Admin → Classes</a> to add yourself, or impersonate via the API.
+					No classes are linked to your staff record. Use <a href="/admin/classes" class="underline"
+						>Admin → Classes</a
+					> to add yourself, or impersonate via the API.
 				{:else}
-					No classes are assigned to you yet. Ask an administrator to add you to a class via <code>/admin/classes</code>.
+					No classes are assigned to you yet. Ask an administrator to add you to a class via <code
+						>/admin/classes</code
+					>.
 				{/if}
 			</Card.Content>
 		</Card.Root>
@@ -38,7 +44,7 @@
 		<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 			{#each data.classes as c}
 				<a href="/teacher/classes/{c.id}" class="block">
-					<Card.Root class="transition hover:shadow-md hover:border-[#6439B5]">
+					<Card.Root class="transition hover:border-[#6439B5] hover:shadow-md">
 						<Card.Header class="pb-2">
 							<div class="flex items-baseline justify-between">
 								<Card.Title class="text-base">{c.code}</Card.Title>

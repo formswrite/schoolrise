@@ -29,7 +29,8 @@
 	<Card.Header>
 		<Card.Title class="text-2xl">Define your hierarchy taxonomy</Card.Title>
 		<Card.Description>
-			Each level represents a tier. Examples: <code>region → prefecture → school</code> for ministries; <code>district → school</code> for districts.
+			Each level represents a tier. Examples: <code>region → prefecture → school</code> for
+			ministries; <code>district → school</code> for districts.
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
@@ -38,15 +39,32 @@
 				<div class="grid grid-cols-12 gap-2 rounded-md border p-3">
 					<div class="col-span-3 space-y-1">
 						<Label for="row-code-{i}" class="text-xs">Code</Label>
-						<Input id="row-code-{i}" name="code" bind:value={rows[i].code} required placeholder="region" />
+						<Input
+							id="row-code-{i}"
+							name="code"
+							bind:value={rows[i].code}
+							required
+							placeholder="region"
+						/>
 					</div>
 					<div class="col-span-4 space-y-1">
 						<Label for="row-label-{i}" class="text-xs">Label</Label>
-						<Input id="row-label-{i}" name="label" bind:value={rows[i].label} required placeholder="Region" />
+						<Input
+							id="row-label-{i}"
+							name="label"
+							bind:value={rows[i].label}
+							required
+							placeholder="Region"
+						/>
 					</div>
 					<div class="col-span-4 space-y-1">
 						<Label for="row-parent-{i}" class="text-xs">Parent (code)</Label>
-						<Input id="row-parent-{i}" name="parent" bind:value={rows[i].parent} placeholder={i === 0 ? '(empty for root)' : ''} />
+						<Input
+							id="row-parent-{i}"
+							name="parent"
+							bind:value={rows[i].parent}
+							placeholder={i === 0 ? '(empty for root)' : ''}
+						/>
 					</div>
 					<div class="col-span-1 flex items-end">
 						<Button

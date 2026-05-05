@@ -1,6 +1,11 @@
 import type { Actions, PageServerLoad } from './$types';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { createAssignment, deleteAssignment, getUser, listUserAssignments } from '$lib/server/admin';
+import {
+	createAssignment,
+	deleteAssignment,
+	getUser,
+	listUserAssignments
+} from '$lib/server/admin';
 
 export const load: PageServerLoad = async ({ cookies, locals, params }) => {
 	if (!locals.user) {

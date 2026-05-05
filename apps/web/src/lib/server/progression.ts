@@ -37,23 +37,47 @@ async function req(path: string, token: string) {
 	});
 }
 
-export async function getProgression({ token }: Opts, scope: number, period: number, campaign: number): Promise<ScopeProgression | null> {
-	const res = await req(`/v1/progression?scope_node_id=${scope}&period_id=${period}&campaign_id=${campaign}`, token);
+export async function getProgression(
+	{ token }: Opts,
+	scope: number,
+	period: number,
+	campaign: number
+): Promise<ScopeProgression | null> {
+	const res = await req(
+		`/v1/progression?scope_node_id=${scope}&period_id=${period}&campaign_id=${campaign}`,
+		token
+	);
 	if (!res.ok) return null;
 	return await res.json();
 }
 
-export async function getDrilldown({ token }: Opts, scope: number, period: number, campaign: number): Promise<Drilldown | null> {
-	const res = await req(`/v1/progression/drilldown?scope_node_id=${scope}&period_id=${period}&campaign_id=${campaign}`, token);
+export async function getDrilldown(
+	{ token }: Opts,
+	scope: number,
+	period: number,
+	campaign: number
+): Promise<Drilldown | null> {
+	const res = await req(
+		`/v1/progression/drilldown?scope_node_id=${scope}&period_id=${period}&campaign_id=${campaign}`,
+		token
+	);
 	if (!res.ok) return null;
 	return await res.json();
 }
 
-export async function refreshSnapshot({ token }: Opts, scope: number, period: number, campaign: number) {
-	const res = await fetch(`${encoreApiUrl}/v1/progression/refresh?scope_node_id=${scope}&period_id=${period}&campaign_id=${campaign}`, {
-		method: 'POST',
-		headers: { Authorization: `Bearer ${token}` }
-	});
+export async function refreshSnapshot(
+	{ token }: Opts,
+	scope: number,
+	period: number,
+	campaign: number
+) {
+	const res = await fetch(
+		`${encoreApiUrl}/v1/progression/refresh?scope_node_id=${scope}&period_id=${period}&campaign_id=${campaign}`,
+		{
+			method: 'POST',
+			headers: { Authorization: `Bearer ${token}` }
+		}
+	);
 	return { ok: res.ok, status: res.status } as const;
 }
 

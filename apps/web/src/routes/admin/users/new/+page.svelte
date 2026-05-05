@@ -16,7 +16,9 @@
 	<header>
 		<a href="/admin/users" class="text-xs text-muted-foreground hover:underline">← Users</a>
 		<h1 class="mt-1 text-2xl font-semibold">New user</h1>
-		<p class="text-sm text-muted-foreground">Create a user account. Assign roles after creation from the user detail page.</p>
+		<p class="text-sm text-muted-foreground">
+			Create a user account. Assign roles after creation from the user detail page.
+		</p>
 	</header>
 
 	<Card.Root>
@@ -28,27 +30,50 @@
 				</div>
 				<div class="space-y-2">
 					<Label for="email">Email</Label>
-					<Input id="email" name="email" type="email" required autocomplete="off" value={form?.email ?? ''} />
+					<Input
+						id="email"
+						name="email"
+						type="email"
+						required
+						autocomplete="off"
+						value={form?.email ?? ''}
+					/>
 				</div>
 				<div class="space-y-2">
 					<Label for="role">Role</Label>
 					<select
 						id="role"
 						name="role"
-						class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+						class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 					>
-						<option value="teacher" selected={form?.role !== 'admin' && form?.role !== 'inspector'}>Teacher</option>
+						<option value="teacher" selected={form?.role !== 'admin' && form?.role !== 'inspector'}
+							>Teacher</option
+						>
 						<option value="inspector" selected={form?.role === 'inspector'}>Inspector</option>
 						<option value="admin" selected={form?.role === 'admin'}>Admin</option>
 					</select>
-					<p class="text-xs text-muted-foreground">Role label is informational. Effective access is granted via assignments on the next screen.</p>
+					<p class="text-xs text-muted-foreground">
+						Role label is informational. Effective access is granted via assignments on the next
+						screen.
+					</p>
 				</div>
 				<div class="space-y-2">
 					<Label for="password">Initial password</Label>
-					<Input id="password" name="password" type="password" required minlength={8} autocomplete="new-password" />
+					<Input
+						id="password"
+						name="password"
+						type="password"
+						required
+						minlength={8}
+						autocomplete="new-password"
+					/>
 				</div>
 				<div class="flex items-center gap-2">
-					<Checkbox id="must_change_password" name="must_change_password" bind:checked={mustChange} />
+					<Checkbox
+						id="must_change_password"
+						name="must_change_password"
+						bind:checked={mustChange}
+					/>
 					<Label for="must_change_password">Force password change on first login</Label>
 				</div>
 

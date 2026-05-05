@@ -94,8 +94,12 @@
 						<Table.Row>
 							<Table.Cell class="font-medium">{p.code}</Table.Cell>
 							<Table.Cell>{p.label}</Table.Cell>
-							<Table.Cell class="text-muted-foreground">{new Date(p.starts_on).toLocaleDateString()}</Table.Cell>
-							<Table.Cell class="text-muted-foreground">{new Date(p.ends_on).toLocaleDateString()}</Table.Cell>
+							<Table.Cell class="text-muted-foreground"
+								>{new Date(p.starts_on).toLocaleDateString()}</Table.Cell
+							>
+							<Table.Cell class="text-muted-foreground"
+								>{new Date(p.ends_on).toLocaleDateString()}</Table.Cell
+							>
 							<Table.Cell>
 								{#if p.is_current}
 									<Badge>Current</Badge>
@@ -108,7 +112,9 @@
 									{#if !p.is_current}
 										<form method="POST" use:enhance action="?/setCurrent">
 											<input type="hidden" name="id" value={p.id} />
-											<Button type="submit" variant="ghost" size="sm" class="h-7 px-2 text-xs">Make current</Button>
+											<Button type="submit" variant="ghost" size="sm" class="h-7 px-2 text-xs"
+												>Make current</Button
+											>
 										</form>
 									{/if}
 									<form method="POST" use:enhance action="?/delete">
@@ -118,7 +124,9 @@
 											variant="ghost"
 											size="sm"
 											class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-											onclick={(e) => { if (!confirm('Delete this period?')) e.preventDefault(); }}
+											onclick={(e) => {
+												if (!confirm('Delete this period?')) e.preventDefault();
+											}}
 										>
 											Delete
 										</Button>

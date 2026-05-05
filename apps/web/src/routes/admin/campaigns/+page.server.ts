@@ -62,7 +62,13 @@ export const actions: Actions = {
 			period_id: Number(data.get('period_id')),
 			scope_node_id: scopeNodeID
 		};
-		if (!body.title || !body.scale_code || !body.form_id || !body.form_version_id || !body.period_id) {
+		if (
+			!body.title ||
+			!body.scale_code ||
+			!body.form_id ||
+			!body.form_version_id ||
+			!body.period_id
+		) {
 			return fail(400, { error: 'All fields are required.' });
 		}
 

@@ -65,7 +65,14 @@ export async function getCampaign({ token }: Opts, id: number): Promise<Campaign
 
 export async function createCampaign(
 	{ token }: Opts,
-	body: { title: string; scale_code: string; form_id: number; form_version_id: number; period_id: number; scope_node_id: number }
+	body: {
+		title: string;
+		scale_code: string;
+		form_id: number;
+		form_version_id: number;
+		period_id: number;
+		scope_node_id: number;
+	}
 ) {
 	const res = await req('/v1/campaigns', token, { method: 'POST', body: JSON.stringify(body) });
 	const data = await res.json().catch(() => ({}));
@@ -97,7 +104,10 @@ export async function assignStudents(
 	campaignID: number,
 	body: { student_ids: number[]; notify_by_email: boolean }
 ) {
-	const res = await req(`/v1/campaigns/${campaignID}/assign`, token, { method: 'POST', body: JSON.stringify(body) });
+	const res = await req(`/v1/campaigns/${campaignID}/assign`, token, {
+		method: 'POST',
+		body: JSON.stringify(body)
+	});
 	const data = await res.json().catch(() => ({}));
 	return { ok: res.ok, status: res.status, data } as const;
 }

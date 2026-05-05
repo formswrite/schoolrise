@@ -67,7 +67,10 @@ export async function createFormWithQuestions(
 	return { formId, questionIds, clientIds };
 }
 
-export async function publishForm(ctx: APIRequestContext, formId: number): Promise<{ versionId: number }> {
+export async function publishForm(
+	ctx: APIRequestContext,
+	formId: number
+): Promise<{ versionId: number }> {
 	const res = await ctx.post(`${GATEWAY}/v1/forms/items/${formId}/publish`);
 	const body = await res.json();
 	return { versionId: body.version.id };
@@ -80,7 +83,11 @@ export async function setLogicRules(
 		id: string;
 		target_question_client_id: string;
 		operator: 'show_if' | 'hide_if';
-		conditions: Array<{ source_question_client_id: string; op: string; value: string | number | string[] }>;
+		conditions: Array<{
+			source_question_client_id: string;
+			op: string;
+			value: string | number | string[];
+		}>;
 	}>
 ): Promise<void> {
 	const formRes = await ctx.get(`${GATEWAY}/v1/forms/items/${formId}`);
@@ -145,16 +152,27 @@ export async function buildPublishedFormWithToken(
 		id: string;
 		target_question_client_id: string;
 		operator: 'show_if' | 'hide_if';
-		conditions: Array<{ source_question_client_id: string; op: string; value: string | number | string[] }>;
+		conditions: Array<{
+			source_question_client_id: string;
+			op: string;
+			value: string | number | string[];
+		}>;
 	}>
-): Promise<{ formId: number; versionId: number; campaignId: number; token: string; clientIds: string[] }> {
+): Promise<{
+	formId: number;
+	versionId: number;
+	campaignId: number;
+	token: string;
+	clientIds: string[];
+}> {
 	const created = await createFormWithQuestions(ctx, title, questions);
 	if (logicRules && logicRules.length > 0) {
 		const idMap = new Map<string, string>();
 		for (let i = 0; i < created.clientIds.length; i++) idMap.set(`__Q${i}__`, created.clientIds[i]);
 		const resolved = logicRules.map((r) => ({
 			...r,
-			target_question_client_id: idMap.get(r.target_question_client_id) ?? r.target_question_client_id,
+			target_question_client_id:
+				idMap.get(r.target_question_client_id) ?? r.target_question_client_id,
 			conditions: r.conditions.map((c) => ({
 				...c,
 				source_question_client_id:

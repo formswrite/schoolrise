@@ -17,9 +17,13 @@
 	};
 	let { target, allQuestions, rules }: Props = $props();
 
-	const targetRules = $derived(rules.filter((r) => r.target_question_client_id === target.client_id));
+	const targetRules = $derived(
+		rules.filter((r) => r.target_question_client_id === target.client_id)
+	);
 	const otherQuestions = $derived(
-		allQuestions.filter((q) => q.client_id !== target.client_id && q.type !== 'SECTION' && q.type !== 'STATEMENT')
+		allQuestions.filter(
+			(q) => q.client_id !== target.client_id && q.type !== 'SECTION' && q.type !== 'STATEMENT'
+		)
 	);
 
 	let showAdd = $state(false);
@@ -35,10 +39,14 @@
 		sourceQuestion ? TYPES_WITH_OPTIONS.has(sourceQuestion.type) : false
 	);
 	const sourceOptions = $derived(
-		((sourceQuestion?.options ?? []) as Array<string | { label?: string; value?: string }>).map((o, i) =>
-			typeof o === 'string'
-				? { label: o, value: o }
-				: { label: o.label ?? o.value ?? `Option ${i + 1}`, value: o.value ?? o.label ?? `opt_${i}` }
+		((sourceQuestion?.options ?? []) as Array<string | { label?: string; value?: string }>).map(
+			(o, i) =>
+				typeof o === 'string'
+					? { label: o, value: o }
+					: {
+							label: o.label ?? o.value ?? `Option ${i + 1}`,
+							value: o.value ?? o.label ?? `opt_${i}`
+						}
 		)
 	);
 
@@ -76,7 +84,10 @@
 		<div class="flex items-start gap-2 rounded-md border bg-muted/20 px-3 py-2 text-xs">
 			<div class="flex-1 space-y-1">
 				<div class="flex items-center gap-1.5">
-					<Badge variant={rule.operator === 'show_if' ? 'default' : 'destructive'} class="text-[10px]">
+					<Badge
+						variant={rule.operator === 'show_if' ? 'default' : 'destructive'}
+						class="text-[10px]"
+					>
 						{rule.operator === 'show_if' ? 'Show if' : 'Hide if'}
 					</Badge>
 				</div>
@@ -105,7 +116,12 @@
 	{/each}
 
 	{#if showAdd && otherQuestions.length > 0}
-		<form method="POST" action="?/createLogicRule" use:enhance class="space-y-2 rounded-md border bg-background p-3 text-xs">
+		<form
+			method="POST"
+			action="?/createLogicRule"
+			use:enhance
+			class="space-y-2 rounded-md border bg-background p-3 text-xs"
+		>
 			<input type="hidden" name="target_client_id" value={target.client_id} />
 
 			<div class="space-y-1">

@@ -24,7 +24,10 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 		await newButton.click();
 		await expect(page.locator('text=/^New campaign$/').first()).toBeVisible();
 		await expect(page.locator('input[name="title"]')).toBeVisible();
-		await page.screenshot({ path: path.join(SHOTS_DIR, '01-campaigns-create-modal.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '01-campaigns-create-modal.png'),
+			fullPage: true
+		});
 
 		await page.getByRole('button', { name: /Cancel/ }).click();
 	});
@@ -32,14 +35,20 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 	test('campaigns at scope=2 — E2E Personas Campaign visible', async ({ page }) => {
 		await page.goto('/admin/campaigns?scope=2');
 		await page.waitForLoadState('networkidle');
-		await page.screenshot({ path: path.join(SHOTS_DIR, '02-campaigns-scope-2.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '02-campaigns-scope-2.png'),
+			fullPage: true
+		});
 		await expect(page.locator('text=/E2E Personas Campaign/i').first()).toBeVisible();
 	});
 
 	test('campaigns at scope=590 — Load Test Campaign visible', async ({ page }) => {
 		await page.goto('/admin/campaigns?scope=590');
 		await page.waitForLoadState('networkidle');
-		await page.screenshot({ path: path.join(SHOTS_DIR, '03-campaigns-scope-590.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '03-campaigns-scope-590.png'),
+			fullPage: true
+		});
 		await expect(page.locator('text=/Load Test Campaign/i').first()).toBeVisible();
 	});
 
@@ -55,11 +64,16 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 		await page.waitForLoadState('networkidle');
 		await expect(page.locator('h1').first()).toBeVisible();
 		await expect(page.locator('text=/Public ID/i').first()).toBeVisible();
-		await page.screenshot({ path: path.join(SHOTS_DIR, '04-campaign-1-detail.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '04-campaign-1-detail.png'),
+			fullPage: true
+		});
 		expect(errors, 'Console/page errors on /admin/campaigns/1').toEqual([]);
 	});
 
-	test('campaign detail page (campaign 5 — Load Test) — renders without error', async ({ page }) => {
+	test('campaign detail page (campaign 5 — Load Test) — renders without error', async ({
+		page
+	}) => {
 		const errors: string[] = [];
 		page.on('pageerror', (err) => errors.push(`pageerror: ${err.message}`));
 		page.on('console', (msg) => {
@@ -70,7 +84,10 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 		expect(resp?.status(), 'HTTP for /admin/campaigns/5').toBeLessThan(400);
 		await page.waitForLoadState('networkidle');
 		await expect(page.locator('h1').first()).toBeVisible();
-		await page.screenshot({ path: path.join(SHOTS_DIR, '05-campaign-5-detail.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '05-campaign-5-detail.png'),
+			fullPage: true
+		});
 		expect(errors, 'Console/page errors on /admin/campaigns/5').toEqual([]);
 	});
 
@@ -83,13 +100,13 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 		await expect(page.locator('text=/^Female$/i').first()).toBeVisible();
 		await expect(page.locator('text=/^Male$/i').first()).toBeVisible();
 
-		const totalCard = page.locator('div').filter({ hasText: /^Total enrolled$/i }).first();
+		const totalCard = page
+			.locator('div')
+			.filter({ hasText: /^Total enrolled$/i })
+			.first();
 		await expect(totalCard).toBeVisible();
 
-		const totalText = await page
-			.locator('p.text-3xl.font-bold')
-			.first()
-			.textContent();
+		const totalText = await page.locator('p.text-3xl.font-bold').first().textContent();
 		const totalNum = Number((totalText ?? '0').replace(/\D/g, ''));
 		expect(totalNum, 'Total enrolled count should be > 0 after 4.3M insert').toBeGreaterThan(0);
 
@@ -98,7 +115,10 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 		const rowCount = await tableRows.count();
 		expect(rowCount, 'Enrollment rows should render').toBeGreaterThan(0);
 
-		await page.screenshot({ path: path.join(SHOTS_DIR, '06-enrollment-scope-22304.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '06-enrollment-scope-22304.png'),
+			fullPage: true
+		});
 	});
 
 	test('enrollment period selector — switching period reloads page', async ({ page }) => {
@@ -108,7 +128,10 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 		await page.goto('/admin/enrollment?scope=22304&period=10');
 		await page.waitForLoadState('networkidle');
 		await expect(page.locator('text=/Period #10/i').first()).toBeVisible();
-		await page.screenshot({ path: path.join(SHOTS_DIR, '07-enrollment-period-10.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '07-enrollment-period-10.png'),
+			fullPage: true
+		});
 	});
 
 	test('forms list — at least 6 forms; expected titles visible', async ({ page }) => {
@@ -142,7 +165,10 @@ test.describe('Admin assessment surface — campaigns, enrollment, forms, period
 		await page.waitForLoadState('networkidle');
 		await expect(page.locator('h1').first()).toBeVisible();
 		await expect(page.locator('text=/Public ID:/i').first()).toBeVisible();
-		await page.screenshot({ path: path.join(SHOTS_DIR, '09-published-form-detail.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '09-published-form-detail.png'),
+			fullPage: true
+		});
 	});
 
 	test('form detail page (form 1) — questions list renders', async ({ page }) => {

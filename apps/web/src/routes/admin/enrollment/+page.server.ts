@@ -70,7 +70,9 @@ export const actions: Actions = {
 			note: String(data.get('note') ?? '')
 		};
 		if (!body.student_id || !body.institution_id || !body.period_id || !body.enrolled_on) {
-			return fail(400, { error: 'student_id, institution_id, period_id, enrolled_on are required.' });
+			return fail(400, {
+				error: 'student_id, institution_id, period_id, enrolled_on are required.'
+			});
 		}
 		const res = await createEnrollment({ token }, body);
 		if (!res.ok) return fail(res.status, { error: res.data?.message ?? 'Could not enroll.' });

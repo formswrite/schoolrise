@@ -49,24 +49,32 @@
 		)
 	);
 	const faceClass = $derived(
-		cn(
-			'relative rounded-[10px] transition-transform group-hover:-translate-y-[2px]',
-			face,
-			padding
-		)
+		cn('relative rounded-[10px] transition-transform group-hover:-translate-y-[2px]', face, padding)
 	);
 </script>
 
 {#if href}
 	<a {href} class={wrapperClass}>
-		<span class="absolute inset-0 rounded-[10px] bg-[#f092dd] border-2 border-[#0b0d2a] translate-x-[4px] translate-y-[4px]" aria-hidden="true"></span>
-		<span class="absolute inset-0 rounded-[10px] bg-[#ffc8eb] border-2 border-[#0b0d2a] translate-x-[2px] translate-y-[2px]" aria-hidden="true"></span>
+		<span
+			class="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-[10px] border-2 border-[#0b0d2a] bg-[#f092dd]"
+			aria-hidden="true"
+		></span>
+		<span
+			class="absolute inset-0 translate-x-[2px] translate-y-[2px] rounded-[10px] border-2 border-[#0b0d2a] bg-[#ffc8eb]"
+			aria-hidden="true"
+		></span>
 		<span class={faceClass}>{@render children()}</span>
 	</a>
 {:else}
 	<button {type} {disabled} {onclick} class={wrapperClass}>
-		<span class="absolute inset-0 rounded-[10px] bg-[#f092dd] border-2 border-[#0b0d2a] translate-x-[4px] translate-y-[4px]" aria-hidden="true"></span>
-		<span class="absolute inset-0 rounded-[10px] bg-[#ffc8eb] border-2 border-[#0b0d2a] translate-x-[2px] translate-y-[2px]" aria-hidden="true"></span>
+		<span
+			class="absolute inset-0 translate-x-[4px] translate-y-[4px] rounded-[10px] border-2 border-[#0b0d2a] bg-[#f092dd]"
+			aria-hidden="true"
+		></span>
+		<span
+			class="absolute inset-0 translate-x-[2px] translate-y-[2px] rounded-[10px] border-2 border-[#0b0d2a] bg-[#ffc8eb]"
+			aria-hidden="true"
+		></span>
 		<span class={faceClass}>{@render children()}</span>
 	</button>
 {/if}

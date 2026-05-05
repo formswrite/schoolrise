@@ -62,7 +62,10 @@ export const load: PageServerLoad = async ({ url, cookies, locals }) => {
 	return { levels, nodes, parent, parentId, breadcrumbs, childLevelCode, leafSummary };
 };
 
-function computeChildLevel(levels: { code: string; parentLevel: string }[], parent: Node | null): string {
+function computeChildLevel(
+	levels: { code: string; parentLevel: string }[],
+	parent: Node | null
+): string {
 	if (parent === null) {
 		const root = levels.find((l) => l.parentLevel === '');
 		return root?.code ?? '';

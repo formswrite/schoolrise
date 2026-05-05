@@ -113,9 +113,7 @@ test.describe('Server-side actions: untested branches', () => {
 		await ctxPost.dispose();
 	});
 
-	test('Logic-rule delete via UI removes the rule from settings.logic_rules', async ({
-		page
-	}) => {
+	test('Logic-rule delete via UI removes the rule from settings.logic_rules', async ({ page }) => {
 		const ctx = await adminCtx();
 		await setLogicRules(ctx, formId, [
 			{

@@ -10,9 +10,22 @@ setup('seed personas + log each one in', async ({ browser }) => {
 	fs.writeFileSync(PERSONAS_FILE, JSON.stringify(personas, null, 2));
 
 	for (const [name, creds] of [
-		['admin', { email: personas.admin.email, password: personas.admin.password, file: 'admin.json' }],
-		['teacher', { email: personas.teacher.email, password: personas.teacher.password, file: 'teacher.json' }],
-		['inspector', { email: personas.inspector.email, password: personas.inspector.password, file: 'inspector.json' }]
+		[
+			'admin',
+			{ email: personas.admin.email, password: personas.admin.password, file: 'admin.json' }
+		],
+		[
+			'teacher',
+			{ email: personas.teacher.email, password: personas.teacher.password, file: 'teacher.json' }
+		],
+		[
+			'inspector',
+			{
+				email: personas.inspector.email,
+				password: personas.inspector.password,
+				file: 'inspector.json'
+			}
+		]
 	] as const) {
 		const page = await browser.newPage();
 		await page.goto('http://localhost:3001/login');

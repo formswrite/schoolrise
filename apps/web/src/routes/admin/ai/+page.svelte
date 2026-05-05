@@ -13,11 +13,15 @@
 
 	function statusVariant(s: string) {
 		switch (s) {
-			case 'done': return 'default';
+			case 'done':
+				return 'default';
 			case 'pending':
-			case 'running': return 'secondary';
-			case 'failed': return 'destructive';
-			default: return 'secondary';
+			case 'running':
+				return 'secondary';
+			case 'failed':
+				return 'destructive';
+			default:
+				return 'secondary';
 		}
 	}
 </script>
@@ -40,8 +44,11 @@
 					<dt class="text-muted-foreground">Provider</dt>
 					<dd>
 						{#if data.provider.provider === 'openai'}<Badge>OpenAI (live)</Badge>
-						{:else if data.provider.provider === 'stub'}<Badge variant="secondary">Stub (dev)</Badge>
-							<span class="ml-2 text-xs text-muted-foreground">No <code>OPENAI_API_KEY</code> set; canned responses only.</span>
+						{:else if data.provider.provider === 'stub'}<Badge variant="secondary">Stub (dev)</Badge
+							>
+							<span class="ml-2 text-xs text-muted-foreground"
+								>No <code>OPENAI_API_KEY</code> set; canned responses only.</span
+							>
 						{:else}<Badge variant="destructive">{data.provider.provider}</Badge>{/if}
 					</dd>
 					<dt class="text-muted-foreground">Model</dt>
@@ -57,7 +64,9 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title class="text-base">Suggest assessment items</Card.Title>
-				<Card.Description>Generate questions for a topic at a given scale + niveau.</Card.Description>
+				<Card.Description
+					>Generate questions for a topic at a given scale + niveau.</Card.Description
+				>
 			</Card.Header>
 			<Card.Content>
 				<form method="POST" action="?/suggest" use:enhance class="space-y-3">
@@ -68,7 +77,11 @@
 					<div class="grid grid-cols-3 gap-2">
 						<div class="space-y-1.5">
 							<Label for="scale_code" class="text-xs">Scale</Label>
-							<select id="scale_code" name="scale_code" class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs">
+							<select
+								id="scale_code"
+								name="scale_code"
+								class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs"
+							>
 								<option value="french_5level">French</option>
 								<option value="maths_5level">Maths</option>
 							</select>
@@ -89,7 +102,7 @@
 
 				{#if form?.suggested}
 					<div class="mt-4 space-y-2">
-						<p class="text-xs font-semibold uppercase text-muted-foreground">Suggested items</p>
+						<p class="text-xs font-semibold text-muted-foreground uppercase">Suggested items</p>
 						{#each form.suggested as item}
 							<div class="rounded-md border p-3">
 								<div class="flex items-center gap-2">
@@ -112,13 +125,20 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title class="text-base">Generate MCQ distractors</Card.Title>
-				<Card.Description>Plausible-but-wrong answers for a multiple-choice question.</Card.Description>
+				<Card.Description
+					>Plausible-but-wrong answers for a multiple-choice question.</Card.Description
+				>
 			</Card.Header>
 			<Card.Content>
 				<form method="POST" action="?/distractors" use:enhance class="space-y-3">
 					<div class="space-y-1.5">
 						<Label for="question_title">Question *</Label>
-						<Input id="question_title" name="question_title" required placeholder="What is the capital of Guinea?" />
+						<Input
+							id="question_title"
+							name="question_title"
+							required
+							placeholder="What is the capital of Guinea?"
+						/>
 					</div>
 					<div class="space-y-1.5">
 						<Label for="correct_answer">Correct answer *</Label>
@@ -135,7 +155,7 @@
 
 				{#if form?.distractors}
 					<div class="mt-4">
-						<p class="text-xs font-semibold uppercase text-muted-foreground">Distractors</p>
+						<p class="text-xs font-semibold text-muted-foreground uppercase">Distractors</p>
 						<ul class="mt-2 space-y-1">
 							{#each form.distractors as d}
 								<li class="rounded-md border bg-muted/30 px-3 py-1.5 text-sm">{d}</li>
@@ -150,7 +170,9 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title class="text-base">Recent jobs</Card.Title>
-			<Card.Description>Audit log of every LLM call (kind, model, latency, tokens).</Card.Description>
+			<Card.Description
+				>Audit log of every LLM call (kind, model, latency, tokens).</Card.Description
+			>
 		</Card.Header>
 		<Card.Content>
 			{#if data.jobs.length === 0}
@@ -170,17 +192,23 @@
 					<Table.Body>
 						{#each data.jobs as j}
 							<Table.Row>
-								<Table.Cell class="text-xs text-muted-foreground">{new Date(j.created_at).toLocaleString()}</Table.Cell>
+								<Table.Cell class="text-xs text-muted-foreground"
+									>{new Date(j.created_at).toLocaleString()}</Table.Cell
+								>
 								<Table.Cell><Badge variant="secondary">{j.kind}</Badge></Table.Cell>
 								<Table.Cell class="font-mono text-xs">{j.model}</Table.Cell>
 								<Table.Cell><Badge variant={statusVariant(j.status)}>{j.status}</Badge></Table.Cell>
-								<Table.Cell class="text-muted-foreground">{j.request_tokens + j.response_tokens}</Table.Cell>
+								<Table.Cell class="text-muted-foreground"
+									>{j.request_tokens + j.response_tokens}</Table.Cell
+								>
 								<Table.Cell class="text-muted-foreground">{j.latency_ms}ms</Table.Cell>
 							</Table.Row>
 							{#if j.error}
 								<Table.Row>
 									<Table.Cell></Table.Cell>
-									<Table.Cell colspan={5} class="pt-0 text-xs text-destructive">⚠ {j.error}</Table.Cell>
+									<Table.Cell colspan={5} class="pt-0 text-xs text-destructive"
+										>⚠ {j.error}</Table.Cell
+									>
 								</Table.Row>
 							{/if}
 						{/each}
