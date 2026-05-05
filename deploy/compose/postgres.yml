@@ -1,0 +1,60 @@
+# SchoolRise — postgres + pgbouncer (own compose project)
+#
+# Boot:  docker compose --env-file ../../.env.production -f deploy/compose/postgres.yml up -d
+#
+# Joins the external `schoolrise-net` so other compose projects (app, web, ...) can resolve
+# `pgbouncer:6432` and `postgres:5432` by name. No host port mappings — internal only.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: schoolrise-postgres
+    command:
+      - postgres
+      - -c
+      - max_connections=400
+      - -c
+      - shared_buffers=512MB
+      - -c
+      - effective_cache_size=2GB
+    environment:
+      POSTGRES_DB: schoolrise
+      POSTGRES_USER: schoolrise
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata-prod:/var/lib/postgresql/data
+      - ../postgres-init:/docker-entrypoint-initdb.d:ro
+    networks: [schoolrise-net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schoolrise"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: schoolrise-pgbouncer
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+    volumes:
+      - ../pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ../pgbouncer/entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
+    networks: [schoolrise-net]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 6432 -U schoolrise || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+networks:
+  schoolrise-net:
+    external: true
+
+volumes:
+  pgdata-prod: {}

@@ -1,0 +1,68 @@
+# Encore
+/.encore
+encore.gen.go
+encore.gen.cue
+/encore.gen
+
+# Go
+*.exe
+*.test
+*.out
+vendor/
+
+# Node / SvelteKit / Next.js
+node_modules/
+.next/
+.svelte-kit/
+out/
+dist/
+*.log
+
+# Secrets & local config — committed examples (.env*.example) are fine; live values are not.
+.env
+.env.local
+.env.*.local
+.env.production
+.env.production.*
+.env.staging
+.env.staging.*
+.env.test
+.env.test.*
+
+# Allow examples — these are intentionally tracked.
+!.env.example
+!.env.production.example
+!.env.staging.example
+!.env.test.example
+
+# Local Claude / Cursor / IDE state — must NOT leave the workstation.
+.claude/settings.local.json
+.claude/projects/
+.cursor/
+.serena/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Build artefacts
+/bin
+/build
+/coverage
+playwright-report/
+test-results/
+apps/web/playwright-report/
+apps/web/test-results/
+
+# Playwright auth state (created at runtime by global.setup.ts)
+apps/web/tests/e2e/.auth/
+
+# Local data volumes (anything mounted into a container at the repo root)
+/data
+/pgdata
+
+# OS / misc
+*.bak
+.tmp

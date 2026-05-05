@@ -1,0 +1,36 @@
+# gitleaks config for SchoolRise.
+# Inherits the default gitleaks ruleset and adds project-specific allow/deny.
+#
+# Run locally: `gitleaks detect --redact -v --no-git`
+# Pre-commit:  installed via .pre-commit-config.yaml
+# CI:          .github/workflows/secrets-scan.yml
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Files and patterns intentionally tracked despite secret-like content"
+
+paths = [
+  '''(.*?)\.(svg|png|jpg|jpeg|webp|gif)$''',
+  '''node_modules/.*''',
+  '''\.git/.*''',
+  '''apps/web/tests/e2e/.*\.spec\.ts$''',     # e2e tests legitimately use the dev seed password
+  '''apps/web/tests/e2e/global\.setup\.ts$''',
+  '''apps/web/tests/e2e/lib/.*\.ts$''',
+  '''apps/auth/passwords_test\.go$''',         # unit test data
+  '''docs/.*\.md$''',                           # docs use placeholder values like __GENERATE...__
+  '''\.env\.example$''',                        # template, no real secrets
+  '''\.env\.production\.example$''',
+  '''\.env\.staging\.example$''',
+  '''\.env\.test\.example$''',
+  '''\.gitleaks\.toml$''',                     # this file
+]
+
+regexes = [
+  '''__GENERATE_[A-Z_]+__''',                  # placeholder syntax in .env.*.example files
+  '''__choose_a_local_[a-z_]+__''',
+  '''__generate_with_openssl[a-z0-9_]+__''',
+  '''ChangeMe123!''',                           # known dev-only seed password (documented as such)
+  '''<your-[a-z-]+>''',                         # `<your-domain>`, `<your-password>` etc. in docs
+]

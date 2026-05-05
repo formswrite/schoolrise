@@ -1,0 +1,65 @@
+# SchoolRise — production reverse proxy (single-host, path-routed)
+#
+# Variables (substituted by docker compose):
+#   {$DOMAIN}    — the only public hostname, e.g. schoolrise.education.gov.gn
+#   {$LE_EMAIL}  — Let's Encrypt account email
+#
+# Topology:
+#   https://{DOMAIN}/v1/*       → encore (app:8080)
+#   https://{DOMAIN}/internal/* → encore (app:8080)
+#   https://{DOMAIN}/*          → SvelteKit (web:3000) — admin, /r/[token],
+#                                  /api/uploads, /api/uploads/[key], /login, etc.
+#
+# MinIO is NOT publicly exposed. All file traffic flows through SvelteKit's
+# /api/uploads/[key] proxy, which serves files from the docker-internal MinIO.
+
+{
+	email {$LE_EMAIL}
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
+		X-Frame-Options "DENY"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		-Server
+		-X-Powered-By
+	}
+}
+
+{$DOMAIN} {
+	import security_headers
+
+	# Encore backend — paths owned by the API.
+	@api path /v1/* /internal/*
+	handle @api {
+		reverse_proxy app:8080 {
+			header_up Host {host}
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto https
+		}
+	}
+
+	# Everything else — SvelteKit web (admin UI, public form renderer, /api/uploads, /login).
+	handle {
+		reverse_proxy web:3000 {
+			header_up Host {host}
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto https
+		}
+	}
+
+	# Match MAX_BYTES in apps/web/src/routes/api/uploads/+server.ts plus headroom.
+	request_body {
+		max_size 30MB
+	}
+
+	encode gzip zstd
+}

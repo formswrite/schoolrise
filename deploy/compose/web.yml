@@ -1,0 +1,28 @@
+# SchoolRise — SvelteKit web (own compose project)
+#
+# Boot:  docker compose --env-file ../../.env.production -f deploy/compose/web.yml up -d
+#
+# Joins `schoolrise-net`. Reachable as `web:3000` from Caddy.
+# Resolves `app:8080` for Encore API calls and `minio:9000` for upload storage.
+
+services:
+  web:
+    image: schoolrise-web:local
+    container_name: schoolrise-web
+    env_file: ../../.env.production
+    environment:
+      ENCORE_API_URL: http://app:8080
+      ORIGIN: https://${DOMAIN}
+      PORT: 3000
+      HOST: 0.0.0.0
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      MINIO_REGION: ${MINIO_REGION:-us-east-1}
+    networks: [schoolrise-net]
+    restart: unless-stopped
+
+networks:
+  schoolrise-net:
+    external: true

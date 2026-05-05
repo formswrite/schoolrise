@@ -1,0 +1,29 @@
+# SchoolRise — Encore Go service (own compose project)
+#
+# Boot:  docker compose --env-file ../../.env.production -f deploy/compose/app.yml up -d
+#
+# Joins `schoolrise-net`. Reachable as `app:8080` from Caddy. Resolves
+# `pgbouncer:6432` for DB connections.
+
+services:
+  app:
+    image: schoolrise-app:patched
+    container_name: schoolrise-app
+    env_file: ../../.env.production
+    environment:
+      ENCORE_RUNTIME_CONFIG: /infra/selfhost.json
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SCHOOLRISE_HEADLESS: ${SCHOOLRISE_HEADLESS:-}
+      ADMIN_FULL_NAME: ${ADMIN_FULL_NAME:-}
+      INSTANCE_NAME: ${INSTANCE_NAME:-}
+      DEFAULT_LOCALE: ${DEFAULT_LOCALE:-fr}
+      TIME_ZONE: ${TIME_ZONE:-Africa/Conakry}
+      COUNTRY_PACK: ${COUNTRY_PACK:-GN}
+    volumes:
+      - ../../infra-config/selfhost.json:/encore/infra.config.json:ro
+    networks: [schoolrise-net]
+    restart: unless-stopped
+
+networks:
+  schoolrise-net:
+    external: true

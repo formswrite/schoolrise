@@ -1,0 +1,48 @@
+{
+  "$schema": "https://encore.dev/schemas/infra.schema.json",
+  "metadata": {
+    "app_id": "schoolrise",
+    "env_name": "selfhost",
+    "env_type": "production",
+    "cloud": "self-hosted",
+    "base_url": "http://localhost:3000"
+  },
+  "sql_servers": [{
+    "host": "pgbouncer:6432",
+    "tls_config": { "disabled": true },
+    "databases": {
+      "auth":          { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "tenancy":       { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "people":        { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "academics":     { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "enrollment":    { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "forms":         { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "assessment":    { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "progression":   { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "imports":       { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "notifications": { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "ai":            { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "setup":         { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} }
+    }
+  }],
+  "secrets": {
+    "AdminEmail":     {"$env": "ADMIN_EMAIL"},
+    "AdminPassword":  {"$env": "ADMIN_PASSWORD"},
+    "AuthSecret":     {"$env": "AUTH_SECRET"},
+    "BaseURL":        {"$env": "BASE_URL"},
+    "ResendAPIKey":   {"$env": "RESEND_API_KEY"},
+    "EmailFrom":      {"$env": "EMAIL_FROM"},
+    "EmailFromName":  {"$env": "EMAIL_FROM_NAME"},
+    "OpenAIAPIKey":   {"$env": "OPENAI_API_KEY"},
+    "OpenAIModel":    {"$env": "OPENAI_MODEL"},
+    "AnthropicAPIKey":{"$env": "ANTHROPIC_API_KEY"},
+    "S3Endpoint":     {"$env": "S3_ENDPOINT"},
+    "S3Bucket":       {"$env": "S3_BUCKET"},
+    "S3AccessKey":    {"$env": "S3_ACCESS_KEY"},
+    "S3SecretKey":    {"$env": "S3_SECRET_KEY"},
+    "S3Region":       {"$env": "S3_REGION"},
+    "SentryDSN":      {"$env": "SENTRY_DSN"},
+    "LogLocale":      {"$env": "LOG_LOCALE"}
+  },
+  "log_config": "json"
+}

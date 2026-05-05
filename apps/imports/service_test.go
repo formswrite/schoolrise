@@ -1,0 +1,30 @@
+package imports_test
+
+import (
+	"context"
+	"testing"
+
+	"encore.app/apps/imports"
+)
+
+func TestServiceHealth(t *testing.T) {
+
+	svc := &imports.Service{}
+
+	resp, err := svc.Health(context.Background())
+	if err != nil {
+		t.Fatalf("Health returned error: %v", err)
+	}
+
+	if resp == nil {
+		t.Fatal("Health returned nil response")
+	}
+
+	if resp.Service != "imports" {
+		t.Errorf("Service = %q, want %q", resp.Service, "imports")
+	}
+
+	if resp.Status != "ok" {
+		t.Errorf("Status = %q, want %q", resp.Status, "ok")
+	}
+}

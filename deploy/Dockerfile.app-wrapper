@@ -1,0 +1,12 @@
+FROM golang:1.25-bookworm AS baml-cache-builder
+ENV BAML_CACHE_DIR=/baml-cache
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN go install github.com/boundaryml/baml/baml-cli@latest
+RUN /go/bin/baml-cli --version
+
+FROM schoolrise-app:rebuilt-arm64
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+ENV BAML_CACHE_DIR=/baml-cache
+COPY --from=baml-cache-builder /baml-cache /baml-cache
+ENTRYPOINT ["/artifacts/0/build/encore_app_out"]

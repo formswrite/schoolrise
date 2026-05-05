@@ -1,0 +1,49 @@
+{
+  "$schema": "https://encore.dev/schemas/infra.schema.json",
+  "metadata": {
+    "app_id": "schoolrise",
+    "env_name": "aws",
+    "env_type": "production",
+    "cloud": "aws",
+    "base_url": "https://schoolrise.example.gov"
+  },
+  "sql_servers": [{
+    "host": "REPLACE_WITH_RDS_HOST:5432",
+    "tls_config": { "disabled": false },
+    "databases": {
+      "auth":          { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "tenancy":       { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "people":        { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "academics":     { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "enrollment":    { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "forms":         { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "assessment":    { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "progression":   { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "imports":       { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "notifications": { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "ai":            { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} }
+    }
+  }],
+  "pubsub": [{
+    "type": "aws_sns_sqs"
+  }],
+  "secrets": {
+    "AdminEmail":     {"$env": "ADMIN_EMAIL"},
+    "AdminPassword": {"$env": "ADMIN_PASSWORD"},
+    "AuthSecret":     {"$env": "AUTH_SECRET"},
+    "BaseURL":        {"$env": "BASE_URL"},
+    "ResendAPIKey":   {"$env": "RESEND_API_KEY"},
+    "EmailFrom":      {"$env": "EMAIL_FROM"},
+    "EmailFromName":  {"$env": "EMAIL_FROM_NAME"},
+    "OpenAIAPIKey":   {"$env": "OPENAI_API_KEY"},
+    "OpenAIModel":    {"$env": "OPENAI_MODEL"},
+    "AnthropicAPIKey":{"$env": "ANTHROPIC_API_KEY"},
+    "SentryDSN":      {"$env": "SENTRY_DSN"},
+    "LogLocale":      {"$env": "LOG_LOCALE"}
+  },
+  "object_storage": [{
+    "type": "s3",
+    "region": "REPLACE_WITH_AWS_REGION"
+  }],
+  "metrics": { "type": "aws_cloudwatch" }
+}

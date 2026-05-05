@@ -1,0 +1,146 @@
+version: "2"
+sql:
+  - engine: postgresql
+    schema: apps/auth/migrations
+    queries: apps/auth/queries
+    gen:
+      go:
+        package: dbauth
+        out: apps/auth/dbauth
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/tenancy/migrations
+    queries: apps/tenancy/queries
+    gen:
+      go:
+        package: dbtenancy
+        out: apps/tenancy/dbtenancy
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/setup/migrations
+    queries: apps/setup/queries
+    gen:
+      go:
+        package: dbsetup
+        out: apps/setup/dbsetup
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/people/migrations
+    queries: apps/people/queries
+    gen:
+      go:
+        package: dbpeople
+        out: apps/people/dbpeople
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/academics/migrations
+    queries: apps/academics/queries
+    gen:
+      go:
+        package: dbacademics
+        out: apps/academics/dbacademics
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/enrollment/migrations
+    queries: apps/enrollment/queries
+    gen:
+      go:
+        package: dbenrollment
+        out: apps/enrollment/dbenrollment
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/imports/migrations
+    queries: apps/imports/queries
+    gen:
+      go:
+        package: dbimports
+        out: apps/imports/dbimports
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/forms/migrations
+    queries: apps/forms/queries
+    gen:
+      go:
+        package: dbforms
+        out: apps/forms/dbforms
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/assessment/migrations
+    queries: apps/assessment/queries
+    gen:
+      go:
+        package: dbassessment
+        out: apps/assessment/dbassessment
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/progression/migrations
+    queries: apps/progression/queries
+    gen:
+      go:
+        package: dbprogression
+        out: apps/progression/dbprogression
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/notifications/migrations
+    queries: apps/notifications/queries
+    gen:
+      go:
+        package: dbnotifications
+        out: apps/notifications/dbnotifications
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true
+  - engine: postgresql
+    schema: apps/ai/migrations
+    queries: apps/ai/queries
+    gen:
+      go:
+        package: dbai
+        out: apps/ai/dbai
+        sql_package: database/sql
+        emit_pointers_for_null_types: true
+        emit_empty_slices: true
+        emit_exported_queries: true
+        omit_unused_structs: true

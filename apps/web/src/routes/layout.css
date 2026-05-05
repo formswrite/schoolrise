@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+
+@theme {
+	--color-brand-dark: #060419;
+	--color-brand-cta: #6439b5;
+	--color-brand-pink-light: #ffc8eb;
+	--color-brand-pink-medium: #f092dd;
+	--color-brand-pink-bright: #ff5ec4;
+	--color-brand-lavender: #f0ecff;
+	--color-brand-lavender-deep: #e8e0ff;
+	--color-brand-purple: #9399f4;
+	--color-brand-text-light: #f7f5ff;
+	--color-brand-text-gray: #51545d;
+	--color-brand-border-dark: #0b0d2a;
+
+	--color-background: #ffffff;
+	--color-foreground: #060419;
+	--color-card: #ffffff;
+	--color-card-foreground: #060419;
+	--color-popover: #ffffff;
+	--color-popover-foreground: #060419;
+	--color-primary: #6439b5;
+	--color-primary-foreground: #ffffff;
+	--color-secondary: #ffc8eb;
+	--color-secondary-foreground: #060419;
+	--color-muted: #f0ecff;
+	--color-muted-foreground: #51545d;
+	--color-accent: #f092dd;
+	--color-accent-foreground: #060419;
+	--color-destructive: #dc2626;
+	--color-destructive-foreground: #ffffff;
+	--color-border: rgba(11, 13, 42, 0.12);
+	--color-input: rgba(11, 13, 42, 0.18);
+	--color-ring: #6439b5;
+	--color-sidebar: #f0ecff;
+	--color-sidebar-foreground: #060419;
+	--color-sidebar-primary: #6439b5;
+	--color-sidebar-primary-foreground: #ffffff;
+	--color-sidebar-accent: #f092dd;
+	--color-sidebar-accent-foreground: #060419;
+	--color-sidebar-border: rgba(11, 13, 42, 0.12);
+	--color-sidebar-ring: #6439b5;
+
+	--font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-display: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+	--radius: 10px;
+	--radius-sm: 6px;
+	--radius-md: 8px;
+	--radius-lg: 10px;
+	--radius-xl: 14px;
+
+	--animate-scroll-left: scroll-left 40s linear infinite;
+	--animate-scroll-right: scroll-right 40s linear infinite;
+}
+
+@keyframes scroll-left {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+	0% { transform: translateX(-50%); }
+	100% { transform: translateX(0); }
+}
+
+@layer base {
+	html {
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+	body {
+		background: var(--color-background);
+		color: var(--color-foreground);
+	}
+	h1, h2, h3, h4 {
+		font-family: var(--font-display);
+		letter-spacing: -0.01em;
+	}
+}
+
+@layer utilities {
+	.bg-brand-hero {
+		background-image: linear-gradient(to bottom, #f0ecff 0%, #e8e0ff 55%, #ffffff 100%);
+	}
+	.bg-brand-soft {
+		background-image: linear-gradient(to right, #fef3fa, #faf5ff, #f0f4ff);
+	}
+	.section-divider {
+		border-top: 2px solid var(--color-brand-dark);
+		border-bottom: 2px solid var(--color-brand-dark);
+	}
+	.highlight-chip {
+		display: inline-block;
+		background-color: var(--color-brand-pink-light);
+		padding-inline: 0.5rem;
+		font-weight: 800;
+	}
+}

@@ -1,0 +1,127 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    command:
+      - postgres
+      - -c
+      - max_connections=400
+      - -c
+      - shared_buffers=512MB
+      - -c
+      - effective_cache_size=2GB
+    environment:
+      POSTGRES_DB: schoolrise
+      POSTGRES_USER: schoolrise
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata-local:/var/lib/postgresql/data
+      - ../deploy/postgres-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schoolrise"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+    volumes:
+      - ../deploy/pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ../deploy/pgbouncer/entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
+    ports:
+      - "6433:6432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 6432 -U schoolrise || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  app:
+    image: schoolrise-app:patched
+    env_file: ../.env
+    environment:
+      ENCORE_RUNTIME_CONFIG: /infra/selfhost.json
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SCHOOLRISE_HEADLESS: ${SCHOOLRISE_HEADLESS:-}
+      ADMIN_FULL_NAME: ${ADMIN_FULL_NAME:-}
+      INSTANCE_NAME: ${INSTANCE_NAME:-}
+      DEFAULT_LOCALE: ${DEFAULT_LOCALE:-}
+      TIME_ZONE: ${TIME_ZONE:-}
+      COUNTRY_PACK: ${COUNTRY_PACK:-}
+    volumes:
+      - ../infra-config/selfhost.json:/encore/infra.config.json:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      pgbouncer:
+        condition: service_healthy
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?MINIO_ROOT_USER is required (set in .env)}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD is required (set in .env)}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "mc ready local || exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        until /usr/bin/mc alias set local http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}; do
+          echo "waiting for minio…" && sleep 2
+        done
+        /usr/bin/mc mb -p local/${MINIO_BUCKET:-schoolrise-uploads} || true
+        /usr/bin/mc anonymous set download local/${MINIO_BUCKET:-schoolrise-uploads} || true
+        echo "minio bucket ready"
+    restart: "no"
+
+  web:
+    image: schoolrise-web:local
+    env_file: ../.env
+    environment:
+      ENCORE_API_URL: http://app:8080
+      ORIGIN: http://localhost:3001
+      PORT: 3000
+      HOST: 0.0.0.0
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_PUBLIC_ENDPOINT: ${MINIO_PUBLIC_ENDPOINT:-http://localhost:9000}
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:?MINIO_ROOT_USER is required}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:?MINIO_ROOT_PASSWORD is required}
+      MINIO_BUCKET: ${MINIO_BUCKET:-schoolrise-uploads}
+      MINIO_REGION: ${MINIO_REGION:-us-east-1}
+    ports:
+      - "3001:3000"
+    depends_on:
+      - app
+      - minio
+    restart: unless-stopped
+
+volumes:
+  pgdata-local: {}
+  minio-data: {}

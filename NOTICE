@@ -1,0 +1,36 @@
+SchoolRise
+Copyright (c) 2026 The SchoolRise contributors
+
+This product is licensed under the GNU Affero General Public License, version 3.
+A copy of the license is included in the LICENSE file at the root of this
+repository.
+
+The Affero clause means: if you run a modified version of SchoolRise as a
+network service that other users interact with, you must offer those users
+the corresponding source code of your modifications. See LICENSE for the
+full terms.
+
+For commercial licensing arrangements (proprietary integrations, OEM
+redistribution, dual-license exemptions), contact the maintainers via the
+address in SECURITY.md.
+
+----------------------------------------------------------------------
+This product includes software developed at:
+
+  Encore.dev (https://encore.dev) — backend framework, MIT license
+  SvelteKit (https://kit.svelte.dev) — frontend framework, MIT license
+  MinIO (https://min.io) — object storage, AGPL-3.0
+  Caddy (https://caddyserver.com) — reverse proxy, Apache-2.0
+  PostgreSQL — database, PostgreSQL License
+  PgBouncer — connection pooler, ISC
+  KaTeX — math typesetting, MIT
+  svelte-dnd-action — drag-and-drop, MIT
+  @aws-sdk/client-s3 — S3 client, Apache-2.0
+  BAML (https://github.com/BoundaryML/baml) — LLM contract DSL, Apache-2.0
+
+Each of these projects ships with its own license. Their license texts are
+preserved in the repositories from which we install them; this NOTICE file
+acknowledges their use without redistributing those licenses.
+
+A full machine-readable SBOM is generated as part of the release pipeline
+and published alongside each tagged Docker image at ghcr.io/formswrite/schoolrise-app.

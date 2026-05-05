@@ -1,0 +1,5 @@
+seed/fixtures.csv
+seed/fixtures.sample.csv
+seed/fixtures.meta.json
+results/*.log
+results/*.json

@@ -1,0 +1,15 @@
+{
+  "bootstrap.starting": "Starting SchoolRise bootstrap...",
+  "bootstrap.env_valid": "Environment variables validated.",
+  "bootstrap.env_missing": "Missing required environment variables: {{vars}}",
+  "bootstrap.resend_check": "Verifying Resend API connectivity...",
+  "bootstrap.resend_ok": "Resend API reachable.",
+  "bootstrap.openai_check": "Verifying OpenAI API connectivity...",
+  "bootstrap.openai_ok": "OpenAI API reachable.",
+  "bootstrap.migrations": "Running database migrations...",
+  "bootstrap.migrations_ok": "Migrations completed.",
+  "bootstrap.seed_scales": "Seeding assessment scales...",
+  "bootstrap.seed_hierarchy": "Seeding country hierarchy...",
+  "bootstrap.seed_admin": "Creating initial admin user...",
+  "bootstrap.complete": "Bootstrap complete. SchoolRise is ready."
+}

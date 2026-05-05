@@ -1,0 +1,32 @@
+# SchoolRise — Caddy edge (own compose project, the only host-port owner)
+#
+# Boot:  docker compose --env-file ../../.env.production -f deploy/compose/caddy.yml up -d
+#
+# Maps host ports 80/443 (TCP) and 443/UDP (HTTP/3). Joins `schoolrise-net` so it can
+# reverse_proxy to web:3000 and app:8080 by docker DNS.
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: schoolrise-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN}
+      LE_EMAIL: ${LE_EMAIL}
+    volumes:
+      - ../Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks: [schoolrise-net]
+    restart: unless-stopped
+
+networks:
+  schoolrise-net:
+    external: true
+
+volumes:
+  caddy-data: {}
+  caddy-config: {}

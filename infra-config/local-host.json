@@ -1,0 +1,28 @@
+{
+  "$schema": "https://encore.dev/schemas/infra.schema.json",
+  "metadata": {
+    "app_id": "schoolrise",
+    "env_name": "localdev",
+    "env_type": "development",
+    "cloud": "self-hosted",
+    "base_url": "http://localhost:4000"
+  },
+  "sql_servers": [{
+    "host": "localhost:5433",
+    "tls_config": { "disabled": true },
+    "databases": {
+      "auth":          { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "tenancy":       { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "people":        { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "academics":     { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "enrollment":    { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "forms":         { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "assessment":    { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "progression":   { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "imports":       { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "notifications": { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "ai":            { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} },
+      "setup":         { "username": "schoolrise", "password": {"$env": "DB_PASSWORD"} }
+    }
+  }]
+}
