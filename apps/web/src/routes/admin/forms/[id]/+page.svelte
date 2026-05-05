@@ -16,9 +16,7 @@
 
 	let selectedId = $state<number | null>(null);
 	const questions = $derived(data.questions as unknown as Question[]);
-	const selectedQuestion = $derived(
-		questions.find((q) => q.id === selectedId) ?? null
-	);
+	const selectedQuestion = $derived(questions.find((q) => q.id === selectedId) ?? null);
 
 	let reorderForm: HTMLFormElement | undefined = $state();
 	let pendingOrder = $state<string>('');
@@ -34,9 +32,7 @@
 
 	<header class="flex shrink-0 items-start justify-between gap-4 border-b bg-background px-6 py-3">
 		<div class="min-w-0">
-			<a href="/admin/forms" class="text-xs text-muted-foreground hover:underline"
-				>← Forms</a
-			>
+			<a href="/admin/forms" class="text-xs text-muted-foreground hover:underline">← Forms</a>
 			<h1 class="mt-0.5 truncate text-xl font-semibold">{data.form.title}</h1>
 			<p class="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
 				<code>{data.form.public_id}</code>
@@ -49,9 +45,7 @@
 
 		<div class="flex shrink-0 gap-2">
 			<form method="POST" use:enhance action="?/publish">
-				<Button type="submit" size="sm" disabled={questions.length === 0}>
-					Publish version
-				</Button>
+				<Button type="submit" size="sm" disabled={questions.length === 0}>Publish version</Button>
 			</form>
 		</div>
 	</header>
@@ -71,8 +65,8 @@
 		<FieldPalette />
 
 		<FormCanvas
-			questions={questions}
-			selectedId={selectedId}
+			{questions}
+			{selectedId}
 			onSelect={(id) => (selectedId = id)}
 			onReorder={submitReorder}
 		/>

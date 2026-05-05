@@ -65,7 +65,9 @@ test.describe('Public student renderer', () => {
 		await expect(page.locator('form button[type="submit"]').last()).toBeVisible();
 		await page.screenshot({ path: path.join(SHOTS_DIR, '02-form-rendered.png'), fullPage: true });
 
-		const inputs = await page.locator('form input[name^="q_"], form textarea[name^="q_"], form select[name^="q_"]').all();
+		const inputs = await page
+			.locator('form input[name^="q_"], form textarea[name^="q_"], form select[name^="q_"]')
+			.all();
 		for (const input of inputs) {
 			const tag = await input.evaluate((el) => el.tagName.toLowerCase());
 			const type = await input.getAttribute('type');
@@ -111,6 +113,9 @@ test.describe('Public student renderer', () => {
 
 		await page.goto(`/r/${token}`);
 		await expect(page.locator('text=/Already submitted/i')).toBeVisible();
-		await page.screenshot({ path: path.join(SHOTS_DIR, '05-already-submitted.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '05-already-submitted.png'),
+			fullPage: true
+		});
 	});
 });

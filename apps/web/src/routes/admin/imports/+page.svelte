@@ -32,8 +32,8 @@ Cleo Bah,female,2010-02-28,STU-A-003,2025-09-01`;
 		<Card.Header>
 			<Card.Title class="text-base">Required headers</Card.Title>
 			<Card.Description>
-				<code>full_name</code> is required.
-				Optional: <code>given_name</code>, <code>family_name</code>, <code>gender</code>,
+				<code>full_name</code> is required. Optional: <code>given_name</code>,
+				<code>family_name</code>, <code>gender</code>,
 				<code>date_of_birth</code> (YYYY-MM-DD), <code>email</code>, <code>phone</code>,
 				<code>student_code</code>, <code>enrollment_date</code> (YYYY-MM-DD).
 			</Card.Description>
@@ -41,20 +41,36 @@ Cleo Bah,female,2010-02-28,STU-A-003,2025-09-01`;
 		<Card.Content>
 			<details>
 				<summary class="cursor-pointer text-sm font-medium text-[#6439B5]">Sample CSV</summary>
-				<pre class="mt-2 overflow-x-auto rounded-md border bg-muted/40 p-3 text-xs">{sampleCSV}</pre>
+				<pre
+					class="mt-2 overflow-x-auto rounded-md border bg-muted/40 p-3 text-xs">{sampleCSV}</pre>
 			</details>
 		</Card.Content>
 	</Card.Root>
 
 	<Card.Root>
 		<Card.Content class="pt-6">
-			<form method="POST" use:enhance action="?/upload" enctype="multipart/form-data" class="space-y-4">
+			<form
+				method="POST"
+				use:enhance
+				action="?/upload"
+				enctype="multipart/form-data"
+				class="space-y-4"
+			>
 				<div class="grid grid-cols-2 gap-4">
 					<div class="space-y-2">
 						<Label for="institution_id">Institution ID *</Label>
-						<Input id="institution_id" name="institution_id" type="number" min="1" required placeholder="e.g. 12" />
+						<Input
+							id="institution_id"
+							name="institution_id"
+							type="number"
+							min="1"
+							required
+							placeholder="e.g. 12"
+						/>
 						<p class="text-xs text-muted-foreground">
-							Find the ID via <a href="/admin/institutions" class="underline">/admin/institutions</a> (URL has <code>?parent=NN</code>).
+							Find the ID via <a href="/admin/institutions" class="underline">/admin/institutions</a
+							>
+							(URL has <code>?parent=NN</code>).
 						</p>
 					</div>
 					<div class="flex items-end">
@@ -77,7 +93,7 @@ Cleo Bah,female,2010-02-28,STU-A-003,2025-09-01`;
 						name="csv_pasted"
 						rows="6"
 						placeholder="paste here if you don't want to upload a file"
-						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+						class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 					></textarea>
 				</div>
 

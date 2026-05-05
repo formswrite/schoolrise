@@ -52,9 +52,7 @@
 	}
 
 	const visibleQuestions = $derived(
-		data.version
-			? computeVisibleQuestions(questions(), logicRules(), answers)
-			: []
+		data.version ? computeVisibleQuestions(questions(), logicRules(), answers) : []
 	);
 	const submittable = $derived(
 		visibleQuestions.filter((q) => !['SECTION', 'STATEMENT'].includes(q.type))
@@ -65,11 +63,13 @@
 	}
 </script>
 
-<div class="min-h-screen bg-brand-hero flex items-start justify-center px-4 py-16">
+<div class="bg-brand-hero flex min-h-screen items-start justify-center px-4 py-16">
 	<div class="w-full max-w-2xl space-y-6">
 		<header class="text-center">
 			<img src="/logo-mark.svg" alt="" class="mx-auto h-16 w-16" aria-hidden="true" />
-			<h1 class="mt-4 font-display text-[#060419] text-[clamp(28px,4vw,40px)] font-semibold leading-tight tracking-tight">
+			<h1
+				class="mt-4 font-display text-[clamp(28px,4vw,40px)] leading-tight font-semibold tracking-tight text-[#060419]"
+			>
 				SchoolRise assessment
 			</h1>
 		</header>
@@ -104,7 +104,9 @@
 						<input type="hidden" name="_total_questions" value={submittable.length} />
 						{#each visibleQuestions as q, i (q.client_id)}
 							{#if q.type === 'SECTION'}
-								<h2 class="border-b-2 border-[#0b0d2a] pb-2 text-xl font-bold text-[#060419]">{q.title}</h2>
+								<h2 class="border-b-2 border-[#0b0d2a] pb-2 text-xl font-bold text-[#060419]">
+									{q.title}
+								</h2>
 							{:else if q.type === 'STATEMENT'}
 								<p class="rounded-md bg-[#ffc8eb]/40 p-3 text-sm text-[#060419]">{q.title}</p>
 							{:else}
@@ -113,7 +115,9 @@
 										{i + 1}. {q.title}
 										{#if q.required}<span class="text-destructive">*</span>{/if}
 									</Label>
-									{#if q.description}<p class="text-xs text-muted-foreground">{q.description}</p>{/if}
+									{#if q.description}<p class="text-xs text-muted-foreground">
+											{q.description}
+										</p>{/if}
 
 									{#if q.type === 'PARAGRAPH' || q.type === 'ESSAY'}
 										<textarea
@@ -121,18 +125,44 @@
 											name="q_{q.client_id}"
 											rows="4"
 											required={q.required}
-											class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+											class="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 										></textarea>
 									{:else if q.type === 'NUMBER' || q.type === 'DECIMAL'}
-										<Input id="q_{q.client_id}" name="q_{q.client_id}" type="number" step={q.type === 'DECIMAL' ? '0.01' : '1'} required={q.required} />
+										<Input
+											id="q_{q.client_id}"
+											name="q_{q.client_id}"
+											type="number"
+											step={q.type === 'DECIMAL' ? '0.01' : '1'}
+											required={q.required}
+										/>
 									{:else if q.type === 'EMAIL'}
-										<Input id="q_{q.client_id}" name="q_{q.client_id}" type="email" required={q.required} />
+										<Input
+											id="q_{q.client_id}"
+											name="q_{q.client_id}"
+											type="email"
+											required={q.required}
+										/>
 									{:else if q.type === 'PHONE' || q.type === 'HOME_NUMBER'}
-										<Input id="q_{q.client_id}" name="q_{q.client_id}" type="tel" required={q.required} />
+										<Input
+											id="q_{q.client_id}"
+											name="q_{q.client_id}"
+											type="tel"
+											required={q.required}
+										/>
 									{:else if q.type === 'DATE'}
-										<Input id="q_{q.client_id}" name="q_{q.client_id}" type="date" required={q.required} />
+										<Input
+											id="q_{q.client_id}"
+											name="q_{q.client_id}"
+											type="date"
+											required={q.required}
+										/>
 									{:else if q.type === 'TIME'}
-										<Input id="q_{q.client_id}" name="q_{q.client_id}" type="time" required={q.required} />
+										<Input
+											id="q_{q.client_id}"
+											name="q_{q.client_id}"
+											type="time"
+											required={q.required}
+										/>
 									{:else if q.type === 'LINEAR_SCALE' || q.type === 'RATING'}
 										<div class="flex items-center gap-3">
 											<span class="text-xs text-muted-foreground">{q.scale_min ?? 1}</span>
@@ -157,8 +187,7 @@
 														value="yes"
 														required={q.required}
 														onchange={(e) =>
-															setAnswer(q.client_id, (e.target as HTMLInputElement).value)
-														}
+															setAnswer(q.client_id, (e.target as HTMLInputElement).value)}
 													/> Yes
 												</label>
 												<label class="flex items-center gap-2 text-sm">
@@ -168,12 +197,11 @@
 														value="no"
 														required={q.required}
 														onchange={(e) =>
-															setAnswer(q.client_id, (e.target as HTMLInputElement).value)
-														}
+															setAnswer(q.client_id, (e.target as HTMLInputElement).value)}
 													/> No
 												</label>
 											{:else}
-												{#each (q.options as { label?: string; value?: string }[]) as opt, oi}
+												{#each q.options as { label?: string; value?: string }[] as opt, oi}
 													<label class="flex items-center gap-2 text-sm">
 														<input
 															type="radio"
@@ -181,8 +209,7 @@
 															value={opt.value ?? opt.label ?? `opt_${oi}`}
 															required={q.required}
 															onchange={(e) =>
-																setAnswer(q.client_id, (e.target as HTMLInputElement).value)
-															}
+																setAnswer(q.client_id, (e.target as HTMLInputElement).value)}
 														/>
 														{opt.label ?? opt.value ?? `Option ${oi + 1}`}
 													</label>
@@ -194,19 +221,31 @@
 											id="q_{q.client_id}"
 											name="q_{q.client_id}"
 											required={q.required}
-											class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+											class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 										>
 											<option value=""></option>
-											{#each (q.options as { label?: string; value?: string }[]) as opt, oi}
-												<option value={opt.value ?? opt.label ?? `opt_${oi}`}>{opt.label ?? opt.value ?? `Option ${oi + 1}`}</option>
+											{#each q.options as { label?: string; value?: string }[] as opt, oi}
+												<option value={opt.value ?? opt.label ?? `opt_${oi}`}
+													>{opt.label ?? opt.value ?? `Option ${oi + 1}`}</option
+												>
 											{/each}
 										</select>
 									{:else if q.type === 'COUNTRY_REGION'}
 										{@const regions = asStringArray((q.extra as { regions?: unknown })?.regions, [
-											'Boké', 'Conakry', 'Faranah', 'Kankan', 'Kindia', 'Labé', 'Mamou', 'Nzérékoré'
+											'Boké',
+											'Conakry',
+											'Faranah',
+											'Kankan',
+											'Kindia',
+											'Labé',
+											'Mamou',
+											'Nzérékoré'
 										])}
 										<div class="grid grid-cols-2 gap-2">
-											<select disabled class="h-9 rounded-md border border-input bg-muted/30 px-2 text-sm">
+											<select
+												disabled
+												class="h-9 rounded-md border border-input bg-muted/30 px-2 text-sm"
+											>
 												<option>Guinée</option>
 											</select>
 											<select
@@ -219,14 +258,14 @@
 											</select>
 										</div>
 									{:else if q.type === 'ADDRESS'}
-										{@const fields = asStringArray((q.extra as { fields?: unknown })?.fields, ['Quartier', 'Commune', 'Préfecture'])}
+										{@const fields = asStringArray((q.extra as { fields?: unknown })?.fields, [
+											'Quartier',
+											'Commune',
+											'Préfecture'
+										])}
 										<div class="space-y-2">
 											{#each fields as f, fi}
-												<Input
-													name="q_{q.client_id}_{fi}"
-													placeholder={f}
-													required={q.required}
-												/>
+												<Input name="q_{q.client_id}_{fi}" placeholder={f} required={q.required} />
 											{/each}
 										</div>
 									{:else if q.type === 'TABLE'}
@@ -261,7 +300,9 @@
 										{@const items = (q.options as Array<{ label?: string; value?: string }>) ?? []}
 										<ol class="space-y-1">
 											{#each items as opt, oi}
-												<li class="flex items-center gap-2 rounded-md border bg-muted/20 px-2 py-1 text-sm">
+												<li
+													class="flex items-center gap-2 rounded-md border bg-muted/20 px-2 py-1 text-sm"
+												>
 													<input
 														type="number"
 														name="q_{q.client_id}_pos_{oi}"
@@ -275,12 +316,16 @@
 											{/each}
 										</ol>
 									{:else if q.type === 'MATCHING'}
-										{@const pairs = ((q.extra as { pairs?: Array<{ left?: string; right?: string }> })?.pairs ?? [])}
+										{@const pairs =
+											(q.extra as { pairs?: Array<{ left?: string; right?: string }> })?.pairs ??
+											[]}
 										{@const rights = pairs.map((p, i) => p.right ?? `R${i + 1}`)}
 										<div class="space-y-1">
 											{#each pairs as p, pi}
 												<div class="grid grid-cols-2 items-center gap-2">
-													<div class="rounded-md border bg-muted/20 px-2 py-1 text-sm">{p.left ?? `L${pi + 1}`}</div>
+													<div class="rounded-md border bg-muted/20 px-2 py-1 text-sm">
+														{p.left ?? `L${pi + 1}`}
+													</div>
 													<select
 														name="q_{q.client_id}_match_{pi}"
 														required={q.required}
@@ -293,7 +338,10 @@
 											{/each}
 										</div>
 									{:else if q.type === 'FILL_IN_BLANK'}
-										{@const tpl = (typeof (q.extra as { template?: string })?.template === 'string' ? (q.extra as { template?: string }).template! : q.title)}
+										{@const tpl =
+											typeof (q.extra as { template?: string })?.template === 'string'
+												? (q.extra as { template?: string }).template!
+												: q.title}
 										{@const parts = fillBlanksParts(tpl)}
 										<p class="text-sm leading-relaxed">
 											{#each parts as part, pi}
@@ -323,8 +371,8 @@
 											name="q_{q.client_id}"
 											rows="6"
 											required={q.required}
-											placeholder={`// ${((q.extra as { language?: string })?.language ?? 'code')}`}
-											class="w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+											placeholder={`// ${(q.extra as { language?: string })?.language ?? 'code'}`}
+											class="w-full rounded-md border border-input bg-transparent px-3 py-2 font-mono text-xs shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 										></textarea>
 									{:else if q.type === 'FILE_UPLOAD' || q.type === 'ATTACHMENT' || q.type === 'IMAGE'}
 										<FileUploadInput
@@ -343,7 +391,12 @@
 											class="block w-full rounded-md border border-input bg-muted/20 px-3 py-2 text-sm"
 										/>
 									{:else}
-										<Input id="q_{q.client_id}" name="q_{q.client_id}" required={q.required} placeholder={`(${q.type})`} />
+										<Input
+											id="q_{q.client_id}"
+											name="q_{q.client_id}"
+											required={q.required}
+											placeholder={`(${q.type})`}
+										/>
 									{/if}
 								</div>
 							{/if}

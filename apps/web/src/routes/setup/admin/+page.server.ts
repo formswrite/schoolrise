@@ -37,7 +37,11 @@ export const actions: Actions = {
 
 		const result = await setupCreateAdmin(session, email, fullName, password);
 		if (!result.ok) {
-			return fail(result.status, { email, fullName, error: result.message ?? 'Could not create admin.' });
+			return fail(result.status, {
+				email,
+				fullName,
+				error: result.message ?? 'Could not create admin.'
+			});
 		}
 
 		throw redirect(303, '/setup/system');

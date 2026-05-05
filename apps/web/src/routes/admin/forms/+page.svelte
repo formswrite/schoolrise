@@ -80,7 +80,9 @@
 								{:else}<Badge variant="secondary">Draft</Badge>{/if}
 							</Table.Cell>
 							<Table.Cell class="font-mono text-xs">{f.public_id}</Table.Cell>
-							<Table.Cell class="text-muted-foreground">{new Date(f.updated_at).toLocaleString()}</Table.Cell>
+							<Table.Cell class="text-muted-foreground"
+								>{new Date(f.updated_at).toLocaleString()}</Table.Cell
+							>
 						</Table.Row>
 					{/each}
 				</Table.Body>

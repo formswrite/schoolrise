@@ -47,7 +47,10 @@ export const actions: Actions = {
 		return {
 			success: true,
 			distractors: res.distractors,
-			toast: { type: 'success' as const, message: `Generated ${res.distractors.length} distractors.` }
+			toast: {
+				type: 'success' as const,
+				message: `Generated ${res.distractors.length} distractors.`
+			}
 		};
 	}
 };

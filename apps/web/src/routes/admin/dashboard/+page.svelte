@@ -47,13 +47,18 @@
 	{#if !data.scopeNodeId}
 		<Alert>
 			<AlertDescription>
-				No scopes are configured yet. Set up your hierarchy first via <a href="/admin/institutions" class="font-medium underline">Institutions</a>.
+				No scopes are configured yet. Set up your hierarchy first via <a
+					href="/admin/institutions"
+					class="font-medium underline">Institutions</a
+				>.
 			</AlertDescription>
 		</Alert>
 	{:else if data.campaigns.length === 0}
 		<Alert>
 			<AlertDescription>
-				No campaigns at this scope yet. Create one via the <a href="/admin/forms" class="underline">Forms</a> screen first.
+				No campaigns at this scope yet. Create one via the <a href="/admin/forms" class="underline"
+					>Forms</a
+				> screen first.
 			</AlertDescription>
 		</Alert>
 	{:else}
@@ -67,7 +72,9 @@
 						{@const isActive = c.id === data.campaignId}
 						<a
 							href="/admin/dashboard?scope={data.scopeNodeId}&campaign={c.id}&period={c.period_id}"
-							class="rounded-md border px-3 py-1.5 text-sm transition-colors {isActive ? 'border-[#6439B5] bg-[#f0ecff] text-[#6439B5] font-semibold' : 'hover:bg-accent'}"
+							class="rounded-md border px-3 py-1.5 text-sm transition-colors {isActive
+								? 'border-[#6439B5] bg-[#f0ecff] font-semibold text-[#6439B5]'
+								: 'hover:bg-accent'}"
 						>
 							{c.title}
 							<Badge variant="secondary" class="ml-2">{c.scale_code}</Badge>
@@ -97,7 +104,8 @@
 							{#each data.progression.bands as b}
 								{#if b.percentage > 0}
 									<div
-										class="{bandColor[b.band_code] ?? 'bg-muted'} flex items-center justify-center text-xs font-semibold text-white"
+										class="{bandColor[b.band_code] ??
+											'bg-muted'} flex items-center justify-center text-xs font-semibold text-white"
 										style="width: {b.percentage}%"
 										title="{b.band_label}: {b.student_count} ({b.percentage}%)"
 									>
@@ -119,7 +127,9 @@
 							{/each}
 						</div>
 					{/if}
-					{#if form?.error}<Alert variant="destructive"><AlertDescription>{form.error}</AlertDescription></Alert>{/if}
+					{#if form?.error}<Alert variant="destructive"
+							><AlertDescription>{form.error}</AlertDescription></Alert
+						>{/if}
 				</Card.Content>
 			</Card.Root>
 		{/if}
@@ -148,13 +158,20 @@
 										<div class="flex h-3 w-48 overflow-hidden rounded">
 											{#each child.bands as b}
 												{#if b.percentage > 0}
-													<div class="{bandColor[b.band_code] ?? 'bg-muted'}" style="width: {b.percentage}%" title="{b.band_label}: {b.percentage}%"></div>
+													<div
+														class={bandColor[b.band_code] ?? 'bg-muted'}
+														style="width: {b.percentage}%"
+														title="{b.band_label}: {b.percentage}%"
+													></div>
 												{/if}
 											{/each}
 										</div>
 									</Table.Cell>
 									<Table.Cell>
-										<a href="/admin/dashboard?scope={child.node_id}&campaign={data.campaignId}&period={data.periodId}" class="text-xs text-[#6439B5] hover:underline">Drill in →</a>
+										<a
+											href="/admin/dashboard?scope={child.node_id}&campaign={data.campaignId}&period={data.periodId}"
+											class="text-xs text-[#6439B5] hover:underline">Drill in →</a
+										>
 									</Table.Cell>
 								</Table.Row>
 							{/each}

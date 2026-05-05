@@ -75,8 +75,7 @@ export async function createUser(
 	try {
 		const data = await res.json();
 		if (data?.message) message = String(data.message);
-	} catch {
-	}
+	} catch {}
 
 	return { ok: false, status: res.status, message };
 }
@@ -109,13 +108,15 @@ export async function createAssignment(
 	try {
 		const data = await res.json();
 		if (data?.message) message = String(data.message);
-	} catch {
-	}
+	} catch {}
 
 	return { ok: false, status: res.status, message };
 }
 
-export async function deleteAssignment({ token }: Auth, id: number): Promise<{ ok: boolean; message?: string }> {
+export async function deleteAssignment(
+	{ token }: Auth,
+	id: number
+): Promise<{ ok: boolean; message?: string }> {
 	const res = await authedFetch(`/v1/auth/assignments/${id}`, token, { method: 'DELETE' });
 	if (res.ok) return { ok: true };
 
@@ -123,8 +124,7 @@ export async function deleteAssignment({ token }: Auth, id: number): Promise<{ o
 	try {
 		const data = await res.json();
 		if (data?.message) message = String(data.message);
-	} catch {
-	}
+	} catch {}
 
 	return { ok: false, message };
 }

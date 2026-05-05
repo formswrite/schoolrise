@@ -30,7 +30,10 @@
 				<h1 class="text-2xl font-semibold">Classes</h1>
 				{#if data.institution}
 					<p class="mt-1 text-sm text-muted-foreground">
-						at <a href="/admin/institutions?parent={data.institution.id}" class="font-medium text-foreground hover:underline">{data.institution.label}</a>
+						at <a
+							href="/admin/institutions?parent={data.institution.id}"
+							class="font-medium text-foreground hover:underline">{data.institution.label}</a
+						>
 					</p>
 				{/if}
 			</div>
@@ -41,22 +44,29 @@
 			{/if}
 		</div>
 		{#if data.institutionOptions && data.institutionOptions.length > 0 && data.institutionId}
-			<ScopePicker options={data.institutionOptions} current={data.institutionId} paramName="institution" />
+			<ScopePicker
+				options={data.institutionOptions}
+				current={data.institutionId}
+				paramName="institution"
+			/>
 		{/if}
 	</header>
 
 	{#if !data.institutionId}
 		<Alert>
 			<AlertDescription>
-				No institutions exist yet. Create one first via <a href="/admin/institutions" class="font-medium underline">Institutions</a>.
+				No institutions exist yet. Create one first via <a
+					href="/admin/institutions"
+					class="font-medium underline">Institutions</a
+				>.
 			</AlertDescription>
 		</Alert>
 	{:else}
 		{#if data.periods.length === 0 || data.niveaux.length === 0}
 			<Alert variant="destructive">
 				<AlertDescription>
-					You need at least one academic period and one niveau before creating a class.
-					Currently: {data.periods.length} period(s), {data.niveaux.length} niveau(x).
+					You need at least one academic period and one niveau before creating a class. Currently: {data
+						.periods.length} period(s), {data.niveaux.length} niveau(x).
 				</AlertDescription>
 			</Alert>
 		{/if}
@@ -75,10 +85,12 @@
 									id="period_id"
 									name="period_id"
 									required
-									class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+									class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 								>
 									{#each data.periods as p}
-										<option value={p.id} selected={p.is_current}>{p.label}{p.is_current ? ' (current)' : ''}</option>
+										<option value={p.id} selected={p.is_current}
+											>{p.label}{p.is_current ? ' (current)' : ''}</option
+										>
 									{/each}
 								</select>
 							</div>
@@ -88,7 +100,7 @@
 									id="niveau_id"
 									name="niveau_id"
 									required
-									class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+									class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 								>
 									{#each data.niveaux as n}
 										<option value={n.id}>{n.label} ({n.code})</option>
@@ -148,10 +160,13 @@
 						{#each data.classes as c}
 							<Table.Row>
 								<Table.Cell class="font-medium">
-									<a href="/admin/classes/{c.id}" class="text-[#6439B5] hover:underline">{c.code}</a>
+									<a href="/admin/classes/{c.id}" class="text-[#6439B5] hover:underline">{c.code}</a
+									>
 								</Table.Cell>
 								<Table.Cell>{c.label}</Table.Cell>
-								<Table.Cell><Badge variant="secondary">{niveauLabel(c.niveau_id)}</Badge></Table.Cell>
+								<Table.Cell
+									><Badge variant="secondary">{niveauLabel(c.niveau_id)}</Badge></Table.Cell
+								>
 								<Table.Cell class="text-muted-foreground">{periodLabel(c.period_id)}</Table.Cell>
 								<Table.Cell class="text-muted-foreground">{c.capacity || '—'}</Table.Cell>
 								<Table.Cell>
@@ -162,7 +177,9 @@
 											variant="ghost"
 											size="sm"
 											class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-											onclick={(e) => { if (!confirm('Delete this class?')) e.preventDefault(); }}
+											onclick={(e) => {
+												if (!confirm('Delete this class?')) e.preventDefault();
+											}}
 										>
 											Delete
 										</Button>

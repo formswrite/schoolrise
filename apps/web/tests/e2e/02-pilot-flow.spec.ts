@@ -72,10 +72,13 @@ test.describe('Pilot flow — admin walks the §10 happy path through the UI', (
 		};
 
 		await addQuestion('SHORT_ANSWER', 'What is your name?');
-		await addQuestion('PARAGRAPH',    'Describe your favourite story.');
+		await addQuestion('PARAGRAPH', 'Describe your favourite story.');
 		await addQuestion('LINEAR_SCALE', 'How confident are you with reading?');
 
-		await page.screenshot({ path: path.join(SHOTS_DIR, '04-form-with-questions.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '04-form-with-questions.png'),
+			fullPage: true
+		});
 
 		await page.getByRole('button', { name: /Publish version/ }).click();
 		await page.waitForLoadState('networkidle');
@@ -90,7 +93,10 @@ test.describe('Pilot flow — admin walks the §10 happy path through the UI', (
 		await expect(
 			page.locator('text=/Pick a campaign|No campaigns at this scope/i').first()
 		).toBeVisible();
-		await page.screenshot({ path: path.join(SHOTS_DIR, '06-dashboard-pick-campaign.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '06-dashboard-pick-campaign.png'),
+			fullPage: true
+		});
 	});
 
 	test('step 6 — drill into existing campaign 1 (when seeded)', async ({ page }) => {
@@ -102,7 +108,10 @@ test.describe('Pilot flow — admin walks the §10 happy path through the UI', (
 		} else {
 			await expect(page.locator('h1')).toContainText(/Progression dashboard/i);
 		}
-		await page.screenshot({ path: path.join(SHOTS_DIR, '07-dashboard-with-bands.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '07-dashboard-with-bands.png'),
+			fullPage: true
+		});
 	});
 
 	test('step 7 — refresh snapshot (when seeded)', async ({ page }) => {
@@ -113,7 +122,10 @@ test.describe('Pilot flow — admin walks the §10 happy path through the UI', (
 			await refresh.click();
 			await page.waitForLoadState('networkidle');
 		}
-		await page.screenshot({ path: path.join(SHOTS_DIR, '08-dashboard-after-refresh.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '08-dashboard-after-refresh.png'),
+			fullPage: true
+		});
 	});
 
 	test('step 8 — drill into a child school (when seeded)', async ({ page }) => {
@@ -123,7 +135,10 @@ test.describe('Pilot flow — admin walks the §10 happy path through the UI', (
 		if (await drillLink.count()) {
 			await drillLink.click();
 			await page.waitForLoadState('networkidle');
-			await page.screenshot({ path: path.join(SHOTS_DIR, '09-dashboard-child-school.png'), fullPage: true });
+			await page.screenshot({
+				path: path.join(SHOTS_DIR, '09-dashboard-child-school.png'),
+				fullPage: true
+			});
 		}
 	});
 

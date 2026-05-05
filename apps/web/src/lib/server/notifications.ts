@@ -45,8 +45,14 @@ export async function getProviderStatus({ token }: Opts): Promise<ProviderStatus
 	return await res.json();
 }
 
-export async function sendTestEmail({ token }: Opts, body: { to: string; subject?: string; body?: string }) {
-	const res = await req('/v1/notifications/test', token, { method: 'POST', body: JSON.stringify(body) });
+export async function sendTestEmail(
+	{ token }: Opts,
+	body: { to: string; subject?: string; body?: string }
+) {
+	const res = await req('/v1/notifications/test', token, {
+		method: 'POST',
+		body: JSON.stringify(body)
+	});
 	const data = await res.json().catch(() => ({}));
 	return { ok: res.ok, status: res.status, data } as const;
 }

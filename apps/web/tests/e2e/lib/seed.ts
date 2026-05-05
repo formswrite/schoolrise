@@ -7,9 +7,23 @@ const ADMIN_PASSWORD = process.env.E2E_ADMIN_PASSWORD ?? 'ChangeMe123!';
 export type Personas = {
 	admin: { email: string; password: string };
 	inspector: { email: string; password: string; userID: number; scopeNodeID: number };
-	teacher: { email: string; password: string; userID: number; staffID: number; classID: number; scopeNodeID: number };
+	teacher: {
+		email: string;
+		password: string;
+		userID: number;
+		staffID: number;
+		classID: number;
+		scopeNodeID: number;
+	};
 	student: { email: string };
-	context: { regionID: number; schoolID: number; classID: number; campaignID: number; periodID: number; studentIDs: number[] };
+	context: {
+		regionID: number;
+		schoolID: number;
+		classID: number;
+		campaignID: number;
+		periodID: number;
+		studentIDs: number[];
+	};
 };
 
 async function adminCtx(): Promise<APIRequestContext> {
@@ -24,7 +38,10 @@ async function adminCtx(): Promise<APIRequestContext> {
 	});
 }
 
-async function ok<T>(res: { ok(): boolean; status(): number; json(): Promise<T>; text(): Promise<string> }, label: string): Promise<T> {
+async function ok<T>(
+	res: { ok(): boolean; status(): number; json(): Promise<T>; text(): Promise<string> },
+	label: string
+): Promise<T> {
 	if (!res.ok()) {
 		const body = await res.text();
 		throw new Error(`${label} failed: ${res.status()} ${body}`);
@@ -50,10 +67,14 @@ export async function seedPersonas(): Promise<Personas> {
 	const regionList = (await regionRes.json()).nodes ?? [];
 	let region = regionList.find((n: { code: string }) => n.code === 'e2e-region');
 	if (!region) {
-		region = (await ok<{ node: { id: number } }>(
-			await ctx.post(`${GATEWAY}/v1/tenancy/nodes`, { data: { code: 'e2e-region', label: 'E2E Region', level: 'region' } }),
-			'create region'
-		)).node;
+		region = (
+			await ok<{ node: { id: number } }>(
+				await ctx.post(`${GATEWAY}/v1/tenancy/nodes`, {
+					data: { code: 'e2e-region', label: 'E2E Region', level: 'region' }
+				}),
+				'create region'
+			)
+		).node;
 	}
 	const regionID = region.id;
 
@@ -61,10 +82,19 @@ export async function seedPersonas(): Promise<Personas> {
 	const schoolList = (await schoolListRes.json()).nodes ?? [];
 	let school = schoolList.find((n: { code: string }) => n.code === 'e2e-school');
 	if (!school) {
-		school = (await ok<{ node: { id: number } }>(
-			await ctx.post(`${GATEWAY}/v1/tenancy/nodes`, { data: { parentId: regionID, code: 'e2e-school', label: 'E2E School', level: 'institution' } }),
-			'create school'
-		)).node;
+		school = (
+			await ok<{ node: { id: number } }>(
+				await ctx.post(`${GATEWAY}/v1/tenancy/nodes`, {
+					data: {
+						parentId: regionID,
+						code: 'e2e-school',
+						label: 'E2E School',
+						level: 'institution'
+					}
+				}),
+				'create school'
+			)
+		).node;
 	}
 	const schoolID = school.id;
 
@@ -74,7 +104,13 @@ export async function seedPersonas(): Promise<Personas> {
 	if (!period) {
 		period = await ok<{ id: number }>(
 			await ctx.post(`${GATEWAY}/v1/academics/periods`, {
-				data: { code: 'e2e-2025-2026', label: 'E2E 2025-2026', starts_on: '2025-09-01', ends_on: '2026-06-30', is_current: true }
+				data: {
+					code: 'e2e-2025-2026',
+					label: 'E2E 2025-2026',
+					starts_on: '2025-09-01',
+					ends_on: '2026-06-30',
+					is_current: true
+				}
 			}),
 			'create period'
 		);
@@ -86,7 +122,9 @@ export async function seedPersonas(): Promise<Personas> {
 	let niveau = niveaux.find((n: { code: string }) => n.code === 'e2e-CE1');
 	if (!niveau) {
 		niveau = await ok<{ id: number }>(
-			await ctx.post(`${GATEWAY}/v1/academics/niveaux`, { data: { code: 'e2e-CE1', label: 'E2E CE1', sort_order: 10 } }),
+			await ctx.post(`${GATEWAY}/v1/academics/niveaux`, {
+				data: { code: 'e2e-CE1', label: 'E2E CE1', sort_order: 10 }
+			}),
 			'create niveau'
 		);
 	}
@@ -97,7 +135,14 @@ export async function seedPersonas(): Promise<Personas> {
 	if (!cls) {
 		cls = await ok<{ id: number }>(
 			await ctx.post(`${GATEWAY}/v1/academics/classes`, {
-				data: { period_id: periodID, niveau_id: niveau.id, institution_id: schoolID, code: 'E2E-CE1-A', label: 'E2E CE1 morning', capacity: 30 }
+				data: {
+					period_id: periodID,
+					niveau_id: niveau.id,
+					institution_id: schoolID,
+					code: 'E2E-CE1-A',
+					label: 'E2E CE1 morning',
+					capacity: 30
+				}
 			}),
 			'create class'
 		);
@@ -105,12 +150,20 @@ export async function seedPersonas(): Promise<Personas> {
 	const classID = cls.id;
 
 	const studentIDs: number[] = [];
-	for (const name of ['E2E Alpha Student', 'E2E Beta Student', 'E2E Gamma Student', 'E2E Delta Student']) {
+	for (const name of [
+		'E2E Alpha Student',
+		'E2E Beta Student',
+		'E2E Gamma Student',
+		'E2E Delta Student'
+	]) {
 		const code = name.split(' ').slice(1, 2)[0].toLowerCase();
-		const existingRes = await ctx.get(`${GATEWAY}/v1/people/students?institutionId=${schoolID}&limit=200`);
+		const existingRes = await ctx.get(
+			`${GATEWAY}/v1/people/students?institutionId=${schoolID}&limit=200`
+		);
 		const existing = (await existingRes.json()).students ?? [];
-		const match = existing.find((s: { studentCode: string; person: { fullName: string } }) =>
-			s.studentCode === code || s.person?.fullName === name
+		const match = existing.find(
+			(s: { studentCode: string; person: { fullName: string } }) =>
+				s.studentCode === code || s.person?.fullName === name
 		);
 		let id: number;
 		if (match) {
@@ -123,9 +176,16 @@ export async function seedPersonas(): Promise<Personas> {
 				`create student ${name}`
 			);
 			id = created.student.id;
-			await ctx.post(`${GATEWAY}/v1/academics/classes/${classID}/students`, { data: { student_id: id } });
+			await ctx.post(`${GATEWAY}/v1/academics/classes/${classID}/students`, {
+				data: { student_id: id }
+			});
 			await ctx.post(`${GATEWAY}/v1/enrollment/enrollments`, {
-				data: { student_id: id, institution_id: schoolID, period_id: periodID, enrolled_on: '2025-09-01' }
+				data: {
+					student_id: id,
+					institution_id: schoolID,
+					period_id: periodID,
+					enrolled_on: '2025-09-01'
+				}
 			});
 		}
 		studentIDs.push(id);
@@ -137,7 +197,9 @@ export async function seedPersonas(): Promise<Personas> {
 	let formVersionID: number;
 	if (!form) {
 		form = await ok<{ id: number }>(
-			await ctx.post(`${GATEWAY}/v1/forms`, { data: { title: 'E2E Personas Form', description: 'seeded by playwright' } }),
+			await ctx.post(`${GATEWAY}/v1/forms`, {
+				data: { title: 'E2E Personas Form', description: 'seeded by playwright' }
+			}),
 			'create form'
 		);
 		await ctx.post(`${GATEWAY}/v1/forms/items/${form.id}/questions`, {
@@ -182,49 +244,88 @@ export async function seedPersonas(): Promise<Personas> {
 	const users = (await usersRes.json()).users ?? [];
 	let teacherUser = users.find((u: { email: string }) => u.email === teacherEmail);
 	if (!teacherUser) {
-		teacherUser = (await ok<{ user: { id: number } }>(
-			await ctx.post(`${GATEWAY}/v1/auth/users`, {
-				data: { email: teacherEmail, password: teacherPassword, fullName: 'E2E Teacher', role: 'teacher', mustChangePassword: false }
-			}),
-			'create teacher user'
-		)).user;
+		teacherUser = (
+			await ok<{ user: { id: number } }>(
+				await ctx.post(`${GATEWAY}/v1/auth/users`, {
+					data: {
+						email: teacherEmail,
+						password: teacherPassword,
+						fullName: 'E2E Teacher',
+						role: 'teacher',
+						mustChangePassword: false
+					}
+				}),
+				'create teacher user'
+			)
+		).user;
 	}
 
 	const inspectorEmail = 'e2e.inspector@local.test';
 	const inspectorPassword = 'Inspect3!';
 	let inspectorUser = users.find((u: { email: string }) => u.email === inspectorEmail);
 	if (!inspectorUser) {
-		inspectorUser = (await ok<{ user: { id: number } }>(
-			await ctx.post(`${GATEWAY}/v1/auth/users`, {
-				data: { email: inspectorEmail, password: inspectorPassword, fullName: 'E2E Inspector', role: 'inspector', mustChangePassword: false }
-			}),
-			'create inspector user'
-		)).user;
+		inspectorUser = (
+			await ok<{ user: { id: number } }>(
+				await ctx.post(`${GATEWAY}/v1/auth/users`, {
+					data: {
+						email: inspectorEmail,
+						password: inspectorPassword,
+						fullName: 'E2E Inspector',
+						role: 'inspector',
+						mustChangePassword: false
+					}
+				}),
+				'create inspector user'
+			)
+		).user;
 	}
 
-	const teacherStaffRes = await ctx.get(`${GATEWAY}/v1/people/staff?scopeNodeId=${schoolID}&limit=200`);
+	const teacherStaffRes = await ctx.get(
+		`${GATEWAY}/v1/people/staff?scopeNodeId=${schoolID}&limit=200`
+	);
 	const teacherStaffList = (await teacherStaffRes.json()).staff ?? [];
-	let teacherStaff = teacherStaffList.find((s: { person: { email: string } }) => s.person?.email === teacherEmail);
+	let teacherStaff = teacherStaffList.find(
+		(s: { person: { email: string } }) => s.person?.email === teacherEmail
+	);
 	if (!teacherStaff) {
-		teacherStaff = (await ok<{ staff: { id: number } }>(
-			await ctx.post(`${GATEWAY}/v1/people/staff`, {
-				data: { scopeNodeId: schoolID, fullName: 'E2E Teacher', position: 'Teacher', email: teacherEmail }
-			}),
-			'create teacher staff'
-		)).staff;
+		teacherStaff = (
+			await ok<{ staff: { id: number } }>(
+				await ctx.post(`${GATEWAY}/v1/people/staff`, {
+					data: {
+						scopeNodeId: schoolID,
+						fullName: 'E2E Teacher',
+						position: 'Teacher',
+						email: teacherEmail
+					}
+				}),
+				'create teacher staff'
+			)
+		).staff;
 	}
 
 	const teacherAssignRes = await ctx.get(`${GATEWAY}/v1/auth/users/${teacherUser.id}/assignments`);
 	const teacherAssignments = (await teacherAssignRes.json()).assignments ?? [];
-	if (!teacherAssignments.some((a: { role: string; scopeNodeId: number | null }) => a.role === 'teacher' && a.scopeNodeId === schoolID)) {
+	if (
+		!teacherAssignments.some(
+			(a: { role: string; scopeNodeId: number | null }) =>
+				a.role === 'teacher' && a.scopeNodeId === schoolID
+		)
+	) {
 		await ctx.post(`${GATEWAY}/v1/auth/assignments`, {
 			data: { userId: teacherUser.id, role: 'teacher', scopeNodeId: schoolID }
 		});
 	}
 
-	const inspectorAssignRes = await ctx.get(`${GATEWAY}/v1/auth/users/${inspectorUser.id}/assignments`);
+	const inspectorAssignRes = await ctx.get(
+		`${GATEWAY}/v1/auth/users/${inspectorUser.id}/assignments`
+	);
 	const inspectorAssignments = (await inspectorAssignRes.json()).assignments ?? [];
-	if (!inspectorAssignments.some((a: { role: string; scopeNodeId: number | null }) => a.role === 'inspector' && a.scopeNodeId === regionID)) {
+	if (
+		!inspectorAssignments.some(
+			(a: { role: string; scopeNodeId: number | null }) =>
+				a.role === 'inspector' && a.scopeNodeId === regionID
+		)
+	) {
 		await ctx.post(`${GATEWAY}/v1/auth/assignments`, {
 			data: { userId: inspectorUser.id, role: 'inspector', scopeNodeId: regionID }
 		});
@@ -238,8 +339,20 @@ export async function seedPersonas(): Promise<Personas> {
 
 	return {
 		admin: { email: ADMIN_EMAIL, password: ADMIN_PASSWORD },
-		inspector: { email: inspectorEmail, password: inspectorPassword, userID: inspectorUser.id, scopeNodeID: regionID },
-		teacher: { email: teacherEmail, password: teacherPassword, userID: teacherUser.id, staffID: teacherStaff.id, classID, scopeNodeID: schoolID },
+		inspector: {
+			email: inspectorEmail,
+			password: inspectorPassword,
+			userID: inspectorUser.id,
+			scopeNodeID: regionID
+		},
+		teacher: {
+			email: teacherEmail,
+			password: teacherPassword,
+			userID: teacherUser.id,
+			staffID: teacherStaff.id,
+			classID,
+			scopeNodeID: schoolID
+		},
 		student: { email: 'e2e.student@local.test' },
 		context: { regionID, schoolID, classID, campaignID: campaign.id, periodID, studentIDs }
 	};
@@ -248,14 +361,26 @@ export async function seedPersonas(): Promise<Personas> {
 export async function newAssignmentToken(personas: Personas): Promise<string> {
 	const ctx = await adminCtx();
 	const stamp = Date.now().toString().slice(-7);
-	const created = (await ok<{ student: { id: number } }>(
-		await ctx.post(`${GATEWAY}/v1/people/students`, {
-			data: { institutionId: personas.context.schoolID, fullName: `E2E Public ${stamp}`, studentCode: `pub${stamp}`, gender: 'female' }
-		}),
-		'create one-off student'
-	)).student;
+	const created = (
+		await ok<{ student: { id: number } }>(
+			await ctx.post(`${GATEWAY}/v1/people/students`, {
+				data: {
+					institutionId: personas.context.schoolID,
+					fullName: `E2E Public ${stamp}`,
+					studentCode: `pub${stamp}`,
+					gender: 'female'
+				}
+			}),
+			'create one-off student'
+		)
+	).student;
 	await ctx.post(`${GATEWAY}/v1/enrollment/enrollments`, {
-		data: { student_id: created.id, institution_id: personas.context.schoolID, period_id: personas.context.periodID, enrolled_on: '2025-09-01' }
+		data: {
+			student_id: created.id,
+			institution_id: personas.context.schoolID,
+			period_id: personas.context.periodID,
+			enrolled_on: '2025-09-01'
+		}
 	});
 	const res = await ctx.post(`${GATEWAY}/v1/campaigns/${personas.context.campaignID}/assign`, {
 		data: { student_ids: [created.id], notify_by_email: false }

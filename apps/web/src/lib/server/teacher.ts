@@ -61,9 +61,9 @@ async function req(path: string, token: string, init?: RequestInit) {
 	});
 }
 
-export async function listTeacherClasses(
-	{ token }: Opts
-): Promise<{ classes: TeacherClass[]; role: string }> {
+export async function listTeacherClasses({
+	token
+}: Opts): Promise<{ classes: TeacherClass[]; role: string }> {
 	const res = await req('/v1/teacher/classes', token);
 	if (!res.ok) return { classes: [], role: '' };
 	return await res.json();
@@ -84,10 +84,7 @@ export async function getGradingRoster(
 	classID: number,
 	campaignID: number
 ): Promise<GradingRoster | null> {
-	const res = await req(
-		`/v1/teacher/classes/${classID}/campaigns/${campaignID}/roster`,
-		token
-	);
+	const res = await req(`/v1/teacher/classes/${classID}/campaigns/${campaignID}/roster`, token);
 	if (!res.ok) return null;
 	return await res.json();
 }
@@ -97,12 +94,19 @@ export async function submitProctoredScores(
 	classID: number,
 	campaignID: number,
 	entries: ProctoredEntry[]
-): Promise<{ ok: boolean; status: number; data: { created?: number; updated?: number; errors?: Array<{ student_id: number; message: string }> } }> {
-	const res = await req(
-		`/v1/teacher/classes/${classID}/campaigns/${campaignID}/scores`,
-		token,
-		{ method: 'POST', body: JSON.stringify({ entries }) }
-	);
+): Promise<{
+	ok: boolean;
+	status: number;
+	data: {
+		created?: number;
+		updated?: number;
+		errors?: Array<{ student_id: number; message: string }>;
+	};
+}> {
+	const res = await req(`/v1/teacher/classes/${classID}/campaigns/${campaignID}/scores`, token, {
+		method: 'POST',
+		body: JSON.stringify({ entries })
+	});
 	const data = await res.json().catch(() => ({}));
 	return { ok: res.ok, status: res.status, data };
 }

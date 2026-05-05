@@ -41,7 +41,13 @@
 			</div>
 			<div class="space-y-2">
 				<Label for="from_address">From address</Label>
-				<Input id="from_address" name="from_address" type="email" required placeholder="schoolrise@example.gov" />
+				<Input
+					id="from_address"
+					name="from_address"
+					type="email"
+					required
+					placeholder="schoolrise@example.gov"
+				/>
 			</div>
 			<div class="flex items-center gap-2">
 				<Checkbox id="use_tls" name="use_tls" bind:checked={useTLS} />

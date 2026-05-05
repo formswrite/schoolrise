@@ -23,7 +23,7 @@
 	onclick={onSelect}
 	onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect()}
 	class="group flex gap-2 rounded-lg border bg-background px-3 py-3 transition-colors {selected
-		? 'border-[#6439B5] ring-1 ring-[#6439B5]/40 shadow-sm'
+		? 'border-[#6439B5] shadow-sm ring-1 ring-[#6439B5]/40'
 		: 'border-border hover:border-[#6439B5]/30 hover:bg-accent/30'}"
 >
 	<div
@@ -44,7 +44,10 @@
 				<div class="mt-0.5 flex items-center gap-1.5">
 					<Badge variant="secondary" class="text-[10px]">{FIELD_LABELS[question.type]}</Badge>
 					{#if pending}
-						<Badge variant="outline" class="border-amber-300 bg-amber-50 text-[10px] text-amber-900">
+						<Badge
+							variant="outline"
+							class="border-amber-300 bg-amber-50 text-[10px] text-amber-900"
+						>
 							renderer pending
 						</Badge>
 					{/if}
@@ -59,7 +62,7 @@
 						e.stopPropagation();
 						if (!confirm('Delete this question?')) e.preventDefault();
 					}}
-					class="rounded-md p-1.5 text-muted-foreground opacity-0 transition-opacity hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+					class="rounded-md p-1.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
 					aria-label="Delete question"
 				>
 					<Trash2 class="size-3.5" />

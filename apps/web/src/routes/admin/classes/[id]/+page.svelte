@@ -19,12 +19,18 @@
 	<FormToaster {form} />
 
 	<header>
-		<a href="/admin/classes?institution={data.cls.institution_id}" class="text-xs text-muted-foreground hover:underline">← Classes</a>
+		<a
+			href="/admin/classes?institution={data.cls.institution_id}"
+			class="text-xs text-muted-foreground hover:underline">← Classes</a
+		>
 		<h1 class="mt-1 text-2xl font-semibold">{data.cls.code}</h1>
 		<p class="mt-1 text-sm text-muted-foreground">
 			{data.cls.label}
 			{#if data.institution}
-				· at <a href="/admin/institutions?parent={data.institution.id}" class="font-medium text-foreground hover:underline">{data.institution.label}</a>
+				· at <a
+					href="/admin/institutions?parent={data.institution.id}"
+					class="font-medium text-foreground hover:underline">{data.institution.label}</a
+				>
 			{/if}
 			{#if data.niveau}
 				· <Badge variant="secondary" class="ml-1">{data.niveau.label}</Badge>
@@ -45,7 +51,9 @@
 		</Card.Root>
 		<Card.Root>
 			<Card.Header class="pb-2"><Card.Description>Teachers / staff</Card.Description></Card.Header>
-			<Card.Content><p class="text-3xl font-bold text-[#6439B5]">{data.onStaff.length}</p></Card.Content>
+			<Card.Content
+				><p class="text-3xl font-bold text-[#6439B5]">{data.onStaff.length}</p></Card.Content
+			>
 		</Card.Root>
 		<Card.Root>
 			<Card.Header class="pb-2"><Card.Description>Capacity used</Card.Description></Card.Header>
@@ -60,7 +68,10 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title class="text-base">Staff on this class</Card.Title>
-			<Card.Description>Teachers can enter scores via <a href="/teacher" class="underline">/teacher</a> for any class they're on.</Card.Description>
+			<Card.Description
+				>Teachers can enter scores via <a href="/teacher" class="underline">/teacher</a> for any class
+				they're on.</Card.Description
+			>
 		</Card.Header>
 		<Card.Content class="space-y-4">
 			{#if data.onStaff.length === 0}
@@ -80,10 +91,13 @@
 						{#each data.onStaff as s}
 							{@const role = staffRoleFor(s.id)}
 							<Table.Row>
-								<Table.Cell class="font-medium">{s.person?.fullName ?? `Staff #${s.id}`}</Table.Cell>
+								<Table.Cell class="font-medium">{s.person?.fullName ?? `Staff #${s.id}`}</Table.Cell
+								>
 								<Table.Cell class="text-muted-foreground">{s.position || '—'}</Table.Cell>
 								<Table.Cell><Badge>{role}</Badge></Table.Cell>
-								<Table.Cell class="text-xs text-muted-foreground">{s.person?.email || '—'}</Table.Cell>
+								<Table.Cell class="text-xs text-muted-foreground"
+									>{s.person?.email || '—'}</Table.Cell
+								>
 								<Table.Cell>
 									<form method="POST" action="?/removeStaff" use:enhance>
 										<input type="hidden" name="staff_id" value={s.id} />
@@ -93,7 +107,9 @@
 											variant="ghost"
 											size="sm"
 											class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-											onclick={(e) => { if (!confirm('Remove from class?')) e.preventDefault(); }}
+											onclick={(e) => {
+												if (!confirm('Remove from class?')) e.preventDefault();
+											}}
 										>
 											Remove
 										</Button>
@@ -106,7 +122,12 @@
 			{/if}
 
 			{#if data.eligibleStaff.length > 0}
-				<form method="POST" action="?/addStaff" use:enhance class="rounded-md border bg-muted/30 p-3">
+				<form
+					method="POST"
+					action="?/addStaff"
+					use:enhance
+					class="rounded-md border bg-muted/30 p-3"
+				>
 					<p class="mb-2 text-sm font-medium">Add staff to this class</p>
 					<div class="flex items-center gap-2">
 						<select
@@ -116,7 +137,11 @@
 						>
 							<option value=""></option>
 							{#each data.eligibleStaff as s}
-								<option value={s.id}>{s.person?.fullName ?? `Staff #${s.id}`}{s.position ? ` · ${s.position}` : ''}</option>
+								<option value={s.id}
+									>{s.person?.fullName ?? `Staff #${s.id}`}{s.position
+										? ` · ${s.position}`
+										: ''}</option
+								>
 							{/each}
 						</select>
 						<select
@@ -132,7 +157,10 @@
 				</form>
 			{:else if data.onStaff.length > 0}
 				<p class="text-xs text-muted-foreground">
-					All staff at this institution are already assigned. Add more via <a href="/admin/staff?scope={data.cls.institution_id}" class="underline">/admin/staff</a>.
+					All staff at this institution are already assigned. Add more via <a
+						href="/admin/staff?scope={data.cls.institution_id}"
+						class="underline">/admin/staff</a
+					>.
 				</p>
 			{/if}
 		</Card.Content>
@@ -145,7 +173,9 @@
 		</Card.Header>
 		<Card.Content class="space-y-4">
 			{#if data.inClass.length === 0}
-				<p class="py-4 text-center text-sm text-muted-foreground">No students yet. Add some below.</p>
+				<p class="py-4 text-center text-sm text-muted-foreground">
+					No students yet. Add some below.
+				</p>
 			{:else}
 				<Table.Root>
 					<Table.Header>
@@ -159,9 +189,13 @@
 					<Table.Body>
 						{#each data.inClass as s}
 							<Table.Row>
-								<Table.Cell class="font-medium">{s.person?.fullName ?? `Student #${s.id}`}</Table.Cell>
+								<Table.Cell class="font-medium"
+									>{s.person?.fullName ?? `Student #${s.id}`}</Table.Cell
+								>
 								<Table.Cell class="font-mono text-xs">{s.studentCode || '—'}</Table.Cell>
-								<Table.Cell class="text-xs text-muted-foreground">{s.person?.email || '—'}</Table.Cell>
+								<Table.Cell class="text-xs text-muted-foreground"
+									>{s.person?.email || '—'}</Table.Cell
+								>
 								<Table.Cell>
 									<form method="POST" action="?/removeStudent" use:enhance>
 										<input type="hidden" name="student_id" value={s.id} />
@@ -170,7 +204,9 @@
 											variant="ghost"
 											size="sm"
 											class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-											onclick={(e) => { if (!confirm('Remove from class?')) e.preventDefault(); }}
+											onclick={(e) => {
+												if (!confirm('Remove from class?')) e.preventDefault();
+											}}
 										>
 											Remove
 										</Button>
@@ -183,7 +219,12 @@
 			{/if}
 
 			{#if data.eligible.length > 0}
-				<form method="POST" action="?/addStudent" use:enhance class="rounded-md border bg-muted/30 p-3">
+				<form
+					method="POST"
+					action="?/addStudent"
+					use:enhance
+					class="rounded-md border bg-muted/30 p-3"
+				>
 					<p class="mb-2 text-sm font-medium">Add a student to this class</p>
 					<div class="flex items-center gap-2">
 						<select
@@ -193,7 +234,11 @@
 						>
 							<option value=""></option>
 							{#each data.eligible as s}
-								<option value={s.id}>{s.person?.fullName ?? `Student #${s.id}`}{s.studentCode ? ` · ${s.studentCode}` : ''}</option>
+								<option value={s.id}
+									>{s.person?.fullName ?? `Student #${s.id}`}{s.studentCode
+										? ` · ${s.studentCode}`
+										: ''}</option
+								>
 							{/each}
 						</select>
 						<Button type="submit" size="sm">Add</Button>
@@ -202,7 +247,10 @@
 			{:else if data.inClass.length > 0}
 				<Alert>
 					<AlertDescription>
-						All students at this institution are in this class. Add more via <a href="/admin/students?institution={data.cls.institution_id}" class="underline">/admin/students</a>.
+						All students at this institution are in this class. Add more via <a
+							href="/admin/students?institution={data.cls.institution_id}"
+							class="underline">/admin/students</a
+						>.
 					</AlertDescription>
 				</Alert>
 			{/if}

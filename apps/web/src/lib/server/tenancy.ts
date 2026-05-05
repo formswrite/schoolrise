@@ -41,7 +41,11 @@ export async function listLevels({ token }: FetchOpts): Promise<Level[]> {
 	return (data.levels ?? []) as Level[];
 }
 
-export async function listNodes({ token }: FetchOpts, parentId: number | null, level?: string): Promise<Node[]> {
+export async function listNodes(
+	{ token }: FetchOpts,
+	parentId: number | null,
+	level?: string
+): Promise<Node[]> {
 	const params = new URLSearchParams();
 	if (parentId !== null) params.set('parentId', String(parentId));
 	if (level) params.set('level', level);
@@ -92,13 +96,15 @@ export async function createNode(
 	try {
 		const data = await res.json();
 		if (data?.message) message = String(data.message);
-	} catch {
-	}
+	} catch {}
 
 	return { ok: false, status: res.status, message };
 }
 
-export async function deleteNode({ token }: FetchOpts, id: number): Promise<{ ok: boolean; message?: string }> {
+export async function deleteNode(
+	{ token }: FetchOpts,
+	id: number
+): Promise<{ ok: boolean; message?: string }> {
 	const res = await authedFetch(`/v1/tenancy/nodes/${id}`, token, { method: 'DELETE' });
 	if (res.ok) return { ok: true };
 
@@ -106,8 +112,7 @@ export async function deleteNode({ token }: FetchOpts, id: number): Promise<{ ok
 	try {
 		const data = await res.json();
 		if (data?.message) message = String(data.message);
-	} catch {
-	}
+	} catch {}
 
 	return { ok: false, message };
 }

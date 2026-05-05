@@ -72,7 +72,10 @@ export async function createForm({ token }: Opts, body: { title: string; descrip
 	return { ok: res.ok, status: res.status, data } as const;
 }
 
-export async function getForm({ token }: Opts, id: number): Promise<{ form: Form; questions: Question[] } | null> {
+export async function getForm(
+	{ token }: Opts,
+	id: number
+): Promise<{ form: Form; questions: Question[] } | null> {
 	const res = await req(`/v1/forms/items/${id}`, token);
 	if (!res.ok) return null;
 	return await res.json();
@@ -91,11 +94,7 @@ export async function addQuestion(
 	return { ok: res.ok, status: res.status, data } as const;
 }
 
-export async function updateQuestion(
-	{ token }: Opts,
-	questionId: number,
-	body: Partial<Question>
-) {
+export async function updateQuestion({ token }: Opts, questionId: number, body: Partial<Question>) {
 	const res = await req(`/v1/forms/questions/${questionId}`, token, {
 		method: 'PUT',
 		body: JSON.stringify(body)

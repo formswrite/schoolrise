@@ -27,7 +27,10 @@
 				<h1 class="text-2xl font-semibold">Campaigns</h1>
 				{#if data.scope}
 					<p class="mt-1 text-sm text-muted-foreground">
-						at <a href="/admin/institutions?parent={data.scope.id}" class="font-medium text-foreground hover:underline">{data.scope.label}</a>
+						at <a
+							href="/admin/institutions?parent={data.scope.id}"
+							class="font-medium text-foreground hover:underline">{data.scope.label}</a
+						>
 					</p>
 				{/if}
 			</div>
@@ -45,7 +48,10 @@
 	{#if !data.scopeNodeID}
 		<Alert>
 			<AlertDescription>
-				No scopes are configured yet. Set up your hierarchy first via <a href="/admin/institutions" class="font-medium underline">Institutions</a>.
+				No scopes are configured yet. Set up your hierarchy first via <a
+					href="/admin/institutions"
+					class="font-medium underline">Institutions</a
+				>.
 			</AlertDescription>
 		</Alert>
 	{:else}
@@ -53,14 +59,19 @@
 			<Card.Root>
 				<Card.Header>
 					<Card.Title class="text-base">New campaign</Card.Title>
-					<Card.Description>Bind a published form version to a scale + period at this scope.</Card.Description>
+					<Card.Description
+						>Bind a published form version to a scale + period at this scope.</Card.Description
+					>
 				</Card.Header>
 				<Card.Content>
 					{#if publishedForms.length === 0 || data.periods.length === 0}
 						<Alert variant="destructive">
 							<AlertDescription>
-								Need at least one <strong>published</strong> form ({publishedForms.length}) and one <strong>period</strong> ({data.periods.length}).
-								Create them in <a href="/admin/forms" class="underline">Forms</a> and <a href="/admin/periods" class="underline">Periods</a>.
+								Need at least one <strong>published</strong> form ({publishedForms.length}) and one
+								<strong>period</strong>
+								({data.periods.length}). Create them in
+								<a href="/admin/forms" class="underline">Forms</a>
+								and <a href="/admin/periods" class="underline">Periods</a>.
 							</AlertDescription>
 						</Alert>
 					{:else}
@@ -76,7 +87,7 @@
 										id="scale_code"
 										name="scale_code"
 										required
-										class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+										class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 									>
 										{#each data.scales as s}<option value={s.code}>{s.label}</option>{/each}
 									</select>
@@ -87,10 +98,12 @@
 										id="period_id"
 										name="period_id"
 										required
-										class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+										class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 									>
 										{#each data.periods as p}
-											<option value={p.id} selected={p.is_current}>{p.label}{p.is_current ? ' (current)' : ''}</option>
+											<option value={p.id} selected={p.is_current}
+												>{p.label}{p.is_current ? ' (current)' : ''}</option
+											>
 										{/each}
 									</select>
 								</div>
@@ -103,7 +116,7 @@
 										name="form_id"
 										required
 										bind:value={selectedFormID}
-										class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:outline-none focus:ring-1 focus:ring-ring"
+										class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus:ring-1 focus:ring-ring focus:outline-none"
 									>
 										<option value={null}></option>
 										{#each publishedForms as f}<option value={f.id}>{f.title}</option>{/each}
@@ -111,9 +124,18 @@
 								</div>
 								<div class="space-y-2">
 									<Label for="form_version_id">Form version ID *</Label>
-									<Input id="form_version_id" name="form_version_id" type="number" min="1" required placeholder="e.g. 1" />
+									<Input
+										id="form_version_id"
+										name="form_version_id"
+										type="number"
+										min="1"
+										required
+										placeholder="e.g. 1"
+									/>
 									<p class="text-xs text-muted-foreground">
-										Find via <a href="/admin/forms/{selectedFormID ?? ''}" class="underline">Forms</a> → versions list.
+										Find via <a href="/admin/forms/{selectedFormID ?? ''}" class="underline"
+											>Forms</a
+										> → versions list.
 									</p>
 								</div>
 							</div>
@@ -148,7 +170,9 @@
 						{#each data.campaigns as c}
 							<Table.Row>
 								<Table.Cell class="font-medium">
-									<a href="/admin/campaigns/{c.id}" class="text-[#6439B5] hover:underline">{c.title}</a>
+									<a href="/admin/campaigns/{c.id}" class="text-[#6439B5] hover:underline"
+										>{c.title}</a
+									>
 								</Table.Cell>
 								<Table.Cell><Badge variant="secondary">{c.scale_code}</Badge></Table.Cell>
 								<Table.Cell>
@@ -156,9 +180,16 @@
 									{:else if c.status === 'closed'}<Badge variant="destructive">Closed</Badge>
 									{:else}<Badge variant="secondary">Draft</Badge>{/if}
 								</Table.Cell>
-								<Table.Cell class="text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</Table.Cell>
+								<Table.Cell class="text-muted-foreground"
+									>{new Date(c.created_at).toLocaleDateString()}</Table.Cell
+								>
 								<Table.Cell>
-									<Button href="/admin/campaigns/{c.id}" variant="ghost" size="sm" class="h-7 text-xs">Open →</Button>
+									<Button
+										href="/admin/campaigns/{c.id}"
+										variant="ghost"
+										size="sm"
+										class="h-7 text-xs">Open →</Button
+									>
 								</Table.Cell>
 							</Table.Row>
 						{/each}

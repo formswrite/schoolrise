@@ -114,9 +114,7 @@ test.describe('Form logic engine — show/hide rules persist + render', () => {
 		const versionId = pubBody.version?.id;
 		expect(versionId).toBeGreaterThan(0);
 
-		const verRes = await request.get(
-			`${API_BASE}/v1/forms/public-versions/${versionId}`
-		);
+		const verRes = await request.get(`${API_BASE}/v1/forms/public-versions/${versionId}`);
 		expect(verRes.ok()).toBeTruthy();
 		const v = await verRes.json();
 		expect(v.snapshot.settings.logic_rules).toBeDefined();
@@ -127,17 +125,27 @@ test.describe('Form logic engine — show/hide rules persist + render', () => {
 	test('pure logic evaluator: hidden when condition not met, visible when met', async () => {
 		const { computeVisibleQuestions } = await import('../../src/lib/forms/logic.ts');
 		const questions = [
-			{ client_id: q1ClientId, type: 'MULTIPLE_CHOICE', title: 'Source', sort_order: 10, required: true },
-			{ client_id: q2ClientId, type: 'SHORT_ANSWER', title: 'Target', sort_order: 20, required: false }
+			{
+				client_id: q1ClientId,
+				type: 'MULTIPLE_CHOICE',
+				title: 'Source',
+				sort_order: 10,
+				required: true
+			},
+			{
+				client_id: q2ClientId,
+				type: 'SHORT_ANSWER',
+				title: 'Target',
+				sort_order: 20,
+				required: false
+			}
 		] as never;
 		const rules = [
 			{
 				id: 'r_1',
 				target_question_client_id: q2ClientId,
 				operator: 'show_if' as const,
-				conditions: [
-					{ source_question_client_id: q1ClientId, op: 'equals' as const, value: 'A' }
-				]
+				conditions: [{ source_question_client_id: q1ClientId, op: 'equals' as const, value: 'A' }]
 			}
 		];
 
@@ -145,6 +153,9 @@ test.describe('Form logic engine — show/hide rules persist + render', () => {
 		expect(hidden.map((q: { client_id: string }) => q.client_id)).toEqual([q1ClientId]);
 
 		const visible = computeVisibleQuestions(questions, rules, { [q1ClientId]: 'A' });
-		expect(visible.map((q: { client_id: string }) => q.client_id)).toEqual([q1ClientId, q2ClientId]);
+		expect(visible.map((q: { client_id: string }) => q.client_id)).toEqual([
+			q1ClientId,
+			q2ClientId
+		]);
 	});
 });

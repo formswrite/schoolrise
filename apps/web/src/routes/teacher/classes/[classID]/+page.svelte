@@ -15,9 +15,7 @@
 	<header>
 		<a href="/teacher" class="text-xs text-muted-foreground hover:underline">← Your classes</a>
 		<h1 class="mt-1 text-2xl font-semibold">Class #{data.classID}</h1>
-		<p class="mt-1 text-sm text-muted-foreground">
-			Pick an open campaign to enter scores.
-		</p>
+		<p class="mt-1 text-sm text-muted-foreground">Pick an open campaign to enter scores.</p>
 	</header>
 
 	<Card.Root>
@@ -27,7 +25,9 @@
 		</Card.Header>
 		<Card.Content>
 			{#if open.length === 0}
-				<p class="py-8 text-center text-sm text-muted-foreground">No open campaigns at this scope.</p>
+				<p class="py-8 text-center text-sm text-muted-foreground">
+					No open campaigns at this scope.
+				</p>
 			{:else}
 				<Table.Root>
 					<Table.Header>
@@ -75,7 +75,11 @@
 						{#each closed as c}
 							<Table.Row>
 								<Table.Cell class="font-medium">{c.title}</Table.Cell>
-								<Table.Cell><Badge variant={c.status === 'closed' ? 'destructive' : 'secondary'}>{c.status}</Badge></Table.Cell>
+								<Table.Cell
+									><Badge variant={c.status === 'closed' ? 'destructive' : 'secondary'}
+										>{c.status}</Badge
+									></Table.Cell
+								>
 								<Table.Cell class="text-muted-foreground">{c.scored} / {c.assigned}</Table.Cell>
 							</Table.Row>
 						{/each}

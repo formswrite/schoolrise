@@ -9,7 +9,13 @@
 	};
 	let { name, required = false, accept, label = 'Choose file' }: Props = $props();
 
-	type Uploaded = { key: string; url: string; content_type: string; size: number; original_name: string };
+	type Uploaded = {
+		key: string;
+		url: string;
+		content_type: string;
+		size: number;
+		original_name: string;
+	};
 
 	let status: 'idle' | 'uploading' | 'done' | 'error' = $state('idle');
 	let uploaded: Uploaded | null = $state(null);
@@ -52,7 +58,9 @@
 		if (fileInput) fileInput.value = '';
 	}
 
-	const isImage = $derived((uploaded as Uploaded | null)?.content_type?.startsWith('image/') ?? false);
+	const isImage = $derived(
+		(uploaded as Uploaded | null)?.content_type?.startsWith('image/') ?? false
+	);
 </script>
 
 <div class="space-y-2">
@@ -106,7 +114,9 @@
 		</div>
 		<input type="hidden" {name} value={uploaded.key} />
 	{:else if status === 'error'}
-		<div class="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+		<div
+			class="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+		>
 			Upload failed: {errorMsg}
 			<button type="button" onclick={reset} class="ml-2 underline">Try again</button>
 		</div>

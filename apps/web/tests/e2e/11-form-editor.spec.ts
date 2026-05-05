@@ -61,14 +61,19 @@ test.describe('Form editor v2 — 3-panel layout, drag-reorder, click-to-edit', 
 		await expect(page.locator('text=/No questions yet/')).not.toBeVisible();
 	});
 
-	test('clicking a question opens the settings drawer; saving persists the title', async ({ page }) => {
+	test('clicking a question opens the settings drawer; saving persists the title', async ({
+		page
+	}) => {
 		await page.goto(`/admin/forms/${formId}`);
 		await page.waitForLoadState('networkidle');
 
 		await page.locator('aside button:has-text("Multiple choice")').first().click();
 		await page.waitForLoadState('networkidle');
 
-		const row = page.locator('div').filter({ hasText: /^[0-9]+\.\s*Multiple choice/ }).first();
+		const row = page
+			.locator('div')
+			.filter({ hasText: /^[0-9]+\.\s*Multiple choice/ })
+			.first();
 		await row.click();
 
 		const drawer = page.locator('aside').filter({ hasText: 'Question settings' });

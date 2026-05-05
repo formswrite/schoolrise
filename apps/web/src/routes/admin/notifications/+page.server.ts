@@ -1,6 +1,11 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { getProviderStatus, listEmails, processOutbox, sendTestEmail } from '$lib/server/notifications';
+import {
+	getProviderStatus,
+	listEmails,
+	processOutbox,
+	sendTestEmail
+} from '$lib/server/notifications';
 
 export const load: PageServerLoad = async ({ cookies, locals }) => {
 	if (!locals.user) throw redirect(303, '/login');

@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 
-	type Result = {
-		success?: boolean;
-		error?: string;
-		message?: string;
-		toast?: { type?: 'success' | 'error' | 'info' | 'warning'; message?: string };
-	} | null | undefined;
+	type Result =
+		| {
+				success?: boolean;
+				error?: string;
+				message?: string;
+				toast?: { type?: 'success' | 'error' | 'info' | 'warning'; message?: string };
+		  }
+		| null
+		| undefined;
 
 	type Props = { form: Result };
 	let { form }: Props = $props();

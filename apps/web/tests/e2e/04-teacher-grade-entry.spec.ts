@@ -42,7 +42,10 @@ test.describe('Teacher proctored grade entry', () => {
 	test('step 4 — enters scores for all students and submits', async ({ page }) => {
 		await page.goto('/teacher');
 		await page.locator('text=CE1-A').first().click();
-		await page.getByRole('link', { name: /Enter scores|Continue/ }).first().click();
+		await page
+			.getByRole('link', { name: /Enter scores|Continue/ })
+			.first()
+			.click();
 		await page.waitForURL(/\/teacher\/classes\/\d+\/campaigns\/\d+/);
 
 		const inputs = await page.locator('input[name^="score_"]').all();
@@ -61,11 +64,17 @@ test.describe('Teacher proctored grade entry', () => {
 	test('step 5 — reload shows persisted scores with Saved chips and bands', async ({ page }) => {
 		await page.goto('/teacher');
 		await page.locator('text=CE1-A').first().click();
-		await page.getByRole('link', { name: /Continue|Enter scores/ }).first().click();
+		await page
+			.getByRole('link', { name: /Continue|Enter scores/ })
+			.first()
+			.click();
 		await page.waitForLoadState('networkidle');
 
 		const savedChips = await page.locator('text=Saved').count();
 		expect(savedChips).toBeGreaterThan(0);
-		await page.screenshot({ path: path.join(SHOTS_DIR, '06-reload-persisted.png'), fullPage: true });
+		await page.screenshot({
+			path: path.join(SHOTS_DIR, '06-reload-persisted.png'),
+			fullPage: true
+		});
 	});
 });

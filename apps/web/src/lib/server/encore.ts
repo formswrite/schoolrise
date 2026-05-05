@@ -28,10 +28,17 @@ export async function fetchSession(token: string): Promise<Session | null> {
 
 		const data = await res.json();
 		const assignments: RoleAssignment[] = Array.isArray(data.Assignments)
-			? data.Assignments.map((a: { role?: string; scopeNodeId?: number | null; Role?: string; ScopeNodeID?: number | null }) => ({
-					role: (a.role ?? a.Role ?? '').toString(),
-					scopeNodeId: a.scopeNodeId ?? a.ScopeNodeID ?? null
-				}))
+			? data.Assignments.map(
+					(a: {
+						role?: string;
+						scopeNodeId?: number | null;
+						Role?: string;
+						ScopeNodeID?: number | null;
+					}) => ({
+						role: (a.role ?? a.Role ?? '').toString(),
+						scopeNodeId: a.scopeNodeId ?? a.ScopeNodeID ?? null
+					})
+				)
 			: [];
 		return {
 			userId: data.UserID,
@@ -98,9 +105,7 @@ export async function loginRequest(email: string, password: string): Promise<Log
 	}
 }
 
-export type ChangePasswordResult =
-	| { ok: true }
-	| { ok: false; status: number; message: string };
+export type ChangePasswordResult = { ok: true } | { ok: false; status: number; message: string };
 
 export async function changePasswordRequest(
 	token: string,
@@ -140,6 +145,5 @@ export async function logoutRequest(token: string): Promise<void> {
 			method: 'POST',
 			headers: { Authorization: `Bearer ${token}` }
 		});
-	} catch {
-	}
+	} catch {}
 }

@@ -31,18 +31,20 @@
 </script>
 
 <div class="flex flex-wrap items-center gap-1.5">
-	<span class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Scope:</span>
+	<span class="text-xs font-semibold tracking-wide text-muted-foreground uppercase">Scope:</span>
 	{#each options as opt}
 		{@const isActive = opt.id === current}
 		<a
 			href={buildHref(opt.id)}
 			class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition-colors {isActive
-				? 'bg-[#6439B5] text-white font-semibold'
+				? 'bg-[#6439B5] font-semibold text-white'
 				: 'border border-border hover:bg-accent'}"
 		>
 			{#if opt.depth > 0}<span class="text-muted-foreground/60">↳</span>{/if}
 			<span>{opt.label}</span>
-			<span class="rounded px-1 py-0.5 text-[10px] {isActive ? 'bg-white/20' : levelBadge(opt.level)}">
+			<span
+				class="rounded px-1 py-0.5 text-[10px] {isActive ? 'bg-white/20' : levelBadge(opt.level)}"
+			>
 				{opt.level}
 			</span>
 		</a>
