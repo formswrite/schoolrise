@@ -29,7 +29,7 @@ jobs:
           - ai
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
           cache: true
@@ -43,7 +43,7 @@ jobs:
           go install golang.org/x/tools/cmd/goimports@latest
       - name: regenerate baml client
         run: cd apps/ai && baml-cli generate
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - name: login ghcr
         uses: docker/login-action@v3
         with:
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
           cache: true
@@ -85,7 +85,7 @@ jobs:
         run: |
           curl -L https://encore.dev/install.sh | bash
           echo "$HOME/.encore/bin" >> "$GITHUB_PATH"
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -117,7 +117,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
