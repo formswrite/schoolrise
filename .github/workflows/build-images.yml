@@ -1,0 +1,80 @@
+name: build-images
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  app:
+    name: build & push schoolrise-app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: install encore cli
+        run: |
+          curl -L https://encore.dev/install.sh | bash -s -- 1.52.1
+          echo "$HOME/.encore/bin" >> "$GITHUB_PATH"
+      - name: install baml-cli
+        run: go install github.com/boundaryml/baml/baml-cli@latest
+      - name: regenerate baml client
+        run: cd apps/ai && baml-cli generate
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: encore build monolithic image
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          encore build docker \
+            --cgo \
+            --base=debian:bookworm-slim \
+            "ghcr.io/formswrite/schoolrise-app:${SHA}" \
+            --config=infra-config/selfhost.json
+          docker tag "ghcr.io/formswrite/schoolrise-app:${SHA}" ghcr.io/formswrite/schoolrise-app:latest
+      - name: push
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          docker push "ghcr.io/formswrite/schoolrise-app:${SHA}"
+          docker push ghcr.io/formswrite/schoolrise-app:latest
+
+  web:
+    name: build & push schoolrise-web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/formswrite/schoolrise-web
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,format=short
+            type=ref,event=branch
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./apps/web
+          file: ./apps/web/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -94,9 +94,12 @@ build-docker:
 LOCAL_ARCH ?= $(shell uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')
 
 build-docker-local:
-	@echo ">> local docker build is disabled — BAML requires cgo cross-compile"
-	@echo ">> use 'encore run' for local dev, or push a tag to trigger CI build"
-	@exit 1
+	@echo ">> pulling ghcr.io/formswrite/schoolrise-app:latest (built by .github/workflows/build-images.yml)"
+	docker pull ghcr.io/formswrite/schoolrise-app:latest
+
+build-web-pull:
+	@echo ">> pulling ghcr.io/formswrite/schoolrise-web:latest"
+	docker pull ghcr.io/formswrite/schoolrise-web:latest
 
 web-install:
 	cd apps/web && npm install --engine-strict=false
@@ -110,8 +113,7 @@ web-build:
 web-lint:
 	cd apps/web && npm run lint
 
-build-web-local:
-	docker build -t schoolrise-web:local apps/web
+build-web-local: build-web-pull
 
 compose-up:
 	docker compose -f deploy/docker-compose.yml up -d

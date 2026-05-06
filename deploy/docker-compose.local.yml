@@ -46,7 +46,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: schoolrise-app:patched
+    image: ghcr.io/formswrite/schoolrise-app:${TAG:-latest}
     env_file: ../.env
     environment:
       ENCORE_RUNTIME_CONFIG: /infra/selfhost.json
@@ -102,7 +102,7 @@ services:
     restart: "no"
 
   web:
-    image: schoolrise-web:local
+    image: ghcr.io/formswrite/schoolrise-web:${TAG:-latest}
     env_file: ../.env
     environment:
       ENCORE_API_URL: http://app:8080
