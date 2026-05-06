@@ -37,12 +37,12 @@ Prerequisites: Docker Desktop (or compatible), `make`.
 ```bash
 git clone https://github.com/formswrite/schoolrise.git
 cd schoolrise
-cp .env.example .env
-# fill in the four __choose_a_local_*__ placeholders
 make compose-up-local
 ```
 
-Open <http://localhost:3001/login> and sign in with the `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `.env`. Form editor at `/admin/forms`. Tear down with `make compose-down-local`.
+`make compose-up-local` auto-creates `.env` on first run (generates `AUTH_SECRET` and `POSTGRES_PASSWORD` via `openssl rand`, sets `ADMIN_EMAIL=admin@local.test` and `ADMIN_PASSWORD=ChangeMe123!`). Edit `.env` afterwards if you want different values.
+
+Open <http://localhost:3001/login> and sign in as `admin@local.test` / `ChangeMe123!`. Form editor at `/admin/forms`. Tear down with `make compose-down-local`.
 
 ## What's shipped
 

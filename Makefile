@@ -126,10 +126,12 @@ env-stub:
 		cp .env.example .env; \
 		AUTH_SECRET=$$(openssl rand -hex 32); \
 		PG_PASS=$$(openssl rand -hex 16); \
+		MINIO_PASS=$$(openssl rand -hex 16); \
 		sed -i.bak "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$$PG_PASS|" .env; \
 		sed -i.bak "s|^ADMIN_EMAIL=.*|ADMIN_EMAIL=admin@local.test|" .env; \
 		sed -i.bak "s|^ADMIN_PASSWORD=.*|ADMIN_PASSWORD=ChangeMe123!|" .env; \
 		sed -i.bak "s|^AUTH_SECRET=.*|AUTH_SECRET=$$AUTH_SECRET|" .env; \
+		sed -i.bak "s|^MINIO_ROOT_PASSWORD=.*|MINIO_ROOT_PASSWORD=$$MINIO_PASS|" .env; \
 		sed -i.bak "s|^BASE_URL=.*|BASE_URL=http://localhost:3000|" .env; \
 		sed -i.bak "s|^RESEND_API_KEY=.*|RESEND_API_KEY=re_local_stub|" .env; \
 		sed -i.bak "s|^EMAIL_FROM=.*|EMAIL_FROM=schoolrise@local.test|" .env; \
