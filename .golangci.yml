@@ -3,6 +3,7 @@ run:
   concurrency: 4
   timeout: 5m
   tests: true
+  go: "1.23"
 
 issues:
   max-issues-per-linter: 0
