@@ -55,6 +55,10 @@ jobs:
   web-e2e:
     name: web playwright
     runs-on: ubuntu-latest
+    env:
+      MINIO_ACCESS_KEY: ci-build-stub
+      MINIO_SECRET_KEY: ci-build-stub
+      MINIO_ENDPOINT: http://localhost:9000
     defaults:
       run:
         working-directory: apps/web

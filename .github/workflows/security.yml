@@ -20,10 +20,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_CONFIG: .gitleaks.toml
+      - name: install gitleaks
+        run: |
+          GITLEAKS_VERSION=8.21.2
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+      - name: gitleaks detect
+        run: gitleaks detect --source . --config .gitleaks.toml --no-banner --redact --verbose
 
   govulncheck:
     name: govulncheck
@@ -33,6 +37,12 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+      - name: install encore cli
+        run: |
+          curl -L https://encore.dev/install.sh | bash -s -- 1.52.1
+          echo "$HOME/.encore/bin" >> "$GITHUB_PATH"
+      - name: generate encore wrappers
+        run: encore gen wrappers
       - run: go install golang.org/x/vuln/cmd/govulncheck@latest
       - run: govulncheck ./...
 
