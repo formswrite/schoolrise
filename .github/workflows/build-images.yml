@@ -23,8 +23,10 @@ jobs:
         run: |
           curl -L https://encore.dev/install.sh | bash -s -- 1.52.1
           echo "$HOME/.encore/bin" >> "$GITHUB_PATH"
-      - name: install baml-cli
-        run: go install github.com/boundaryml/baml/baml-cli@latest
+      - name: install baml-cli + goimports
+        run: |
+          go install github.com/boundaryml/baml/baml-cli@latest
+          go install golang.org/x/tools/cmd/goimports@latest
       - name: regenerate baml client
         run: cd apps/ai && baml-cli generate
       - uses: docker/setup-buildx-action@v3
