@@ -1,9 +1,9 @@
-FROM node:25-alpine AS deps
+FROM node:26-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
 
-FROM node:25-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -12,7 +12,7 @@ ENV MINIO_ACCESS_KEY=build-stub \
     MINIO_ENDPOINT=http://localhost:9000
 RUN npm run build
 
-FROM node:25-alpine AS runner
+FROM node:26-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/build ./build
